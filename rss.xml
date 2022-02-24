@@ -1,9 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>poor guy</title><link>https://poorguyorz.github.io/</link><description>A Test Blog</description><generator>Hugo 0.92.1 https://gohugo.io/</generator><language>zh-CN</language><managingEditor>a_designer@qq.com (poor Guy)</managingEditor><webMaster>a_designer@qq.com (poor Guy)</webMaster><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><lastBuildDate>Tue, 22 Feb 2022 12:20:37 +0000</lastBuildDate><atom:link rel="self" type="application/rss+xml" href="https://poorguyorz.github.io/rss.xml"/><item><title>Envs</title><link>https://poorguyorz.github.io/posts/envs/</link><guid isPermaLink="true">https://poorguyorz.github.io/posts/envs/</guid><pubDate>Mon, 21 Feb 2022 19:00:25 +0800</pubDate><author>a_designer@qq.com (poor Guy)</author><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><description>&lt;h2 id="hugo">hugo&lt;/h2>
+<?xml version="1.0" encoding="utf-8"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>poor guy</title><link>https://poorguyorz.github.io/</link><description>A Test Blog</description><generator>Hugo 0.92.1 https://gohugo.io/</generator><language>zh-CN</language><managingEditor>a_designer@qq.com (poor Guy)</managingEditor><webMaster>a_designer@qq.com (poor Guy)</webMaster><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><lastBuildDate>Thu, 24 Feb 2022 02:11:54 +0000</lastBuildDate><atom:link rel="self" type="application/rss+xml" href="https://poorguyorz.github.io/rss.xml"/><item><title>Envs</title><link>https://poorguyorz.github.io/posts/envs/</link><guid isPermaLink="true">https://poorguyorz.github.io/posts/envs/</guid><pubDate>Mon, 21 Feb 2022 19:00:25 +0800</pubDate><author>a_designer@qq.com (poor Guy)</author><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><description>&lt;h2 id="hugo">hugo&lt;/h2>
 &lt;p>&lt;a href="https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb">https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb&lt;/a>&lt;/p>
 &lt;p>可以使用aria2下载，ubuntu使用&lt;code>apt install aria2&lt;/code>直接安装工具，使用-s开启多路下载
 aria2c -s 5 &lt;a href="https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb">https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb&lt;/a>&lt;/p>
 &lt;p>manager用户&lt;/p>
-&lt;p>&lt;a href="https://www.jianshu.com/p/a76a93e8c662">https://www.jianshu.com/p/a76a93e8c662&lt;/a>&lt;/p></description><category domain="https://poorguyorz.github.io/posts/">posts</category></item><item><title>Docker</title><link>https://poorguyorz.github.io/posts/docker/</link><guid isPermaLink="true">https://poorguyorz.github.io/posts/docker/</guid><pubDate>Sun, 20 Feb 2022 21:17:58 +0800</pubDate><author>a_designer@qq.com (poor Guy)</author><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><description>&lt;h2 id="docker">Docker&lt;/h2>
+&lt;p>&lt;a href="https://www.jianshu.com/p/a76a93e8c662">https://www.jianshu.com/p/a76a93e8c662&lt;/a>&lt;/p>
+&lt;h2 id="unix">Unix&lt;/h2>
+&lt;p>分区问题，集群上多块磁盘分区挂载到指定目录&lt;/p>
+&lt;pre tabindex="0">&lt;code>fdisk disk 可以对一个磁盘进行分区的添加和删除等操作
+p
+d
+w
+h
+&lt;/code>&lt;/pre>&lt;p>添加磁盘挂载&lt;/p>
+&lt;pre tabindex="0">&lt;code>lsblk -f 查看磁盘
+mkfs.xfs -f -n ftype=1 /dev/sdb1 格式化磁盘
+mount /dev/sdb1 /var/lib/docker 挂载
+xfs_info /dev/sdb1 | grep ftype=1
+blkid /dev/sdb1 查看UUID
+UUID=&amp;lt;UUID&amp;gt; /var/lib/docker xfs defaults 0 0 写进/etc/fstab
+&lt;/code>&lt;/pre>&lt;p>问题&lt;code>Couldn't find device with uuid 4mhUbb-Ls1h-jp0d-JuJK-C38V-T3tX-f7s2IN&lt;/code>&lt;/p>
+&lt;p>原因未知，疑似但是这个UUID是前面挂载的分区格式化之前的UUID，所以可能是挂载的时候出了什么问题，但是之前对其他机器操作无问题，此问题只出现在集群中的一两太机器上。&lt;/p>
+&lt;p>解决：&lt;/p>
+&lt;pre tabindex="0">&lt;code>使用 vgreduce --removemissing --verbose lvname 解决，但是需要视情况而定，需要知道自己在做什么
+其中会使用的命令
+lsblk
+vgscan
+pvscan
+cat /etc/lvm/archive/* | less 查看UUID和盘符之前的关系
+lvextend -L +300G /dev/mapper/centos-root 扩展分区大小
+xfs_growfs /dev/mapper/centos-root 扩展且生效
+lvremove /dev/mapper/centos-home 删除lv
+lvcreate -L 100G -n /dev/mapper/centos-home 创建lv
+mkdf.sfx /xxxx 创建文件系统
+&lt;/code>&lt;/pre>&lt;p>详细储备知识 &lt;a href="https://blog.csdn.net/lemontree1945/article/details/79293390">linux 文件&lt;/a>&lt;/p>
+&lt;h2 id="ubuntu安装typora">Ubuntu安装typora&lt;/h2>
+&lt;p>上海无法直连外网，所以这些都需要翻墙，或者使用其他的链接方式，&lt;/p>
+&lt;ol>
+&lt;li>直接使用snap安装，一般情况下，Ubuntu上可以使用apt安装就使用apt安装，这样节约空间，但是无法使用apt的时候，可以尝试使用snap，不是首选，但是无法链接网络的时候，这是首选方案&lt;/li>
+&lt;li>使用安装包，但是可能无法下载&lt;/li>
+&lt;li>添加typora的apt源，使用apt下载，可能有网络问题&lt;/li>
+&lt;/ol>
+&lt;h2 id="kubelet-换包">kubelet 换包&lt;/h2>
+&lt;p>&lt;a href="http://docs.kubernetes.org.cn/227.html">官网&lt;/a>&lt;/p>
+&lt;h3 id="角色">角色&lt;/h3>
+&lt;ul>
+&lt;li>deployment
+*&lt;/li>
+&lt;li>replicaset&lt;/li>
+&lt;li>pod&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>docker pull 172.16.1.99/postcommit/inceptor@sha256:d9a8c9c1cf4e1587e2ac468942a987ee43b92c99787f9d392b81a8e1bda26932
+docker tag 3b2a1923a5d3 baisheng5:5000/transwarp/argodb-inceptor:argodb-3.2.0-final-wl
+docker push baisheng5:5000/transwarp/argodb-inceptor:argodb-3.2.0-final-wl
+vdevelop-shiva1-202112141040
+kubectl get deployment | grep shiva
+172.16.1.99/postcommit/shiva-tabletserver:vdevelop-shiva1-202112141040
+172.16.1.99/postcommit/shiva-master:vdevelop-shiva1-202112141040
+172.16.1.99/postcommit/shiva-webserver:vdevelop-shiva1-202112141040
+&lt;/code>&lt;/pre>&lt;p>改变deployment的配置文件的镜像，他会自动重启然后拉取镜像启动服务，所以需要准备自己的镜像，一般只需要替换镜像中的一个或者几个文件，然后让k8s使用此镜像即可，但是无法直接替换镜像中的文件，需要在运行的容器中替换，然后再以此为基准建立新的镜像，然后替换&lt;/p></description><category domain="https://poorguyorz.github.io/posts/">posts</category></item><item><title>Docker</title><link>https://poorguyorz.github.io/posts/docker/</link><guid isPermaLink="true">https://poorguyorz.github.io/posts/docker/</guid><pubDate>Sun, 20 Feb 2022 21:17:58 +0800</pubDate><author>a_designer@qq.com (poor Guy)</author><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><description>&lt;h2 id="docker">Docker&lt;/h2>
 &lt;p>新公司的产品的每一个模块是单独运行在容器中的，且由于是使用Java开发的，所以需要有频繁替换包的过程，之前只是简单的了解了docker，但是并没有深入的学习，这里记录docker的使用细节，以便于更好的工作，&lt;/p>
 &lt;h2 id="基础概念">基础概念&lt;/h2>
 &lt;p>Docker使用go开发的一种沙箱工具，他使得应用可以单独运行在沙箱中，通过端口映射或者volumes与外界进行交互。这可以让一个机器上可以运行多种不同环境的应用且互不干扰，例如一个比较大型的引用，使用的此方式单独维护一个模块，使得系统的可靠性大大增强&lt;/p>
