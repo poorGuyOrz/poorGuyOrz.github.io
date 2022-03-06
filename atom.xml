@@ -1,4 +1,110 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN"><title type="text">poor guy</title><subtitle type="html">A Test Blog</subtitle><updated>2022-02-24T02:11:54+00:00</updated><id>https://poorguyorz.github.io/</id><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/"/><link rel="self" type="application/atom+xml" href="https://poorguyorz.github.io/atom.xml"/><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><generator uri="https://gohugo.io/" version="0.92.1">Hugo</generator><entry><title type="text">Envs</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/envs/"/><id>https://poorguyorz.github.io/posts/envs/</id><updated>2022-02-24T10:11:19+08:00</updated><published>2022-02-21T19:00:25+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">hugo https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb 可以使用aria2下载，ubuntu使用apt install aria2直接安装工具，使用-s……</summary><content type="html">&lt;h2 id="hugo">hugo&lt;/h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN"><title type="text">poor guy</title><subtitle type="html">A Test Blog</subtitle><updated>2022-03-06T15:12:45+00:00</updated><id>https://poorguyorz.github.io/</id><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/"/><link rel="self" type="application/atom+xml" href="https://poorguyorz.github.io/atom.xml"/><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><generator uri="https://gohugo.io/" version="0.92.1">Hugo</generator><entry><title type="text">现代C++白皮书</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/readbooks/%E7%8E%B0%E4%BB%A3c++%E7%99%BD%E7%9A%AE%E4%B9%A6/"/><id>https://poorguyorz.github.io/posts/readbooks/%E7%8E%B0%E4%BB%A3c++%E7%99%BD%E7%9A%AE%E4%B9%A6/</id><updated>2022-03-06T15:12:44+00:00</updated><published>2022-03-06T20:46:08+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">读者序 之前没有好好的阅读过一本任何技术书籍，一般都是打开前几张，然后慢慢的失去耐心，……</summary><content type="html">&lt;h2 id="读者序">读者序&lt;/h2>
+&lt;p>之前没有好好的阅读过一本任何技术书籍，一般都是打开前几张，然后慢慢的失去耐心，所有造成的问题是一些书籍上的知识，只会对前面的章节有记忆，而大多数的书籍前面的章节也只是他书籍的入门介绍而已，所以我是个半吊子程序员，工作两年半之后，这个问题越来越困扰着我，有时候看见别人的面帖，感觉那些问题其实都因该是知道答案的，但是当我想要在脑海中把答案整理出来的时候却无从说起，简单的来说就是有的东西我是知道的，但是无法表示出来，不成体系，这给我一个错觉就是我感觉我能力可以，但是落到实地的时候却啥也做不了，脱离了谷歌百度或者其他我之前的资料，我啥都不行。&lt;/p>
+&lt;p>我个人觉得问题的解决方式是学会输出，把自己的知识整理输出，通过自己让别人知道一项新技能，新知识，那就代表自己其实已经有了闹靠的基础，知识的输出需要一个载体，我不是老师，公司也没有这个渠道，因为公司的知识交流与工作内容是密切相关的，所以这也是我搭建这个博客的原因，但愿我可以长期的坚持下去，说实话，之前已经有了还几次类似的经历，但是都半途而废了，我希望这是最后一次&lt;/p>
+&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>书籍是Bjarne Stroustup为HOPL所撰写的论文，目的是介绍c++在过去到现在的发展历程，以及其中一些大的功能点的演化。促发展上来划分C++可以分为两个阶段，一是C++98之前的类C版C++，二是之后的C++11之后的现代C++，在进40年的时间里C++还没有被取代，还可以在如此多的编程语言中占据一些之地，引用Bjarne Stroustup大佬的话说就是因为他填补了编程语言中一个重要的生态位。C++的核心是直接映射硬件和林开销抽象，&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>ISO
+编程语言可以分为三种，一是有公司主导的编程语言，例如Google的go，C#以及苹果的swift等，二是由社区主导如php，python等，这两种在除了显而易见的好处之外的，都有各自的问题，公司主导的语言的，可能哎公司强势的时候还可以得到发展，但是公司没落之后，语言没有支持可能就无了，还有那家公司主导，那语言就是那家公司的产品，技术上的map由公司指定，小公司没有能力可以影响到语言的后续发展，对于社区，则可能会由于没有一个核心的个人或者组织来引导方向，导致语言偏离最初顶下的发展道路。Bjarne Stroustup就是基于以上的原因，提出组建一个标准委员会来引导C++ 的发展，&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>语言特性
+具体的定义的语言的规则，有对应的具体的实现&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="1-起源">1. 起源&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>C++核心特性&lt;/p>
+&lt;ol>
+&lt;li>语言到设备之间的直接映射&lt;/li>
+&lt;li>零开销抽象
+&lt;ul>
+&lt;li>不使用的东西就不需要付出任何代价&lt;/li>
+&lt;li>使用到的东西就是可以实现的最好的&lt;/li>
+&lt;li>抽象具体为类，函数，模板，概念和别名&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;p>simula
+最早的面向对象的语言，之后几乎所有的面向对象的语言都是直接或者间接的受奥他的印象。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>C++最初是在1979年推出的，那时候是真正的带类的C。 Bjarne Stroustup的目的是想要一个可以直接映射硬件，同时又有类似于&lt;a href="https://baike.baidu.com/item/simula">simula&lt;/a>的具有抽象能力的语言，那是一个实验性质的语言的，实现就是把编码从C++逐行翻译到C，之后的1982年，随着人数的增加，他重写了前端，实现了一个功能完整的编译器，但是实际上在代码生成的是时候，还是生成的是C，&lt;/p>
+&lt;p>之后就是平稳的发展到推出98版本的C++，不考虑最近的一些新特性的话，我们大部分人的C++ 知识就到这里了。此时C++实现了&lt;/p>
+&lt;ul>
+&lt;li>类&lt;/li>
+&lt;li>多态&lt;/li>
+&lt;li>运算符重载&lt;/li>
+&lt;li>类型安全连接&lt;/li>
+&lt;li>抽象类&lt;/li>
+&lt;li>模板
+更好的泛型编程。大佬最初的时候使用宏实现的泛型编程&lt;/li>
+&lt;li>异常&lt;/li>
+&lt;li>RAII&lt;/li>
+&lt;li>*_cast&lt;/li>
+&lt;li>bool&lt;/li>
+&lt;li>STL标准库
+上述就是最初的98的C++实现的功能点，实际上也是大多是C++的开发人员知道的最详细的C++知识。之后就是漫长过渡期，直到11版本的推出，使C++进入新时代，&lt;/li>
+&lt;li>06年单核处理器新能几乎不再提升，所以大部分应用开始寻找可以提升性能的编程语言，&lt;/li>
+&lt;/ul>
+&lt;h2 id="c11-新时代">C++11 新时代&lt;/h2>
+&lt;p>许多新的特性的引入，使得C++类似一个新语言
+特性如下&lt;/p>
+&lt;ul>
+&lt;li>内存模型
+高效的为现代硬件设计的底层抽象，描述并发的基础，&lt;/li>
+&lt;li>auto|declytype&lt;/li>
+&lt;li>range for
+更好的遍历容器&lt;/li>
+&lt;li>移动语义和右值引用&lt;/li>
+&lt;li>统一初始化&lt;/li>
+&lt;li>nullptrt&lt;/li>
+&lt;li>constexpr&lt;/li>
+&lt;li>用户自定义字面量&lt;/li>
+&lt;li>原始字符串字面量&lt;/li>
+&lt;li>属性&lt;/li>
+&lt;li>lambda表达式&lt;/li>
+&lt;li>变参模板&lt;/li>
+&lt;li>模板别名&lt;/li>
+&lt;li>noexcept&lt;/li>
+&lt;li>override和final&lt;/li>
+&lt;li>static_assert&lt;/li>
+&lt;li>longlong&lt;/li>
+&lt;li>默认成员初始化&lt;/li>
+&lt;li>enum class&lt;/li>
+&lt;/ul>
+&lt;p>组件如下&lt;/p>
+&lt;ul>
+&lt;li>智能指针 unique_ptr和shared_ptr&lt;/li>
+&lt;li>atomic&lt;/li>
+&lt;li>thread库&lt;/li>
+&lt;li>future，promise等&lt;/li>
+&lt;li>tuple&lt;/li>
+&lt;li>type trait&lt;/li>
+&lt;li>正则&lt;/li>
+&lt;li>随机数&lt;/li>
+&lt;li>时间&lt;/li>
+&lt;li>容器&lt;/li>
+&lt;/ul>
+&lt;p>上面的东西就是后续C++在98 的基础上推出的新11功能点，在我自己写这边文档的时候，其实有些东西我是没概念的😂，这些看似不相关的东西，可以分为下面的几个大的主题&lt;/p>
+&lt;ol>
+&lt;li>并发支持&lt;/li>
+&lt;li>简化使用&lt;/li>
+&lt;li>泛型编程的改进&lt;/li>
+&lt;li>增加静态类型的安全&lt;/li>
+&lt;li>支持对库的开发&lt;/li>
+&lt;li>标准库组件&lt;/li>
+&lt;/ol>
+&lt;h3 id="1-并发支持">1. 并发支持&lt;/h3></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" term="读书笔记" label="读书笔记"/><category scheme="https://poorguyorz.github.io/tags/c-/" term="C++" label="C++"/></entry><entry><title type="text">Envs</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/envs/"/><id>https://poorguyorz.github.io/posts/others/envs/</id><updated>2022-03-06T23:09:03+08:00</updated><published>2022-02-21T19:00:25+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">hugo wget https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb https://github.91chi.fun/https://github.com//gohugoio/hugo/releases/download/v0.92.2/hugo_extended_0.92.2_Linux-64bit.deb sudo dpkg -i hugo*.deb 140.82.113.3 aria2c -s 5 https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb 可以使用aria2下载，ubuntu使用apt install aria……</summary><content type="html">&lt;h2 id="hugo">hugo&lt;/h2>
+&lt;p>wget &lt;a href="https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb">https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb&lt;/a>
+&lt;a href="https://github.91chi.fun/https://github.com//gohugoio/hugo/releases/download/v0.92.2/hugo_extended_0.92.2_Linux-64bit.deb">https://github.91chi.fun/https://github.com//gohugoio/hugo/releases/download/v0.92.2/hugo_extended_0.92.2_Linux-64bit.deb&lt;/a>
+sudo dpkg -i hugo*.deb&lt;/p>
+&lt;p>140.82.113.3&lt;/p>
+&lt;p>aria2c -s 5 &lt;a href="https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb">https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb&lt;/a>&lt;/p>
 &lt;p>&lt;a href="https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb">https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb&lt;/a>&lt;/p>
 &lt;p>可以使用aria2下载，ubuntu使用&lt;code>apt install aria2&lt;/code>直接安装工具，使用-s开启多路下载
 aria2c -s 5 &lt;a href="https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb">https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb&lt;/a>&lt;/p>
@@ -57,7 +163,33 @@ kubectl get deployment | grep shiva
 172.16.1.99/postcommit/shiva-tabletserver:vdevelop-shiva1-202112141040
 172.16.1.99/postcommit/shiva-master:vdevelop-shiva1-202112141040
 172.16.1.99/postcommit/shiva-webserver:vdevelop-shiva1-202112141040
-&lt;/code>&lt;/pre>&lt;p>改变deployment的配置文件的镜像，他会自动重启然后拉取镜像启动服务，所以需要准备自己的镜像，一般只需要替换镜像中的一个或者几个文件，然后让k8s使用此镜像即可，但是无法直接替换镜像中的文件，需要在运行的容器中替换，然后再以此为基准建立新的镜像，然后替换&lt;/p></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/></entry><entry><title type="text">Docker</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/docker/"/><id>https://poorguyorz.github.io/posts/docker/</id><updated>2022-02-24T10:11:19+08:00</updated><published>2022-02-20T21:17:58+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Docker 新公司的产品的每一个模块是单独运行在容器中的，且由于是使用Java开发的，所以需要……</summary><content type="html">&lt;h2 id="docker">Docker&lt;/h2>
+&lt;/code>&lt;/pre>&lt;p>改变deployment的配置文件的镜像，他会自动重启然后拉取镜像启动服务，所以需要准备自己的镜像，一般只需要替换镜像中的一个或者几个文件，然后让k8s使用此镜像即可，但是无法直接替换镜像中的文件，需要在运行的容器中替换，然后再以此为基准建立新的镜像，然后替换&lt;/p>
+&lt;p>安装最新gcc g++
+&lt;a href="https://www.jianshu.com/p/">https://www.jianshu.com/p/&lt;/a>
+&lt;a href="https://cloud.tencent.com/developer/article/1635218">https://cloud.tencent.com/developer/article/1635218&lt;/a>&lt;/p>
+&lt;h2 id="ubuntu换源">Ubuntu换源&lt;/h2>
+&lt;pre tabindex="0">&lt;code>cd /etc/apt/
+sudo cp sources.list sources.list.bak
+sudo vim sources.list
+注意换源的版本
+deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+sudo apt-get update
+sudo apt-get upgrade
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt update
+sudo apt install g++-11
+sudo apt install gcc-11
+&lt;/code>&lt;/pre>&lt;p>export GIT_CURL_VERBOSE=1
+github无法使用https拉取代码&lt;/p></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/></entry><entry><title type="text">Docker</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/docker/"/><id>https://poorguyorz.github.io/posts/others/docker/</id><updated>2022-03-06T23:09:03+08:00</updated><published>2022-02-20T21:17:58+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Docker 新公司的产品的每一个模块是单独运行在容器中的，且由于是使用Java开发的，所以需要……</summary><content type="html">&lt;h2 id="docker">Docker&lt;/h2>
 &lt;p>新公司的产品的每一个模块是单独运行在容器中的，且由于是使用Java开发的，所以需要有频繁替换包的过程，之前只是简单的了解了docker，但是并没有深入的学习，这里记录docker的使用细节，以便于更好的工作，&lt;/p>
 &lt;h2 id="基础概念">基础概念&lt;/h2>
 &lt;p>Docker使用go开发的一种沙箱工具，他使得应用可以单独运行在沙箱中，通过端口映射或者volumes与外界进行交互。这可以让一个机器上可以运行多种不同环境的应用且互不干扰，例如一个比较大型的引用，使用的此方式单独维护一个模块，使得系统的可靠性大大增强&lt;/p>
@@ -104,7 +236,7 @@ kubectl get deployment | grep shiva
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;p>其他命令基本在遇到的时候，再去查看&lt;/p></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/docker/" term="Docker" label="Docker"/></entry><entry><title type="text">C++ logs</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/cpp/"/><id>https://poorguyorz.github.io/posts/cpp/</id><updated>2022-02-24T10:11:19+08:00</updated><published>2022-02-20T20:54:01+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">编译器 把高级语言编译成可执行语言工具，分为前端后后端，前端值得是高级语言的解析，后端……</summary><content type="html">&lt;h1 id="编译器">编译器&lt;/h1>
+&lt;p>其他命令基本在遇到的时候，再去查看&lt;/p></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/docker/" term="Docker" label="Docker"/></entry><entry><title type="text">C++ logs</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/languange/cpp/"/><id>https://poorguyorz.github.io/posts/languange/cpp/</id><updated>2022-03-06T23:09:03+08:00</updated><published>2022-02-20T20:54:01+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">编译器 把高级语言编译成可执行语言工具，分为前端后后端，前端值得是高级语言的解析，后端……</summary><content type="html">&lt;h1 id="编译器">编译器&lt;/h1>
 &lt;p>把高级语言编译成可执行语言工具，分为前端后后端，前端值得是高级语言的解析，后端是指翻译解析之后的结果为机器语言&lt;/p>
 &lt;ul>
 &lt;li>
@@ -284,7 +416,7 @@ std::shared_ptr&lt;void>和 std::any
 &lt;li>常饮用范围最小，其他两种引用都可以转换为长应用&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ul></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/test_tag/" term="test_tag" label="test_tag"/><category scheme="https://poorguyorz.github.io/tags/asd/" term="asd" label="asd"/></entry><entry><title type="text">Hello World</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/hello-world/"/><id>https://poorguyorz.github.io/posts/hello-world/</id><updated>2022-02-24T10:11:19+08:00</updated><published>2022-02-07T03:54:01+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
+&lt;/ul></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/test_tag/" term="test_tag" label="test_tag"/><category scheme="https://poorguyorz.github.io/tags/asd/" term="asd" label="asd"/></entry><entry><title type="text">Hello World</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/hello-world/"/><id>https://poorguyorz.github.io/posts/others/hello-world/</id><updated>2022-03-06T23:09:03+08:00</updated><published>2022-02-07T03:54:01+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
 Quick Start Create a new post 1 $ hexo new &amp;#34;My New Post&amp;#34; More info: Writing</summary><content type="html">&lt;p>Welcome to &lt;a href="https://hexo.io/">Hexo&lt;/a>! This is your very first post. Check &lt;a href="https://hexo.io/docs/">documentation&lt;/a> for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href="https://hexo.io/docs/troubleshooting.html">troubleshooting&lt;/a> or you can ask me on &lt;a href="https://github.com/hexojs/hexo/issues">GitHub&lt;/a>.&lt;/p>
 &lt;h2 id="quick-start">Quick Start&lt;/h2>
 &lt;h3 id="create-a-new-post">Create a new post&lt;/h3>
