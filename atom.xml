@@ -1,4 +1,326 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN"><title type="text">poor guy</title><subtitle type="html">A Test Blog</subtitle><updated>2022-03-16T11:21:28+00:00</updated><id>https://poorguyorz.github.io/</id><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/"/><link rel="self" type="application/atom+xml" href="https://poorguyorz.github.io/atom.xml"/><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><generator uri="https://gohugo.io/" version="0.92.1">Hugo</generator><entry><title type="text">现代C++白皮书</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/readbooks/%E7%8E%B0%E4%BB%A3c++%E7%99%BD%E7%9A%AE%E4%B9%A6/"/><id>https://poorguyorz.github.io/posts/readbooks/%E7%8E%B0%E4%BB%A3c++%E7%99%BD%E7%9A%AE%E4%B9%A6/</id><updated>2022-03-16T11:21:26+00:00</updated><published>2022-03-06T20:46:08+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">读者序 之前没有好好的阅读过一本任何技术书籍，一般都是打开前几张，然后慢慢的失去耐心，……</summary><content type="html">&lt;h2 id="读者序">读者序&lt;/h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN"><title type="text">poor guy</title><subtitle type="html">A Test Blog</subtitle><updated>2022-03-24T14:30:25+00:00</updated><id>https://poorguyorz.github.io/</id><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/"/><link rel="self" type="application/atom+xml" href="https://poorguyorz.github.io/atom.xml"/><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><generator uri="https://gohugo.io/" version="0.92.1">Hugo</generator><entry><title type="text">面试</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/bigdata/log/"/><id>https://poorguyorz.github.io/posts/bigdata/log/</id><updated>2022-03-24T22:28:47+08:00</updated><published>2022-03-24T20:26:11+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">面试 只是一个技术汇总 C++基础 [2 days] [课程- https://github.com/parallel101/course.git] 内存 内存结构 c++ 编译出来的是可执行文件，是……</summary><content type="html">&lt;h1 id="面试">面试&lt;/h1>
+&lt;p>只是一个技术汇总&lt;/p>
+&lt;hr>
+&lt;ul>
+&lt;li>
+&lt;p>C++基础 [2 days] [课程- https://github.com/parallel101/course.git]&lt;/p>
+&lt;ul>
+&lt;li>内存
+&lt;ul>
+&lt;li>
+&lt;p>内存结构 &lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>c++ 编译出来的是可执行文件，是ELF格式的，他本来就有一些格式上的划分，C++在他的基础上进行了更细的划分，分为五个部分，从高地址到底地址依次为：&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>1. 内核虚拟内存&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>进程的虚拟印象&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>2. 栈&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>程序自动控制，具体为程序的函数调用，保存局部变量，有大小，可以使用ulimit -s 查看，也可以自行设置，但是建议系统默认即可&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>3. 共享库的内存印象&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>3. 堆&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>空间有程序员自行维护，向上增长(TIPS: 由于C的历史原因，C++的内存结构还是说堆区，但是在区别new/malloc 和delete/free 的时候，他们的差别之一可能会在内存上有点区别&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C的malloc/free可能会说是在堆上分配空间，但是对于C++可能会说的是在自由存储区上分配，自由存储区和堆是不同的概念，堆是操作系统上的概念，但是自由存储区是一个抽象概念&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>一般new可以是在堆上分配空间，但是可能存在在其他情况，例如在栈上使用new，所以他们不是一个概念，面试的时候说到这里，可以装逼😎)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>4. 可写/全局区&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>对应elf中data段和bss段，data段保存的是已初始化的全局变量或者静态变量，bss保存的是未初始化的数据&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>5. 只读区&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>text段，保存编译之后的指令，不可变&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>6. 常量区&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>保存全局变量，不可变，rodata段，记得使用其他手段去尝试修改常量的时候会报错。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>7. 未使用&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/li>
+&lt;li>
+&lt;p>内存管理&lt;/p>
+&lt;ul>
+&lt;li>new
+C++有对象的概念，所以他的new大意上是malloc的封装，先申请对象的内存空间，然后调用对象的构造函数构造对象，用在数组上是，先申请所有的空间，然后再依次调用构造函数&lt;/li>
+&lt;li>delete
+删除对象，先调用析构函数，然后再释放空间
+&lt;ul>
+&lt;li>对象数组
+如果调用的是delete[]，如果是基础类型，则删除的时候使用delete和delete[] 都没有区别，因为空间连续的，有额外的空间记录内存的大小，直接使用delete的时候可以直接伤处 如果是自定义对象，如果有指针这类的属性，则必须调用delete[]，
+否则他只会调用第一个对象的析构函数，可能会导致内存泄露&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&amp;ndash; new malloc 的区别&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>1. 空间分配的概念上&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>一个是堆区，一个是自由存储区&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>2. 使用上&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>new会调用构造函数，且new会自行计算对象所需的空间大小，malloc需要自行指定&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>3. 概念上&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>malloc是标准函数，而new是关键字&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/li>
+&lt;li>
+&lt;p>虚表&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.zhihu.com/question/389546003/answer/1194780618">实现&lt;/a>&lt;br>
+虚表是多态的一种实现，但是不是C++的规定，而是编译器的自行的实现方法，在函数中只要声明虚函数，则对象中就会有额外的空间用于保存虚表，他是一个指针，指向虚表，所以对于有虚表的对象
+sizeof的时候会计算这个指针的大小，指针指向虚表的第三个槽位，gdb查看地址的时候会显示+16的字样，因为这是实际的函数指针的开始位置，前两个槽位一个一般是0，拎一个一般是typeinfo的地址，
+虚表和他的附属信息在内存中都是一起的，其实从根本原理上来说，他只是做了一层转换，实际上函数的调用最终的实现都是面向过程的函数的调用，函数才是C++ 的核心，
+&lt;ul>
+&lt;li>验证方法&lt;br>
+编译的时候使用参数-fdump-lang-class，gdb调试的时候使用set print asm-demangle on，然后x/b打印地址&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>虚继承
+同样使用到虚表，&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>智能指针&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>构造函数&lt;/p>
+&lt;ul>
+&lt;li>移动构造和移动赋值&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>右值&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>move&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>语法&lt;/li>
+&lt;li>STL
+&lt;ul>
+&lt;li>容器
+&lt;ul>
+&lt;li>容器分类&lt;/li>
+&lt;li>容器使用&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>迭代器
+&lt;ul>
+&lt;li>失效问题&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>算法&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>特性
+&lt;ul>
+&lt;li>11新特性&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>GDB
+&lt;ul>
+&lt;li>调试技巧&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>数据结构与算法 [3 天整理知识列表，长期进行]&lt;/p>
+&lt;ul>
+&lt;li>数据结构
+&lt;ul>
+&lt;li>树
+&lt;ul>
+&lt;li>二叉树&lt;/li>
+&lt;li>红黑树&lt;/li>
+&lt;li>234树&lt;/li>
+&lt;li>树&lt;/li>
+&lt;li>B+树&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>hash&lt;/li>
+&lt;li>图&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>算法
+&lt;ul>
+&lt;li>二分&lt;/li>
+&lt;li>dp&lt;/li>
+&lt;li>排序&lt;/li>
+&lt;li>dfs&lt;/li>
+&lt;li>bfs&lt;/li>
+&lt;li>&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>数据库 [3 天整理知识列表]&lt;/p>
+&lt;ul>
+&lt;li>编译
+&lt;ul>
+&lt;li>编译原理&lt;/li>
+&lt;li>SQL编译过程&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>优化
+&lt;ul>
+&lt;li>优化规则&lt;/li>
+&lt;li>CBO&lt;/li>
+&lt;li>RBO&lt;/li>
+&lt;li>优化框架
+&lt;ul>
+&lt;li>cascade&lt;/li>
+&lt;li>遗传算法&lt;/li>
+&lt;li>dp&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>执行
+&lt;ul>
+&lt;li>算子实现
+&lt;ul>
+&lt;li>join
+&lt;ul>
+&lt;li>merge join&lt;/li>
+&lt;li>hash join&lt;/li>
+&lt;li>nest loop join&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>sort&lt;/li>
+&lt;li>窗口函数&lt;/li>
+&lt;li>常规函数&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>执行框架
+&lt;ul>
+&lt;li>自底向上&lt;/li>
+&lt;li>自顶向下&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>向量化&lt;/li>
+&lt;li>codegen&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>存储
+&lt;ul>
+&lt;li>存储格式
+&lt;ul>
+&lt;li>行存&lt;/li>
+&lt;li>列村&lt;/li>
+&lt;li>index&lt;/li>
+&lt;li>table&lt;/li>
+&lt;li>partition&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>事务&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>案例
+&lt;ul>
+&lt;li>leveldb&lt;/li>
+&lt;li>pg&lt;/li>
+&lt;li>trafodion&lt;/li>
+&lt;li>mysql&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>linux [2 天整理知识列表]&lt;/p>
+&lt;ul>
+&lt;li>进程，线程
+&lt;ul>
+&lt;li>通信&lt;/li>
+&lt;li>内存结构&lt;/li>
+&lt;li>IO&lt;/li>
+&lt;li>多线程编程&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>网络 [1 天整理知识列表]&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>分布式 [2 天整理知识列表]&lt;/p>
+&lt;ul>
+&lt;li>共识协议
+&lt;ul>
+&lt;li>raft&lt;/li>
+&lt;li>posie&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>大数据 [2 天整理知识列表]&lt;/p>
+&lt;ul>
+&lt;li>Hadoop&lt;/li>
+&lt;li>spark&lt;/li>
+&lt;li>hdfs&lt;/li>
+&lt;li>hive&lt;/li>
+&lt;li>scala&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>项目经历 [1 天整理知识列表]&lt;/p>
+&lt;ul>
+&lt;li>分区表&lt;/li>
+&lt;li>临时表&lt;/li>
+&lt;li>只读表&lt;/li>
+&lt;li>bug fix&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/></entry><entry><title type="text">现代C++白皮书</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/readbooks/%E7%8E%B0%E4%BB%A3c++%E7%99%BD%E7%9A%AE%E4%B9%A6/"/><id>https://poorguyorz.github.io/posts/readbooks/%E7%8E%B0%E4%BB%A3c++%E7%99%BD%E7%9A%AE%E4%B9%A6/</id><updated>2022-03-24T14:30:24+00:00</updated><published>2022-03-06T20:46:08+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">读者序 之前没有好好的阅读过一本任何技术书籍，一般都是打开前几张，然后慢慢的失去耐心，……</summary><content type="html">&lt;h2 id="读者序">读者序&lt;/h2>
 &lt;p>之前没有好好的阅读过一本任何技术书籍，一般都是打开前几张，然后慢慢的失去耐心，所有造成的问题是一些书籍上的知识，只会对前面的章节有记忆，而大多数的书籍前面的章节也只是他书籍的入门介绍而已，所以我是个半吊子程序员，工作两年半之后，这个问题越来越困扰着我，有时候看见别人的面帖，感觉那些问题其实都因该是知道答案的，但是当我想要在脑海中把答案整理出来的时候却无从说起，简单的来说就是有的东西我是知道的，但是无法表示出来，不成体系，这给我一个错觉就是我感觉我能力可以，但是落到实地的时候却啥也做不了，脱离了谷歌百度或者其他我之前的资料，我啥都不行。&lt;/p>
 &lt;p>我个人觉得问题的解决方式是学会输出，把自己的知识整理输出，通过自己让别人知道一项新技能，新知识，那就代表自己其实已经有了闹靠的基础，知识的输出需要一个载体，我不是老师，公司也没有这个渠道，因为公司的知识交流与工作内容是密切相关的，所以这也是我搭建这个博客的原因，但愿我可以长期的坚持下去，说实话，之前已经有了还几次类似的经历，但是都半途而废了，我希望这是最后一次&lt;/p>
 &lt;h2 id="前言">前言&lt;/h2>
@@ -99,7 +421,7 @@
 &lt;li>支持对库的开发&lt;/li>
 &lt;li>标准库组件&lt;/li>
 &lt;/ol>
-&lt;h3 id="1-并发支持">1. 并发支持&lt;/h3></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" term="读书笔记" label="读书笔记"/><category scheme="https://poorguyorz.github.io/tags/c-/" term="C++" label="C++"/></entry><entry><title type="text">Envs</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/envs/"/><id>https://poorguyorz.github.io/posts/others/envs/</id><updated>2022-03-16T19:20:13+08:00</updated><published>2022-02-21T19:00:25+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">hugo wget https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb https://github.91chi.fun/https://github.com//gohugoio/hugo/releases/download/v0.92.2/hugo_extended_0.92.2_Linux-64bit.deb sudo dpkg -i hugo*.deb 140.82.113.3 aria2c -s 5 https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb 可以使用aria2下载，ubuntu使用apt install aria……</summary><content type="html">&lt;h2 id="hugo">hugo&lt;/h2>
+&lt;h3 id="1-并发支持">1. 并发支持&lt;/h3></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" term="读书笔记" label="读书笔记"/><category scheme="https://poorguyorz.github.io/tags/c-/" term="C++" label="C++"/></entry><entry><title type="text">Envs</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/envs/"/><id>https://poorguyorz.github.io/posts/others/envs/</id><updated>2022-03-24T22:28:47+08:00</updated><published>2022-02-21T19:00:25+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">hugo wget https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb https://github.91chi.fun/https://github.com//gohugoio/hugo/releases/download/v0.92.2/hugo_extended_0.92.2_Linux-64bit.deb sudo dpkg -i hugo*.deb 140.82.113.3 aria2c -s 5 https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb 可以使用aria2下载，ubuntu使用apt install aria……</summary><content type="html">&lt;h2 id="hugo">hugo&lt;/h2>
 &lt;p>wget &lt;a href="https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb">https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb&lt;/a>
 &lt;a href="https://github.91chi.fun/https://github.com//gohugoio/hugo/releases/download/v0.92.2/hugo_extended_0.92.2_Linux-64bit.deb">https://github.91chi.fun/https://github.com//gohugoio/hugo/releases/download/v0.92.2/hugo_extended_0.92.2_Linux-64bit.deb&lt;/a>
 sudo dpkg -i hugo*.deb&lt;/p>
@@ -217,7 +539,7 @@ skip-grant-tables
 密码策略，
 SHOW VARIABLES LIKE 'validate_password%';查看密码策略
 使用set global validate_password_length=6;修改策略
-&lt;/code>&lt;/pre></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/></entry><entry><title type="text">Docker</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/docker/"/><id>https://poorguyorz.github.io/posts/others/docker/</id><updated>2022-03-16T19:20:13+08:00</updated><published>2022-02-20T21:17:58+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Docker 新公司的产品的每一个模块是单独运行在容器中的，且由于是使用Java开发的，所以需要……</summary><content type="html">&lt;h2 id="docker">Docker&lt;/h2>
+&lt;/code>&lt;/pre></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/></entry><entry><title type="text">Docker</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/docker/"/><id>https://poorguyorz.github.io/posts/others/docker/</id><updated>2022-03-24T22:28:47+08:00</updated><published>2022-02-20T21:17:58+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Docker 新公司的产品的每一个模块是单独运行在容器中的，且由于是使用Java开发的，所以需要……</summary><content type="html">&lt;h2 id="docker">Docker&lt;/h2>
 &lt;p>新公司的产品的每一个模块是单独运行在容器中的，且由于是使用Java开发的，所以需要有频繁替换包的过程，之前只是简单的了解了docker，但是并没有深入的学习，这里记录docker的使用细节，以便于更好的工作，&lt;/p>
 &lt;h2 id="基础概念">基础概念&lt;/h2>
 &lt;p>Docker使用go开发的一种沙箱工具，他使得应用可以单独运行在沙箱中，通过端口映射或者volumes与外界进行交互。这可以让一个机器上可以运行多种不同环境的应用且互不干扰，例如一个比较大型的引用，使用的此方式单独维护一个模块，使得系统的可靠性大大增强&lt;/p>
@@ -264,7 +586,7 @@ SHOW VARIABLES LIKE 'validate_password%';查看密码策略
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;p>其他命令基本在遇到的时候，再去查看&lt;/p></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/docker/" term="Docker" label="Docker"/></entry><entry><title type="text">C++ logs</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/languange/cpp/"/><id>https://poorguyorz.github.io/posts/languange/cpp/</id><updated>2022-03-16T19:20:13+08:00</updated><published>2022-02-20T20:54:01+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">编译器 把高级语言编译成可执行语言工具，分为前端后后端，前端值得是高级语言的解析，后端……</summary><content type="html">&lt;h1 id="编译器">编译器&lt;/h1>
+&lt;p>其他命令基本在遇到的时候，再去查看&lt;/p></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/docker/" term="Docker" label="Docker"/></entry><entry><title type="text">C++ logs</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/languange/cpp/"/><id>https://poorguyorz.github.io/posts/languange/cpp/</id><updated>2022-03-24T22:28:47+08:00</updated><published>2022-02-20T20:54:01+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">编译器 把高级语言编译成可执行语言工具，分为前端后后端，前端值得是高级语言的解析，后端……</summary><content type="html">&lt;h1 id="编译器">编译器&lt;/h1>
 &lt;p>把高级语言编译成可执行语言工具，分为前端后后端，前端值得是高级语言的解析，后端是指翻译解析之后的结果为机器语言&lt;/p>
 &lt;ul>
 &lt;li>
@@ -444,7 +766,7 @@ std::shared_ptr&lt;void>和 std::any
 &lt;li>常饮用范围最小，其他两种引用都可以转换为长应用&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ul></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/test_tag/" term="test_tag" label="test_tag"/><category scheme="https://poorguyorz.github.io/tags/asd/" term="asd" label="asd"/></entry><entry><title type="text">Hello World</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/hello-world/"/><id>https://poorguyorz.github.io/posts/others/hello-world/</id><updated>2022-03-16T19:20:13+08:00</updated><published>2022-02-07T03:54:01+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
+&lt;/ul></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/test_tag/" term="test_tag" label="test_tag"/><category scheme="https://poorguyorz.github.io/tags/asd/" term="asd" label="asd"/></entry><entry><title type="text">Hello World</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/hello-world/"/><id>https://poorguyorz.github.io/posts/others/hello-world/</id><updated>2022-03-24T22:28:47+08:00</updated><published>2022-02-07T03:54:01+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
 Quick Start Create a new post 1 $ hexo new &amp;#34;My New Post&amp;#34; More info: Writing</summary><content type="html">&lt;p>Welcome to &lt;a href="https://hexo.io/">Hexo&lt;/a>! This is your very first post. Check &lt;a href="https://hexo.io/docs/">documentation&lt;/a> for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href="https://hexo.io/docs/troubleshooting.html">troubleshooting&lt;/a> or you can ask me on &lt;a href="https://github.com/hexojs/hexo/issues">GitHub&lt;/a>.&lt;/p>
 &lt;h2 id="quick-start">Quick Start&lt;/h2>
 &lt;h3 id="create-a-new-post">Create a new post&lt;/h3>
