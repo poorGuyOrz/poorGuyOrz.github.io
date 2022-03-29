@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>poor guy</title><link>https://poorguyorz.github.io/</link><description>A Test Blog</description><generator>Hugo 0.92.1 https://gohugo.io/</generator><language>zh-CN</language><managingEditor>a_designer@qq.com (poor Guy)</managingEditor><webMaster>a_designer@qq.com (poor Guy)</webMaster><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><lastBuildDate>Tue, 29 Mar 2022 02:42:47 +0000</lastBuildDate><atom:link rel="self" type="application/rss+xml" href="https://poorguyorz.github.io/rss.xml"/><item><title>面试</title><link>https://poorguyorz.github.io/posts/bigdata/log/</link><guid isPermaLink="true">https://poorguyorz.github.io/posts/bigdata/log/</guid><pubDate>Thu, 24 Mar 2022 20:26:11 +0800</pubDate><author>a_designer@qq.com (poor Guy)</author><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><description>&lt;h1 id="面试">面试&lt;/h1>
+<?xml version="1.0" encoding="utf-8"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>poor guy</title><link>https://poorguyorz.github.io/</link><description>A Test Blog</description><generator>Hugo 0.92.1 https://gohugo.io/</generator><language>zh-CN</language><managingEditor>a_designer@qq.com (poor Guy)</managingEditor><webMaster>a_designer@qq.com (poor Guy)</webMaster><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><lastBuildDate>Tue, 29 Mar 2022 07:18:53 +0000</lastBuildDate><atom:link rel="self" type="application/rss+xml" href="https://poorguyorz.github.io/rss.xml"/><item><title>面试</title><link>https://poorguyorz.github.io/posts/bigdata/log/</link><guid isPermaLink="true">https://poorguyorz.github.io/posts/bigdata/log/</guid><pubDate>Thu, 24 Mar 2022 20:26:11 +0800</pubDate><author>a_designer@qq.com (poor Guy)</author><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><description>&lt;h1 id="面试">面试&lt;/h1>
 &lt;p>只是一个技术汇总&lt;/p>
 &lt;hr>
 &lt;ul>
@@ -466,12 +466,37 @@ tidb使用的是向量化，即使它使用的是行存，他会在数据读取�
 &lt;li>存储格式
 &lt;ul>
 &lt;li>行存&lt;/li>
-&lt;li>列村&lt;/li>
-&lt;li>index&lt;/li>
-&lt;li>table&lt;/li>
-&lt;li>partition&lt;/li>
+&lt;li>列存&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;li>存储的数据结构 【LSM &lt;a href="https://www.yuque.com/earayu/kkdi0n/gqibsf#pSa3E">https://www.yuque.com/earayu/kkdi0n/gqibsf#pSa3E&lt;/a>】
+LSM
+* 起源
+- B+tree的异地更新，定期合并，垃圾回收，顺序写，最先由PG实现，但是由于实现复杂，所以后续的LSM重新设计了数据结构
+* 数据分层
+使用sstable保存数据，在内存中是memetable，在磁盘中是sstable，磁盘中sstable只是写，达到一定大小的时候和下层进行合并，典型的实现是leveldb
+* 写
+保证数据安全，先写wal
+写内存中的memtable，当数据满之后。固化memtable
+memtable落盘，落盘成功之后释放之前的WAL
+如果此时磁盘中顶层的数据达到限定的阈值，则挑选一个sstable向下层compact，直到所有层都满足要求
+* 读
+从内存中的memtable读取数据
+内存中没有则在磁盘中按层次查找
+sstable可以使用额外的信息加速查找
+* 问题
+在写的时候会有多次IO操作，如果后台进行compact的时候，会导致前端的吞吐量，查询的时候会由读放大问题。
+LSM 优化
+LSM适用于HDD，当前SSD中随机读写和顺序读写几乎无太大差距
+B+tree
+* 起源
+目的是为了降低从磁盘中查询数据时候的次数
+* 组织结构
+按页大小为单位组织节点，逻辑上的树形结构，树的高度与数据的多少有关，节点满的时候进行分裂
+* 操作
+读取的时候按页读取，从根节点开始，定位到子页的时候再去读取子叶，直到叶子节点被读取，页的大小是4KB，假设key为8，地址大小为8，则一组key大小为16，则一页可以指向256页，则两层树高的树可以保存1kw的数据，此时磁盘io只有三次
+写的时候会检测节点时候full，如果full，则需要split，如果当前层满了，则增加树的高度，
+* 随机读性能高。如果没有额外的设计，则没有读写放大的问题，且易于实现lock，但是由于写的时候可能会导致树的变化，会有性能问题&lt;/li>
 &lt;li>事务&lt;/li>
 &lt;/ul>
 &lt;/li>
