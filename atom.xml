@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN"><title type="text">poor guy</title><subtitle type="html">A Test Blog</subtitle><updated>2022-03-26T15:10:15+00:00</updated><id>https://poorguyorz.github.io/</id><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/"/><link rel="self" type="application/atom+xml" href="https://poorguyorz.github.io/atom.xml"/><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><generator uri="https://gohugo.io/" version="0.92.1">Hugo</generator><entry><title type="text">面试</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/bigdata/log/"/><id>https://poorguyorz.github.io/posts/bigdata/log/</id><updated>2022-03-26T23:09:38+08:00</updated><published>2022-03-24T20:26:11+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">面试 只是一个技术汇总 C++基础 [2 days] [课程- https://github.com/parallel101/course.git] 内存 内存结构 [https://segmentfault.com/a/1190000039348996] c++ 编译出来的是可执行文件，……</summary><content type="html">&lt;h1 id="面试">面试&lt;/h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN"><title type="text">poor guy</title><subtitle type="html">A Test Blog</subtitle><updated>2022-03-29T02:42:47+00:00</updated><id>https://poorguyorz.github.io/</id><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/"/><link rel="self" type="application/atom+xml" href="https://poorguyorz.github.io/atom.xml"/><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><generator uri="https://gohugo.io/" version="0.92.1">Hugo</generator><entry><title type="text">面试</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/bigdata/log/"/><id>https://poorguyorz.github.io/posts/bigdata/log/</id><updated>2022-03-29T10:42:13+08:00</updated><published>2022-03-24T20:26:11+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">面试 只是一个技术汇总 C++基础 [2 days] [课程- https://github.com/parallel101/course.git] 内存 内存结构 [https://segmentfault.com/a/1190000039348996] c++ 编译出来的是可执行文件，……</summary><content type="html">&lt;h1 id="面试">面试&lt;/h1>
 &lt;p>只是一个技术汇总&lt;/p>
 &lt;hr>
 &lt;ul>
@@ -47,6 +47,7 @@ C的malloc/free可能会说是在堆上分配空间，但是对于C++可能会�
 text段，保存编译之后的指令，不可变
 6. 常量区
 保存全局变量，不可变，rodata段，记得使用其他手段去尝试修改常量的时候会报错。
+TIPS: const修饰的参数不一定是常量，例如他修饰一个函数的参数的时候，参数还是只是在栈中，只是约定不能修改。
 7. 未使用
 &lt;/code>&lt;/pre>
 &lt;/li>
@@ -118,15 +119,26 @@ sizeof的时候会计算这个指针的大小，指针指向虚表的第三个�
 &lt;/li>
 &lt;li>
 &lt;p>构造函数&lt;/p>
+&lt;ol>
+&lt;li>构造函数 （&lt;code>A();&lt;/code>）&lt;/li>
+&lt;li>拷贝构造函数（&lt;code>A(const A&amp;amp;);&lt;/code>）&lt;/li>
+&lt;li>析构函数（&lt;code>~A();&lt;/code>）&lt;/li>
+&lt;li>重载赋值运算函数（&lt;code>A&amp;amp; operator = (const A&amp;amp;);&lt;/code>）&lt;/li>
+&lt;li>重载取址运算函数（&lt;code>A* operator &amp;amp; ();&lt;/code>）&lt;/li>
+&lt;li>重载取址const运算函数（&lt;code>const A* operator &amp;amp; () const;&lt;/code>）&lt;/li>
+&lt;li>移动构造函数（&lt;code>A(A&amp;amp;&amp;amp;);&lt;/code>）&lt;/li>
+&lt;li>重载移动复制函数（&lt;code>A&amp;amp; operator = (const A&amp;amp;&amp;amp;);&lt;/code>）&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;p>模板
+编译期按照实际的类型进行代码的动态扩展，遇到使用的新的模板类型的时候，就编译出对应的类型的代码。类似与在编译期对代码进行重载。&lt;/p>
 &lt;ul>
-&lt;li>移动构造和移动赋值&lt;/li>
+&lt;li>模板参数除了类型，还支持整形，但是必须是常量&lt;/li>
+&lt;li>模板使用的时候，会自动进行类型推导。无序声明参数&lt;/li>
+&lt;li>模板是惰性编译的，只有使用到了才会编译。所以模板的实现最好写在一起&lt;/li>
+&lt;li>lambda也支持模板&lt;/li>
 &lt;/ul>
-&lt;/li>
-&lt;li>
-&lt;p>右值&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>move&lt;/p>
 &lt;/li>
 &lt;li>
 &lt;p>多线程内存模型&lt;/p>
@@ -165,7 +177,7 @@ C++支持自定义对象，可以使用自己定义的函数，最终的是实�
 &lt;li>vector
 解决array的问题，自动扩容，扩容时需要重新分配空间，然后移动数据到新空间，这个操作可能会导致迭代器失效，扩容因子不确定，有的是1.5倍增长，有的是2，扩容有性能问题，所以使用的时候明确场景，然后预先设置容量，避免扩容操作&lt;/li>
 &lt;li>deque
-双向队列，是用多段数组和一个控制中心实现的，没有迭代器的失效问题&lt;/li>
+双向队列，是用多段数组和一个控制中心实现的&lt;/li>
 &lt;li>stack/queue
 对列和栈，使用deque实现&lt;/li>
 &lt;li>list
@@ -183,6 +195,8 @@ C++支持自定义对象，可以使用自己定义的函数，最终的是实�
 &lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;li>迭代器
+迭代器在删除数据的时候可能会导致失效问题，对于内存空间上连续的容器，由于删除之后需要其他的数据填补空洞，所以迭代器会移动到下一个位置，对于关联式容器，当前元素迭代器失效，需要手动记录下一个元素位置&lt;/li>
 &lt;li>容器使用&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -244,7 +258,8 @@ C++支持自定义对象，可以使用自己定义的函数，最终的是实�
 &lt;li>
 &lt;p>数据库 [3 天整理知识列表]&lt;/p>
 &lt;ul>
-&lt;li>编译
+&lt;li>
+&lt;p>编译&lt;/p>
 &lt;ul>
 &lt;li>
 &lt;p>编译原理&lt;/p>
@@ -269,7 +284,8 @@ C++支持自定义对象，可以使用自己定义的函数，最终的是实�
 &lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>优化
+&lt;li>
+&lt;p>优化&lt;/p>
 &lt;ul>
 &lt;li>优化规则
 &lt;ul>
@@ -317,11 +333,11 @@ C++支持自定义对象，可以使用自己定义的函数，最终的是实�
 基于代价的优化，由于一个逻辑算子的物理实现可能有多个物理算子，所以需要在实际的使用场景中选择合适的物理算子，且在多个表达式的情况下，每个逻辑算子的最有的执行计划可能得到的结果也不是最优的，所以一般需要考虑数据统计信息，以及环境的io情况，内存大小，是否是分布式环境等，然后使用这些信息计算出cost最小的执行计划，cost只是一个变量，目的是为了对计划可以与一个具体的衡量指标&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>优化框架
+&lt;li>优化框架 &lt;a href="https://zhuanlan.zhihu.com/p/73545345">https://zhuanlan.zhihu.com/p/73545345&lt;/a>
 &lt;ul>
 &lt;li>遗传算法
 pg默认在表数量大于13的时候使用遗传算法，可能得到的不是最优的执行计划，他是通过组合然后按计划代价排序，然后随机变异，淘汰最差解得到最后的执行计划的，不是全局最优解，但是搜索空间小，&lt;/li>
-&lt;li>动态规划
+&lt;li>自底向上
 自底向上的动态规划算法，可以得到全局最优解，但是搜索空间巨大，PG只有在表数量小于13的时候使用此方法。
 &lt;ol>
 &lt;li>初始化叶子节点，每个节点取得当前最优执行计划&lt;/li>
@@ -329,20 +345,42 @@ pg默认在表数量大于13的时候使用遗传算法，可能得到的不是�
 &lt;li>使用第一层和第二层组合得到第三层&lt;/li>
 &lt;li>重复类似的方式得到最优解，在计算N层的时候，具体选取那一层暂时没有结论&lt;/li>
 &lt;/ol>
+&lt;ul>
+&lt;li>对于是否是order的，需要单独额外记录，否则底层选择的计划上层无法得知是否为最优的。&lt;/li>
+&lt;/ul>
 &lt;/li>
 &lt;li>system R
-也是一种动态规划，但是只保留最优和次优解，用于上层的执行计划的生成，最后的执行计划可能不是全局最优&lt;/li>
+也是一种自底向上，但是只保留最优和次优解，用于上层的执行计划的生成，最后的执行计划可能不是全局最优&lt;/li>
 &lt;li>Volcano&lt;/li>
 &lt;li>Cascades
-自定向上的动态规划算法&lt;/li>
+&lt;ul>
+&lt;li>expression
+有逻辑表达式和物理表达式，他们在group中是等价的&lt;/li>
+&lt;li>group
+等价表达式的集合，等价的意思是他们的输入和输出是一样的&lt;/li>
+&lt;li>rule
+对group的变换规则，有物理算子的实现规则，有逻辑算子的转换规则，目的是为了扩大搜索空间&lt;/li>
+&lt;li>memo
+搜岁空间，存放group&lt;/li>
+&lt;/ul>
+&lt;ol>
+&lt;li>首先初始化搜索空间，即初始化所有group&lt;/li>
+&lt;li>从根节点开始，然后使用rule扩展搜索空间&lt;/li>
+&lt;li>使用dfs搜索&lt;/li>
+&lt;li>可以设置代价阈值，搜索时间限制等，使优化过程提前终止&lt;/li>
+&lt;li>可以自行指定执行计划&lt;/li>
+&lt;/ol>
+&lt;/li>
 &lt;li>启发式&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>执行
+&lt;li>
+&lt;p>执行&lt;/p>
 &lt;ul>
-&lt;li>算子实现
+&lt;li>
+&lt;p>算子实现&lt;/p>
 &lt;ul>
 &lt;li>join
 &lt;ul>
@@ -372,21 +410,58 @@ pg默认在表数量大于13的时候使用遗传算法，可能得到的不是�
 &lt;/li>
 &lt;li>sort
 排序，数据是按块操作的，可以使用merge sort，也可以通过在内存中构造一个有序的数据结构然后输出，如果内存放不下数据，则可以把数据临时放在内存外，另外，由于是按块操作的，所以可以在块中存放当前块的min max，可以使用此信息加速排序等。&lt;/li>
-&lt;li>窗口函数&lt;/li>
+&lt;li>窗口函数
+&lt;a href="https://zhuanlan.zhihu.com/p/80051518">https://zhuanlan.zhihu.com/p/80051518&lt;/a>&lt;/li>
 &lt;li>常规函数&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>执行框架
+&lt;li>
+&lt;p>执行框架&lt;/p>
 &lt;ul>
-&lt;li>自底向上&lt;/li>
-&lt;li>自顶向下&lt;/li>
+&lt;li>火山模型/Volcano
+每个算子实现next，open,close方法，tuple-at-a-time类似于迭代器，用于向上层节点向下层节点拉取数据，早期cpu和mem的新能还在增长所以当时这种技术几乎是首选，运行是时间耗时主要为io，且由于大量next的调用，都会导致流水线被破坏。&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>向量化&lt;/li>
-&lt;li>codegen&lt;/li>
+&lt;li>
+&lt;p>向量化
+简单理解就是每个算子批量处理数据，早期的Volcano 模型的单行处理，会导致缓存，指令调度，分支预测错误等导致性能下降，在TP的场景中最为明显，因为AP是行存的，所以为了解决这些问题， MonetDB/X100: Hyper-Pipelining Query Execution提出vector-at-a-time执行模式，大致方向为：&lt;/p>
+&lt;ul>
+&lt;li>保持Volcano模型大致结构基本不变，但是原来的tuple保存一行的操作使用vector替代，保存列，数据大小尽量可以都放在缓存中&lt;br>
+所以他更多的适用于列存，行存也可以使用类似的方法来加速，但是可能效果没有列存优秀&lt;/li>
+&lt;li>使用向量化原语计算
+上下文无关的计算逻辑，专门计算vector的数据&lt;/li>
+&lt;li>使用延迟物化技术减少内存的读写开销
+记录vector中的数据变动，尽可能晚的变动内存中的数据&lt;/li>
+&lt;li>使用代码生成来避免类型转换代码的大量代码分支&lt;/li>
+&lt;li>CPU在计算同类型数据的时候更容易使用simd优化
+TIPS:
+&lt;ol>
+&lt;li>分支预测，局部性原理，会预加载多条指令，在遇到代码跳转的时候，清空当前流水线，加载其他流水线，导致性能问题，典型的场景是排序一组有序数据和无序数据之间的差距明显&lt;/li>
+&lt;li>cache miss，使用的数据不在缓存中，需要去内存中读取，记得之前有测试AOS，SOA之间的差距可以达到四五倍&lt;/li>
+&lt;/ol>
+&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>存储
+&lt;li>
+&lt;p>codegen
+把执行计划中不需要物化的算子实现为一个表达式，而不是以task的方式调度，具体实现为：&lt;/p>
+&lt;ol>
+&lt;li>对于算子树，使用深度优先遍历，生成一段代码&lt;/li>
+&lt;li>对于Volcano模型来说，就是task算子的调用层级是现在一段代码逻辑中&lt;/li>
+&lt;li>数据流动的时候可以直接存储在寄存器中，而不需要物化操作&lt;/li>
+&lt;li>对于block算子，则必须物化&lt;/li>
+&lt;li>由底层节点开始，向上推送数据&lt;/li>
+&lt;li>适合计算场景，可以优化代码，提升寄存器的利用率&lt;/li>
+&lt;/ol>
+&lt;p>所以对于一个执行计划，codegen的就是把他实现为一个整体，而不是Volcano类似的面对对象的实现&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>[Everything You Always Wanted to Know About Compiled and Vectorized Queries But Were Afraid to Ask https://www.bilibili.com/video/av50329586/]
+案例：
+tidb使用的是向量化，即使它使用的是行存，他会在数据读取出来之后转换数据模式为vector，以便于使用向量化&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>存储&lt;/p>
 &lt;ul>
 &lt;li>存储格式
 &lt;ul>
@@ -400,7 +475,8 @@ pg默认在表数量大于13的时候使用遗传算法，可能得到的不是�
 &lt;li>事务&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>案例
+&lt;li>
+&lt;p>案例&lt;/p>
 &lt;ul>
 &lt;li>leveldb&lt;/li>
 &lt;li>pg&lt;/li>
@@ -411,20 +487,95 @@ pg默认在表数量大于13的时候使用遗传算法，可能得到的不是�
 &lt;/ul>
 &lt;/li>
 &lt;li>
-&lt;p>linux [2 天整理知识列表]&lt;/p>
+&lt;p>linux [2 天整理知识列表 https://www.bookstack.cn/books/webxiaohua-gitbook]&lt;/p>
 &lt;ul>
-&lt;li>进程，线程
+&lt;li>
+&lt;p>进程，线程
+可以通过init创建，也可以使用fork从父进程创建，fork返回值为0，则是子进程，子进程创建的时候使用写拷贝技术，初始化的时候除了pcb之外，其余的内存呢地址和父进程是一起的，只有当子进程需要修改的时候，才会copy修改为到自己的内存中去，&lt;/p>
 &lt;ul>
+&lt;li>调度方法
+抢占式和非抢占式
+时间片
+先进先出
+短作业优先
+长作业优先
+最短剩余时间优先等&lt;/li>
 &lt;li>通信&lt;/li>
-&lt;li>内存结构&lt;/li>
-&lt;li>IO&lt;/li>
-&lt;li>多线程编程&lt;/li>
+&lt;li>内存结构
+&lt;ul>
+&lt;li>虚拟内存
+为了给进程提供一个连续的内存空间，逻辑上连续，物理上不一定连续，由于进程的使用会申请和释放空间且空间有有限的，所以需要把一些页面置换出去
+&lt;ol>
+&lt;li>最佳置换
+把以后不会使用的页面置换掉，但是无法实现，不能保证那些页面不会使用&lt;/li>
+&lt;li>先进先出&lt;/li>
+&lt;li>时钟置换&lt;/li>
+&lt;li>最近最久未使用
+置换最长时间没有使用的页面
+局部性原理，时间局部性和空间局部性，在操作各种资源的时候，可以把当前资源附近的资源一起使用，附近可以是空间，也可以是时间&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>共享内存
+所有页面都映射到相同的内存空间，多进程使用的时候存在竞争问题&lt;/li>
+&lt;li>内存碎片
+内存可能会导致总体空足够，但是无法申请空间的问题，所以需要较为合适的内存分配算法，内存一般使用链表或者其他类似的数据结构维护
+&lt;ol>
+&lt;li>首次适应
+从链表的首段开始找到合适的内存&lt;/li>
+&lt;li>最佳适应
+从链表的首段开始，找到最合适的空间&lt;/li>
+&lt;li>最大适应
+查找到最大的内存空间，从他上面分配内存&lt;/li>
+&lt;li>临近适应
+从当前的使用位置开始，寻找合适的空间&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>进程间通信
+&lt;ul>
+&lt;li>线程由于公用地址空间，所以线程可以直接通信，进程由于资源隔离，所以需要额外的通信机制
+&lt;ol>
+&lt;li>匿名管道
+存在在父子进程中，因为fork之后的父子进程具有相同的内存印象，所以可以直接使用&lt;/li>
+&lt;li>命名管道
+有名的管道，知道名字之后任意进程可以直接使用 mkfifo&lt;/li>
+&lt;li>消息队列
+一个本质时存放在内核中的链表，消息发送和取消的时候遵循先进先出&lt;/li>
+&lt;li>共享内存
+所有进程都会映射共享内存，所以可以借助它进行通信&lt;/li>
+&lt;li>信号量&lt;/li>
+&lt;/ol>
+&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>
-&lt;p>网络 [1 天整理知识列表]&lt;/p>
+&lt;p>协程
+简单的理解就是函数调用的状态机？他会记录运行时的状态，在多个执行线路之间进行跳转。一种实现思路时使用堆区维护协程运行context，然后在协程调用的时候记录信息即可。出现时间早，C++最早面世的时候时支持协程的，d大致是在1980s左右，因为当时计算机没有线程的实现，而进程并发代价大，所以协程-用户态线程就出现了，&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>IO多路复用
+单线程同时检测多io
+select
+底层使用数组保存fd，默认大小为1024，所以有操作上限，在使用的时候需要把数组从内核拷贝到用户空间
+poll
+对select 的改进，底层替换为链表，使用的时候，需要遍历链表
+epoll
+使用回调机制，当io完成之后放入就绪链表，使用预先注册的回调函数通知用户&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>线程
+资源使用的基本单位，进程中的线程公用地址空间，生命周期和进程有关，运行时每一个线程都有自己的运行栈&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>同步/异步&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>并发/并行&lt;/p>
+&lt;/li>
+&lt;/ul>
 &lt;/li>
 &lt;li>
 &lt;p>分布式 [2 天整理知识列表]&lt;/p>
@@ -448,15 +599,85 @@ pg默认在表数量大于13的时候使用遗传算法，可能得到的不是�
 &lt;/ul>
 &lt;/li>
 &lt;li>
-&lt;p>项目经历 [1 天整理知识列表]&lt;/p>
+&lt;p>项目经历 [1 天整理知识列表] &amp;ndash; 大厂扯皮必备&lt;/p>
 &lt;ul>
-&lt;li>分区表&lt;/li>
-&lt;li>临时表&lt;/li>
-&lt;li>只读表&lt;/li>
-&lt;li>bug fix&lt;/li>
+&lt;li>
+&lt;p>分区表
+range分区，负责index的维护，split分区，同时后期维护整个分区表的dml实现&lt;/p>
+&lt;ul>
+&lt;li>index
+&lt;ul>
+&lt;li>global index
+一个分区表对应一个index，在使用的时候，例如index的全表查询等，就会使用GI&lt;/li>
+&lt;li>local index
+一个分区对应一个index，在查询单个分区的时候，就会使用此index&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ul></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/></entry><entry><title type="text">现代C++白皮书</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/readbooks/%E7%8E%B0%E4%BB%A3c++%E7%99%BD%E7%9A%AE%E4%B9%A6/"/><id>https://poorguyorz.github.io/posts/readbooks/%E7%8E%B0%E4%BB%A3c++%E7%99%BD%E7%9A%AE%E4%B9%A6/</id><updated>2022-03-26T15:10:13+00:00</updated><published>2022-03-06T20:46:08+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">读者序 之前没有好好的阅读过一本任何技术书籍，一般都是打开前几张，然后慢慢的失去耐心，……</summary><content type="html">&lt;h2 id="读者序">读者序&lt;/h2>
+&lt;li>split
+分裂分区，要求可以分裂任意分区，包括混合分区&lt;/li>
+&lt;li>dml
+&lt;ul>
+&lt;li>
+&lt;p>select
+分区查询，按照查询条件决定从那个分区查询，有跨分区的情况&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>insert
+分区insert，无法限定insert的数据来源的边界，所以需要全表的分区都进行insert&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>update&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>delete&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>临时表&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>只读表
+数据预加载进缓存，然后从缓存读取&lt;/p>
+&lt;ul>
+&lt;li>难点
+数据存储模型
+memtableDB 维护内存中的表，使用的是hash表，key为table name，values为table
+- table 维护一个table对象，使用的是array，数据顺序和原表数据顺序一致
+- row 行数据
+内存使用
+使用内置的内存池，便于计算空间使用率
+多节点之间的数据同步，数据维护
+* 数据预加载的时候堆表加dml和ddl锁，防止期间外部操作数据变动
+* 提供数据一致性检测语法
+之前设计的时候，只是想简单的比对数据
+之后有一个想法，数据存储在hbase中，暂时没有找到hbase有没有所有数据的checksum实现，没有的话自行实现，然后memtable 中也实现一个checksum，比对的时候直接检测checksum即可，可以在每次查询的时候进行比对
+* 原表数据变动的时候，由于存储的架构问题，所以可以完整的追踪每个数据的变化，同时计算checksum
+多节点数据预加载时候的查询
+存在节点重启或者节点添加或者人工运维只读表的情况，此时禁止读取，使用锁，对共享内存加锁，禁止其他任何操作&lt;/li>
+&lt;li>性能
+聚合语句的直接提升为上百倍&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>大字段优化&lt;/p>
+&lt;ul>
+&lt;li>收获最大 &amp;ndash; 假装
+&lt;ul>
+&lt;li>范围广，所以追踪数据流向，加快了解项目的执行逻辑&lt;/li>
+&lt;li>知道了执行引擎执行逻辑 &amp;ndash; 火山模型&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>bug fix&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/></entry><entry><title type="text">现代C++白皮书</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/readbooks/%E7%8E%B0%E4%BB%A3c++%E7%99%BD%E7%9A%AE%E4%B9%A6/"/><id>https://poorguyorz.github.io/posts/readbooks/%E7%8E%B0%E4%BB%A3c++%E7%99%BD%E7%9A%AE%E4%B9%A6/</id><updated>2022-03-29T02:42:46+00:00</updated><published>2022-03-06T20:46:08+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">读者序 之前没有好好的阅读过一本任何技术书籍，一般都是打开前几张，然后慢慢的失去耐心，……</summary><content type="html">&lt;h2 id="读者序">读者序&lt;/h2>
 &lt;p>之前没有好好的阅读过一本任何技术书籍，一般都是打开前几张，然后慢慢的失去耐心，所有造成的问题是一些书籍上的知识，只会对前面的章节有记忆，而大多数的书籍前面的章节也只是他书籍的入门介绍而已，所以我是个半吊子程序员，工作两年半之后，这个问题越来越困扰着我，有时候看见别人的面帖，感觉那些问题其实都因该是知道答案的，但是当我想要在脑海中把答案整理出来的时候却无从说起，简单的来说就是有的东西我是知道的，但是无法表示出来，不成体系，这给我一个错觉就是我感觉我能力可以，但是落到实地的时候却啥也做不了，脱离了谷歌百度或者其他我之前的资料，我啥都不行。&lt;/p>
 &lt;p>我个人觉得问题的解决方式是学会输出，把自己的知识整理输出，通过自己让别人知道一项新技能，新知识，那就代表自己其实已经有了闹靠的基础，知识的输出需要一个载体，我不是老师，公司也没有这个渠道，因为公司的知识交流与工作内容是密切相关的，所以这也是我搭建这个博客的原因，但愿我可以长期的坚持下去，说实话，之前已经有了还几次类似的经历，但是都半途而废了，我希望这是最后一次&lt;/p>
 &lt;h2 id="前言">前言&lt;/h2>
@@ -557,7 +778,7 @@ pg默认在表数量大于13的时候使用遗传算法，可能得到的不是�
 &lt;li>支持对库的开发&lt;/li>
 &lt;li>标准库组件&lt;/li>
 &lt;/ol>
-&lt;h3 id="1-并发支持">1. 并发支持&lt;/h3></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" term="读书笔记" label="读书笔记"/><category scheme="https://poorguyorz.github.io/tags/c-/" term="C++" label="C++"/></entry><entry><title type="text">Envs</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/envs/"/><id>https://poorguyorz.github.io/posts/others/envs/</id><updated>2022-03-26T23:09:38+08:00</updated><published>2022-02-21T19:00:25+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">hugo wget https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb https://github.91chi.fun/https://github.com//gohugoio/hugo/releases/download/v0.92.2/hugo_extended_0.92.2_Linux-64bit.deb sudo dpkg -i hugo*.deb 140.82.113.3 aria2c -s 5 https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb 可以使用aria2下载，ubuntu使用apt install aria……</summary><content type="html">&lt;h2 id="hugo">hugo&lt;/h2>
+&lt;h3 id="1-并发支持">1. 并发支持&lt;/h3></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" term="读书笔记" label="读书笔记"/><category scheme="https://poorguyorz.github.io/tags/c-/" term="C++" label="C++"/></entry><entry><title type="text">Envs</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/envs/"/><id>https://poorguyorz.github.io/posts/others/envs/</id><updated>2022-03-29T10:42:13+08:00</updated><published>2022-02-21T19:00:25+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">hugo wget https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb https://github.91chi.fun/https://github.com//gohugoio/hugo/releases/download/v0.92.2/hugo_extended_0.92.2_Linux-64bit.deb sudo dpkg -i hugo*.deb 140.82.113.3 aria2c -s 5 https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb 可以使用aria2下载，ubuntu使用apt install aria……</summary><content type="html">&lt;h2 id="hugo">hugo&lt;/h2>
 &lt;p>wget &lt;a href="https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb">https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb&lt;/a>
 &lt;a href="https://github.91chi.fun/https://github.com//gohugoio/hugo/releases/download/v0.92.2/hugo_extended_0.92.2_Linux-64bit.deb">https://github.91chi.fun/https://github.com//gohugoio/hugo/releases/download/v0.92.2/hugo_extended_0.92.2_Linux-64bit.deb&lt;/a>
 sudo dpkg -i hugo*.deb&lt;/p>
@@ -675,7 +896,7 @@ skip-grant-tables
 密码策略，
 SHOW VARIABLES LIKE 'validate_password%';查看密码策略
 使用set global validate_password_length=6;修改策略
-&lt;/code>&lt;/pre></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/></entry><entry><title type="text">Docker</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/docker/"/><id>https://poorguyorz.github.io/posts/others/docker/</id><updated>2022-03-26T23:09:38+08:00</updated><published>2022-02-20T21:17:58+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Docker 新公司的产品的每一个模块是单独运行在容器中的，且由于是使用Java开发的，所以需要……</summary><content type="html">&lt;h2 id="docker">Docker&lt;/h2>
+&lt;/code>&lt;/pre></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/></entry><entry><title type="text">Docker</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/docker/"/><id>https://poorguyorz.github.io/posts/others/docker/</id><updated>2022-03-29T10:42:13+08:00</updated><published>2022-02-20T21:17:58+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Docker 新公司的产品的每一个模块是单独运行在容器中的，且由于是使用Java开发的，所以需要……</summary><content type="html">&lt;h2 id="docker">Docker&lt;/h2>
 &lt;p>新公司的产品的每一个模块是单独运行在容器中的，且由于是使用Java开发的，所以需要有频繁替换包的过程，之前只是简单的了解了docker，但是并没有深入的学习，这里记录docker的使用细节，以便于更好的工作，&lt;/p>
 &lt;h2 id="基础概念">基础概念&lt;/h2>
 &lt;p>Docker使用go开发的一种沙箱工具，他使得应用可以单独运行在沙箱中，通过端口映射或者volumes与外界进行交互。这可以让一个机器上可以运行多种不同环境的应用且互不干扰，例如一个比较大型的引用，使用的此方式单独维护一个模块，使得系统的可靠性大大增强&lt;/p>
@@ -722,7 +943,7 @@ SHOW VARIABLES LIKE 'validate_password%';查看密码策略
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;p>其他命令基本在遇到的时候，再去查看&lt;/p></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/docker/" term="Docker" label="Docker"/></entry><entry><title type="text">C++ logs</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/languange/cpp/"/><id>https://poorguyorz.github.io/posts/languange/cpp/</id><updated>2022-03-26T23:09:38+08:00</updated><published>2022-02-20T20:54:01+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">编译器 把高级语言编译成可执行语言工具，分为前端后后端，前端值得是高级语言的解析，后端……</summary><content type="html">&lt;h1 id="编译器">编译器&lt;/h1>
+&lt;p>其他命令基本在遇到的时候，再去查看&lt;/p></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/docker/" term="Docker" label="Docker"/></entry><entry><title type="text">C++ logs</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/languange/cpp/"/><id>https://poorguyorz.github.io/posts/languange/cpp/</id><updated>2022-03-29T10:42:13+08:00</updated><published>2022-02-20T20:54:01+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">编译器 把高级语言编译成可执行语言工具，分为前端后后端，前端值得是高级语言的解析，后端……</summary><content type="html">&lt;h1 id="编译器">编译器&lt;/h1>
 &lt;p>把高级语言编译成可执行语言工具，分为前端后后端，前端值得是高级语言的解析，后端是指翻译解析之后的结果为机器语言&lt;/p>
 &lt;ul>
 &lt;li>
@@ -902,7 +1123,7 @@ std::shared_ptr&lt;void>和 std::any
 &lt;li>常饮用范围最小，其他两种引用都可以转换为长应用&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ul></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/test_tag/" term="test_tag" label="test_tag"/><category scheme="https://poorguyorz.github.io/tags/asd/" term="asd" label="asd"/></entry><entry><title type="text">Hello World</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/hello-world/"/><id>https://poorguyorz.github.io/posts/others/hello-world/</id><updated>2022-03-26T23:09:38+08:00</updated><published>2022-02-07T03:54:01+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
+&lt;/ul></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/test_tag/" term="test_tag" label="test_tag"/><category scheme="https://poorguyorz.github.io/tags/asd/" term="asd" label="asd"/></entry><entry><title type="text">Hello World</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/hello-world/"/><id>https://poorguyorz.github.io/posts/others/hello-world/</id><updated>2022-03-29T10:42:13+08:00</updated><published>2022-02-07T03:54:01+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
 Quick Start Create a new post 1 $ hexo new &amp;#34;My New Post&amp;#34; More info: Writing</summary><content type="html">&lt;p>Welcome to &lt;a href="https://hexo.io/">Hexo&lt;/a>! This is your very first post. Check &lt;a href="https://hexo.io/docs/">documentation&lt;/a> for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href="https://hexo.io/docs/troubleshooting.html">troubleshooting&lt;/a> or you can ask me on &lt;a href="https://github.com/hexojs/hexo/issues">GitHub&lt;/a>.&lt;/p>
 &lt;h2 id="quick-start">Quick Start&lt;/h2>
 &lt;h3 id="create-a-new-post">Create a new post&lt;/h3>
