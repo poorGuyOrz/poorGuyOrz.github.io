@@ -1,4 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN"><title type="text">poor guy</title><subtitle type="html">A Test Blog</subtitle><updated>2022-03-29T07:18:53+00:00</updated><id>https://poorguyorz.github.io/</id><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/"/><link rel="self" type="application/atom+xml" href="https://poorguyorz.github.io/atom.xml"/><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><generator uri="https://gohugo.io/" version="0.92.1">Hugo</generator><entry><title type="text">面试</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/bigdata/log/"/><id>https://poorguyorz.github.io/posts/bigdata/log/</id><updated>2022-03-29T15:18:20+08:00</updated><published>2022-03-24T20:26:11+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">面试 只是一个技术汇总 C++基础 [2 days] [课程- https://github.com/parallel101/course.git] 内存 内存结构 [https://segmentfault.com/a/1190000039348996] c++ 编译出来的是可执行文件，……</summary><content type="html">&lt;h1 id="面试">面试&lt;/h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN"><title type="text">poor guy</title><subtitle type="html">A Test Blog</subtitle><updated>2022-04-04T14:05:33+00:00</updated><id>https://poorguyorz.github.io/</id><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/"/><link rel="self" type="application/atom+xml" href="https://poorguyorz.github.io/atom.xml"/><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><generator uri="https://gohugo.io/" version="0.92.1">Hugo</generator><entry><title type="text">Columbia Optimizer</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/readbooks/columbia-optimizer/"/><id>https://poorguyorz.github.io/posts/readbooks/columbia-optimizer/</id><updated>2022-04-04T22:05:08+08:00</updated><published>2022-04-02T16:55:12+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">start EFFICIENCY IN THE COLUMBIA DATABASE QUERY OPTIMIZER 优化器发展版本 第一代 模块化的，分层的，可扩展的，基于规则的优化器 扩展……</summary><content type="html">&lt;h1 id="start">start&lt;/h1>
+&lt;p>EFFICIENCY IN THE COLUMBIA DATABASE QUERY OPTIMIZER&lt;/p>
+&lt;h2 id="优化器发展版本">优化器发展版本&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>第一代&lt;/p>
+&lt;ul>
+&lt;li>模块化的，分层的，可扩展的，基于规则的优化器&lt;/li>
+&lt;li>扩展的复杂性，搜索性能&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>第二代&lt;/p>
+&lt;ul>
+&lt;li>类似Volcano，更加优秀的优化规则，且使用物理属性参与优化，使用新的搜索方式&lt;/li>
+&lt;li>更加灵活，但是还是难与扩展&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>第三代&lt;/p>
+&lt;ul>
+&lt;li>使用面对象的思想实现的优化器，易于扩展，更灵活&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>可以按照搜索策略分为两类
+1. 自底向上
+2. 自顶向下
+Cascades Optimizer Framework
+对关键操作定义为抽象类，通过实现抽象类来添加规则或者进行表达式变换来扩展优化器，
+* 使用hash来消除重复的表达式
+* 再group中把逻辑表达式和物理表达式分开
+* 剪枝
+先计算上层group的cost 阈值，在计算下层节点的时候，直接判断是否还需要继续进行优化
+预先对执行计划设置阈值，当执行计划的代价和阈值足够接近的时候，则判定已完成搜索&lt;/p>
+&lt;h2 id="术语">术语&lt;/h2>
+&lt;ul>
+&lt;li>&lt;/li>
+&lt;/ul></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/></entry><entry><title type="text">面试</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/bigdata/log/"/><id>https://poorguyorz.github.io/posts/bigdata/log/</id><updated>2022-04-04T22:05:08+08:00</updated><published>2022-03-24T20:26:11+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">面试 只是一个技术汇总 C++基础 [2 days] [课程- https://github.com/parallel101/course.git] 内存 内存结构 [https://segmentfault.com/a/1190000039348996] c++ 编译出来的是可执行文件，……</summary><content type="html">&lt;h1 id="面试">面试&lt;/h1>
 &lt;p>只是一个技术汇总&lt;/p>
 &lt;hr>
 &lt;ul>
@@ -384,7 +422,7 @@ pg默认在表数量大于13的时候使用遗传算法，可能得到的不是�
 &lt;ul>
 &lt;li>join
 &lt;ul>
-&lt;li>merge join
+&lt;li>merge join&lt;br>
 如果表是有序的，则优先选择merge join，否则数据无序且强行走merge join的话，会导致数据进行排序，可能会有极大的性能损耗&lt;/li>
 &lt;li>hash join
 &lt;ol>
@@ -397,20 +435,20 @@ pg默认在表数量大于13的时候使用遗传算法，可能得到的不是�
 &lt;/li>
 &lt;/ol>
 &lt;/li>
-&lt;li>nest loop join
+&lt;li>nest loop join&lt;br>
 小表驱动大表，小表读取一行数据之后，使用此行数据到被驱动表进行匹配，所以如果被驱动表的对应的键只是普通的键的话，可能会全表扫面，所以需要被驱动表有index或者键是主键等可以直接按照key定位数据的表，代价为n*m + n&lt;/li>
 &lt;li>如过是分布式的环境，则可能有数据的跨界点的传输的情况，有一张IO时间的表格表示，网络io的时间是非常长的，所以需要尽可能的保证数据在当前节点进行计算。如果必须传输数据，则
 &lt;ol>
 &lt;li>小表进行广播，各节点使用小表join&lt;/li>
-&lt;li>常规的join运算
+&lt;li>常规的join运算&lt;br>
 但是如果在表分区的是否，可以保证join的数据在同于一个分区上是相同的分区方式，则可以直接本节点join然后汇总数据，clickhouse的分区可以实现这种需求，分区对其&lt;/li>
 &lt;/ol>
 &lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>sort
+&lt;li>sort&lt;br>
 排序，数据是按块操作的，可以使用merge sort，也可以通过在内存中构造一个有序的数据结构然后输出，如果内存放不下数据，则可以把数据临时放在内存外，另外，由于是按块操作的，所以可以在块中存放当前块的min max，可以使用此信息加速排序等。&lt;/li>
-&lt;li>窗口函数
+&lt;li>窗口函数&lt;br>
 &lt;a href="https://zhuanlan.zhihu.com/p/80051518">https://zhuanlan.zhihu.com/p/80051518&lt;/a>&lt;/li>
 &lt;li>常规函数&lt;/li>
 &lt;/ul>
@@ -418,22 +456,22 @@ pg默认在表数量大于13的时候使用遗传算法，可能得到的不是�
 &lt;li>
 &lt;p>执行框架&lt;/p>
 &lt;ul>
-&lt;li>火山模型/Volcano
+&lt;li>火山模型/Volcano&lt;br>
 每个算子实现next，open,close方法，tuple-at-a-time类似于迭代器，用于向上层节点向下层节点拉取数据，早期cpu和mem的新能还在增长所以当时这种技术几乎是首选，运行是时间耗时主要为io，且由于大量next的调用，都会导致流水线被破坏。&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>
-&lt;p>向量化
+&lt;p>向量化&lt;br>
 简单理解就是每个算子批量处理数据，早期的Volcano 模型的单行处理，会导致缓存，指令调度，分支预测错误等导致性能下降，在TP的场景中最为明显，因为AP是行存的，所以为了解决这些问题， MonetDB/X100: Hyper-Pipelining Query Execution提出vector-at-a-time执行模式，大致方向为：&lt;/p>
 &lt;ul>
-&lt;li>保持Volcano模型大致结构基本不变，但是原来的tuple保存一行的操作使用vector替代，保存列，数据大小尽量可以都放在缓存中&lt;br>
+&lt;li>保持Volcano模型大致结构基本不变，但是原来的tuple保存一行的操作使用vector替代，保存列，数据大小尽量可以都放在缓存中 &lt;br>
 所以他更多的适用于列存，行存也可以使用类似的方法来加速，但是可能效果没有列存优秀&lt;/li>
-&lt;li>使用向量化原语计算
+&lt;li>使用向量化原语计算&lt;br>
 上下文无关的计算逻辑，专门计算vector的数据&lt;/li>
-&lt;li>使用延迟物化技术减少内存的读写开销
+&lt;li>使用延迟物化技术减少内存的读写开销&lt;br>
 记录vector中的数据变动，尽可能晚的变动内存中的数据&lt;/li>
 &lt;li>使用代码生成来避免类型转换代码的大量代码分支&lt;/li>
-&lt;li>CPU在计算同类型数据的时候更容易使用simd优化
+&lt;li>CPU在计算同类型数据的时候更容易使用simd优化&lt;br>
 TIPS:
 &lt;ol>
 &lt;li>分支预测，局部性原理，会预加载多条指令，在遇到代码跳转的时候，清空当前流水线，加载其他流水线，导致性能问题，典型的场景是排序一组有序数据和无序数据之间的差距明显&lt;/li>
@@ -443,7 +481,7 @@ TIPS:
 &lt;/ul>
 &lt;/li>
 &lt;li>
-&lt;p>codegen
+&lt;p>codegen&lt;br>
 把执行计划中不需要物化的算子实现为一个表达式，而不是以task的方式调度，具体实现为：&lt;/p>
 &lt;ol>
 &lt;li>对于算子树，使用深度优先遍历，生成一段代码&lt;/li>
@@ -469,33 +507,33 @@ tidb使用的是向量化，即使它使用的是行存，他会在数据读取�
 &lt;li>列存&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>存储的数据结构 【LSM &lt;a href="https://www.yuque.com/earayu/kkdi0n/gqibsf#pSa3E">https://www.yuque.com/earayu/kkdi0n/gqibsf#pSa3E&lt;/a>】
-LSM
-* 起源
-- B+tree的异地更新，定期合并，垃圾回收，顺序写，最先由PG实现，但是由于实现复杂，所以后续的LSM重新设计了数据结构
-* 数据分层
-使用sstable保存数据，在内存中是memetable，在磁盘中是sstable，磁盘中sstable只是写，达到一定大小的时候和下层进行合并，典型的实现是leveldb
-* 写
-保证数据安全，先写wal
-写内存中的memtable，当数据满之后。固化memtable
-memtable落盘，落盘成功之后释放之前的WAL
-如果此时磁盘中顶层的数据达到限定的阈值，则挑选一个sstable向下层compact，直到所有层都满足要求
-* 读
-从内存中的memtable读取数据
-内存中没有则在磁盘中按层次查找
-sstable可以使用额外的信息加速查找
-* 问题
-在写的时候会有多次IO操作，如果后台进行compact的时候，会导致前端的吞吐量，查询的时候会由读放大问题。
-LSM 优化
-LSM适用于HDD，当前SSD中随机读写和顺序读写几乎无太大差距
-B+tree
-* 起源
-目的是为了降低从磁盘中查询数据时候的次数
-* 组织结构
-按页大小为单位组织节点，逻辑上的树形结构，树的高度与数据的多少有关，节点满的时候进行分裂
-* 操作
-读取的时候按页读取，从根节点开始，定位到子页的时候再去读取子叶，直到叶子节点被读取，页的大小是4KB，假设key为8，地址大小为8，则一组key大小为16，则一页可以指向256页，则两层树高的树可以保存1kw的数据，此时磁盘io只有三次
-写的时候会检测节点时候full，如果full，则需要split，如果当前层满了，则增加树的高度，
+&lt;li>存储的数据结构 【LSM &lt;a href="https://www.yuque.com/earayu/kkdi0n/gqibsf#pSa3E">https://www.yuque.com/earayu/kkdi0n/gqibsf#pSa3E&lt;/a>】&lt;br>
+LSM&lt;br>
+* 起源&lt;br>
+- B+tree的异地更新，定期合并，垃圾回收，顺序写，最先由PG实现，但是由于实现复杂，所以后续的LSM重新设计了数据结构&lt;br>
+* 数据分层&lt;br>
+使用sstable保存数据，在内存中是memetable，在磁盘中是sstable，磁盘中sstable只是写，达到一定大小的时候和下层进行合并，典型的实现是leveldb&lt;br>
+* 写&lt;br>
+保证数据安全，先写wal&lt;br>
+写内存中的memtable，当数据满之后。固化memtable&lt;br>
+memtable落盘，落盘成功之后释放之前的WAL&lt;br>
+如果此时磁盘中顶层的数据达到限定的阈值，则挑选一个sstable向下层compact，直到所有层都满足要求&lt;br>
+* 读&lt;br>
+从内存中的memtable读取数据&lt;br>
+内存中没有则在磁盘中按层次查找&lt;br>
+sstable可以使用额外的信息加速查找&lt;br>
+* 问题&lt;br>
+在写的时候会有多次IO操作，如果后台进行compact的时候，会导致前端的吞吐量，查询的时候会由读放大问题。&lt;br>
+LSM 优化&lt;br>
+LSM适用于HDD，当前SSD中随机读写和顺序读写几乎无太大差距&lt;br>
+B+tree&lt;br>
+* 起源&lt;br>
+目的是为了降低从磁盘中查询数据时候的次数&lt;br>
+* 组织结构&lt;br>
+按页大小为单位组织节点，逻辑上的树形结构，树的高度与数据的多少有关，节点满的时候进行分裂&lt;br>
+* 操作&lt;br>
+读取的时候按页读取，从根节点开始，定位到子页的时候再去读取子叶，直到叶子节点被读取，页的大小是4KB，假设key为8，地址大小为8，则一组key大小为16，则一页可以指向256页，则两层树高的树可以保存1kw的数据，此时磁盘io只有三次&lt;br>
+写的时候会检测节点时候full，如果full，则需要split，如果当前层满了，则增加树的高度，&lt;br>
 * 随机读性能高。如果没有额外的设计，则没有读写放大的问题，且易于实现lock，但是由于写的时候可能会导致树的变化，会有性能问题&lt;/li>
 &lt;li>事务&lt;/li>
 &lt;/ul>
@@ -702,7 +740,7 @@ memtableDB 维护内存中的表，使用的是hash表，key为table name，valu
 &lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ul></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/></entry><entry><title type="text">现代C++白皮书</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/readbooks/%E7%8E%B0%E4%BB%A3c++%E7%99%BD%E7%9A%AE%E4%B9%A6/"/><id>https://poorguyorz.github.io/posts/readbooks/%E7%8E%B0%E4%BB%A3c++%E7%99%BD%E7%9A%AE%E4%B9%A6/</id><updated>2022-03-29T07:18:51+00:00</updated><published>2022-03-06T20:46:08+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">读者序 之前没有好好的阅读过一本任何技术书籍，一般都是打开前几张，然后慢慢的失去耐心，……</summary><content type="html">&lt;h2 id="读者序">读者序&lt;/h2>
+&lt;/ul></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/></entry><entry><title type="text">现代C++白皮书</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/readbooks/%E7%8E%B0%E4%BB%A3c++%E7%99%BD%E7%9A%AE%E4%B9%A6/"/><id>https://poorguyorz.github.io/posts/readbooks/%E7%8E%B0%E4%BB%A3c++%E7%99%BD%E7%9A%AE%E4%B9%A6/</id><updated>2022-04-04T14:05:32+00:00</updated><published>2022-03-06T20:46:08+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">读者序 之前没有好好的阅读过一本任何技术书籍，一般都是打开前几张，然后慢慢的失去耐心，……</summary><content type="html">&lt;h2 id="读者序">读者序&lt;/h2>
 &lt;p>之前没有好好的阅读过一本任何技术书籍，一般都是打开前几张，然后慢慢的失去耐心，所有造成的问题是一些书籍上的知识，只会对前面的章节有记忆，而大多数的书籍前面的章节也只是他书籍的入门介绍而已，所以我是个半吊子程序员，工作两年半之后，这个问题越来越困扰着我，有时候看见别人的面帖，感觉那些问题其实都因该是知道答案的，但是当我想要在脑海中把答案整理出来的时候却无从说起，简单的来说就是有的东西我是知道的，但是无法表示出来，不成体系，这给我一个错觉就是我感觉我能力可以，但是落到实地的时候却啥也做不了，脱离了谷歌百度或者其他我之前的资料，我啥都不行。&lt;/p>
 &lt;p>我个人觉得问题的解决方式是学会输出，把自己的知识整理输出，通过自己让别人知道一项新技能，新知识，那就代表自己其实已经有了闹靠的基础，知识的输出需要一个载体，我不是老师，公司也没有这个渠道，因为公司的知识交流与工作内容是密切相关的，所以这也是我搭建这个博客的原因，但愿我可以长期的坚持下去，说实话，之前已经有了还几次类似的经历，但是都半途而废了，我希望这是最后一次&lt;/p>
 &lt;h2 id="前言">前言&lt;/h2>
@@ -803,7 +841,7 @@ memtableDB 维护内存中的表，使用的是hash表，key为table name，valu
 &lt;li>支持对库的开发&lt;/li>
 &lt;li>标准库组件&lt;/li>
 &lt;/ol>
-&lt;h3 id="1-并发支持">1. 并发支持&lt;/h3></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" term="读书笔记" label="读书笔记"/><category scheme="https://poorguyorz.github.io/tags/c-/" term="C++" label="C++"/></entry><entry><title type="text">Envs</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/envs/"/><id>https://poorguyorz.github.io/posts/others/envs/</id><updated>2022-03-29T15:18:20+08:00</updated><published>2022-02-21T19:00:25+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">hugo wget https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb https://github.91chi.fun/https://github.com//gohugoio/hugo/releases/download/v0.92.2/hugo_extended_0.92.2_Linux-64bit.deb sudo dpkg -i hugo*.deb 140.82.113.3 aria2c -s 5 https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb 可以使用aria2下载，ubuntu使用apt install aria……</summary><content type="html">&lt;h2 id="hugo">hugo&lt;/h2>
+&lt;h3 id="1-并发支持">1. 并发支持&lt;/h3></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" term="读书笔记" label="读书笔记"/><category scheme="https://poorguyorz.github.io/tags/c-/" term="C++" label="C++"/></entry><entry><title type="text">Envs</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/envs/"/><id>https://poorguyorz.github.io/posts/others/envs/</id><updated>2022-04-04T22:05:08+08:00</updated><published>2022-02-21T19:00:25+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">hugo wget https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb https://github.91chi.fun/https://github.com//gohugoio/hugo/releases/download/v0.92.2/hugo_extended_0.92.2_Linux-64bit.deb sudo dpkg -i hugo*.deb 140.82.113.3 aria2c -s 5 https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb 可以使用aria2下载，ubuntu使用apt install aria……</summary><content type="html">&lt;h2 id="hugo">hugo&lt;/h2>
 &lt;p>wget &lt;a href="https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb">https://github.com/gohugoio/hugo/releases/download/v0.92.1/hugo_0.92.1_Linux-64bit.deb&lt;/a>
 &lt;a href="https://github.91chi.fun/https://github.com//gohugoio/hugo/releases/download/v0.92.2/hugo_extended_0.92.2_Linux-64bit.deb">https://github.91chi.fun/https://github.com//gohugoio/hugo/releases/download/v0.92.2/hugo_extended_0.92.2_Linux-64bit.deb&lt;/a>
 sudo dpkg -i hugo*.deb&lt;/p>
@@ -921,7 +959,7 @@ skip-grant-tables
 密码策略，
 SHOW VARIABLES LIKE 'validate_password%';查看密码策略
 使用set global validate_password_length=6;修改策略
-&lt;/code>&lt;/pre></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/></entry><entry><title type="text">Docker</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/docker/"/><id>https://poorguyorz.github.io/posts/others/docker/</id><updated>2022-03-29T15:18:20+08:00</updated><published>2022-02-20T21:17:58+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Docker 新公司的产品的每一个模块是单独运行在容器中的，且由于是使用Java开发的，所以需要……</summary><content type="html">&lt;h2 id="docker">Docker&lt;/h2>
+&lt;/code>&lt;/pre></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/></entry><entry><title type="text">Docker</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/docker/"/><id>https://poorguyorz.github.io/posts/others/docker/</id><updated>2022-04-04T22:05:08+08:00</updated><published>2022-02-20T21:17:58+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Docker 新公司的产品的每一个模块是单独运行在容器中的，且由于是使用Java开发的，所以需要……</summary><content type="html">&lt;h2 id="docker">Docker&lt;/h2>
 &lt;p>新公司的产品的每一个模块是单独运行在容器中的，且由于是使用Java开发的，所以需要有频繁替换包的过程，之前只是简单的了解了docker，但是并没有深入的学习，这里记录docker的使用细节，以便于更好的工作，&lt;/p>
 &lt;h2 id="基础概念">基础概念&lt;/h2>
 &lt;p>Docker使用go开发的一种沙箱工具，他使得应用可以单独运行在沙箱中，通过端口映射或者volumes与外界进行交互。这可以让一个机器上可以运行多种不同环境的应用且互不干扰，例如一个比较大型的引用，使用的此方式单独维护一个模块，使得系统的可靠性大大增强&lt;/p>
@@ -968,7 +1006,7 @@ SHOW VARIABLES LIKE 'validate_password%';查看密码策略
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;p>其他命令基本在遇到的时候，再去查看&lt;/p></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/docker/" term="Docker" label="Docker"/></entry><entry><title type="text">C++ logs</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/languange/cpp/"/><id>https://poorguyorz.github.io/posts/languange/cpp/</id><updated>2022-03-29T15:18:20+08:00</updated><published>2022-02-20T20:54:01+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">编译器 把高级语言编译成可执行语言工具，分为前端后后端，前端值得是高级语言的解析，后端……</summary><content type="html">&lt;h1 id="编译器">编译器&lt;/h1>
+&lt;p>其他命令基本在遇到的时候，再去查看&lt;/p></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/docker/" term="Docker" label="Docker"/></entry><entry><title type="text">C++ logs</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/languange/cpp/"/><id>https://poorguyorz.github.io/posts/languange/cpp/</id><updated>2022-04-04T22:05:08+08:00</updated><published>2022-02-20T20:54:01+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">编译器 把高级语言编译成可执行语言工具，分为前端后后端，前端值得是高级语言的解析，后端……</summary><content type="html">&lt;h1 id="编译器">编译器&lt;/h1>
 &lt;p>把高级语言编译成可执行语言工具，分为前端后后端，前端值得是高级语言的解析，后端是指翻译解析之后的结果为机器语言&lt;/p>
 &lt;ul>
 &lt;li>
@@ -1148,7 +1186,7 @@ std::shared_ptr&lt;void>和 std::any
 &lt;li>常饮用范围最小，其他两种引用都可以转换为长应用&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ul></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/test_tag/" term="test_tag" label="test_tag"/><category scheme="https://poorguyorz.github.io/tags/asd/" term="asd" label="asd"/></entry><entry><title type="text">Hello World</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/hello-world/"/><id>https://poorguyorz.github.io/posts/others/hello-world/</id><updated>2022-03-29T15:18:20+08:00</updated><published>2022-02-07T03:54:01+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
+&lt;/ul></content><category scheme="https://poorguyorz.github.io/posts/" term="posts" label="posts"/><category scheme="https://poorguyorz.github.io/tags/test_tag/" term="test_tag" label="test_tag"/><category scheme="https://poorguyorz.github.io/tags/asd/" term="asd" label="asd"/></entry><entry><title type="text">Hello World</title><link rel="alternate" type="text/html" href="https://poorguyorz.github.io/posts/others/hello-world/"/><id>https://poorguyorz.github.io/posts/others/hello-world/</id><updated>2022-04-04T22:05:08+08:00</updated><published>2022-02-07T03:54:01+08:00</published><author><name>poor Guy</name><uri>https://poorguyorz.github.io/</uri><email>a_designer@qq.com</email></author><rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
 Quick Start Create a new post 1 $ hexo new &amp;#34;My New Post&amp;#34; More info: Writing</summary><content type="html">&lt;p>Welcome to &lt;a href="https://hexo.io/">Hexo&lt;/a>! This is your very first post. Check &lt;a href="https://hexo.io/docs/">documentation&lt;/a> for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href="https://hexo.io/docs/troubleshooting.html">troubleshooting&lt;/a> or you can ask me on &lt;a href="https://github.com/hexojs/hexo/issues">GitHub&lt;/a>.&lt;/p>
 &lt;h2 id="quick-start">Quick Start&lt;/h2>
 &lt;h3 id="create-a-new-post">Create a new post&lt;/h3>
