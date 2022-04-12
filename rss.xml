@@ -1,4 +1,203 @@
-<?xml version="1.0" encoding="utf-8"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>poor guy</title><link>https://poorguyorz.github.io/</link><description>A Test Blog</description><generator>Hugo 0.92.1 https://gohugo.io/</generator><language>zh-CN</language><managingEditor>a_designer@qq.com (poor Guy)</managingEditor><webMaster>a_designer@qq.com (poor Guy)</webMaster><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><lastBuildDate>Mon, 04 Apr 2022 14:05:33 +0000</lastBuildDate><atom:link rel="self" type="application/rss+xml" href="https://poorguyorz.github.io/rss.xml"/><item><title>Columbia Optimizer</title><link>https://poorguyorz.github.io/posts/readbooks/columbia-optimizer/</link><guid isPermaLink="true">https://poorguyorz.github.io/posts/readbooks/columbia-optimizer/</guid><pubDate>Sat, 02 Apr 2022 16:55:12 +0800</pubDate><author>a_designer@qq.com (poor Guy)</author><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><description>&lt;h1 id="start">start&lt;/h1>
+<?xml version="1.0" encoding="utf-8"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>poor guy</title><link>https://poorguyorz.github.io/</link><description>A Test Blog</description><generator>Hugo 0.92.1 https://gohugo.io/</generator><language>zh-CN</language><managingEditor>a_designer@qq.com (poor Guy)</managingEditor><webMaster>a_designer@qq.com (poor Guy)</webMaster><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><lastBuildDate>Tue, 12 Apr 2022 13:42:56 +0000</lastBuildDate><atom:link rel="self" type="application/rss+xml" href="https://poorguyorz.github.io/rss.xml"/><item><title>VolcanoOptimizer</title><link>https://poorguyorz.github.io/posts/readbooks/volcanooptimizer/</link><guid isPermaLink="true">https://poorguyorz.github.io/posts/readbooks/volcanooptimizer/</guid><pubDate>Mon, 04 Apr 2022 22:10:50 +0800</pubDate><author>a_designer@qq.com (poor Guy)</author><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><description>&lt;h1 id="note">NOTE&lt;/h1>
+&lt;p>论文阅读笔记&lt;a href="http://www.cse.iitb.ac.in/infolab/Data/Courses/CS632/Papers/Volcano-graefe.pdf">The Volcano Optimizer Generator: Extensibility and Efficient Search&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>可扩展&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>面向对象&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>自顶向下&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>剪枝&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>原型是EXODUS， Volcano是对他的改进&lt;/p>
+&lt;ul>
+&lt;li>可以单独使用的优化器&lt;/li>
+&lt;li>优化搜索时间和搜索空间&lt;/li>
+&lt;li>可扩展&lt;/li>
+&lt;li>可以使用启发式算法和有效的代价模型来扩展和减少搜索空间，【剪枝】&lt;/li>
+&lt;li>灵活的成本计算模型&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>一个框架，优化器生成器，可以由“optimizer implementor”自行实现关键函数，整个优化器框架的输入是AST，输出是一个执行计划，算子的集合&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>SQL是基于关系代数，Volcano把关系表达式分为逻辑表达式和物理表达式，逻辑表达式之间使用transformation进行转换，物理表达式使用基于代价的implementation和逻辑表达式映射的，关系不一定是意义对应的，例如scan可以同时一起实现projection&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>在表达式进行转换的时候可以使用condition进行模式判断，满足条件的时候可以进行变换&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>表达式使用特征描述输出，&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>enforcers会强制添加某属性，用于指导优化器进行优化，例如指定表的scan方式&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>Logical Operator&lt;br>
+Operator set，也就是可以描述在目标data model上可以执行的代数运算合&lt;br>
+Transformation rules + Condition，对每条等价变换规则，在满足condition时才可以应用&lt;br>
+Logical properties : 逻辑属性，用来描述代数运算的输出所具有的一些特征，这些特征与运算的具体执行方式无关，是逻辑的，例如输出的行数，结果集的schema等&lt;/p>
+&lt;p>Physical Operator&lt;br>
+Algorithm + Enforcer set，即可应用的物理实现算法 + 可添加的Enforcer集合&lt;br>
+Implementation rules + Condition，满足Condition的前提下，可以尝试该物理算法&lt;br>
+Cost model + Cost formula，基于cost选择最优的物理算法&lt;br>
+Physical property，与logical property对应，物理属性是选择了特定的算法实现后，输出的数据所具有的物理上的特性，例如数据是否有序、是否具有唯一性，数据在多机上的分布情况等，不同的物理算法，会决定执行该operator产生的物理属性，例如sort merge join会在join key上产生有序属性&lt;br>
+Applicability function : 决定一个物理算法，其输出是否可以满足要求父算子对自身的physical property要求，且决定它对自身的输入具有什么样的physical property要求&lt;br>
+Enforcer是search engine中一个重要的概念，它用来强制产生某种物理属性。例如上层是join算子，在枚举时会考虑使用sort merge join的物理执行方式(Implementation），但当递归到下层时，子节点可以选择table scan（无序输出），或者index scan（目标序输出），当选择table scan时，由于输出不满足父算子对自身输出的物理属性要求，就可以通过Order Enforcer来产生目标输出，Enforcer表示了排序这个操作，同时也包含了排序操作会产生的代价。&lt;/p>
+&lt;h2 id="the--search--engine">The Search Engine&lt;/h2>
+&lt;p>搜索实现&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c++" data-lang="c++">&lt;span class="c1">// PhysProp：： 此LogExpr锁具有的物理属性的要求
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="n">FindBestPlan&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">LogExpr&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">PhysProp&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Limit&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="c1">// 如果可以在look-up table找到满足的计划，则代表以及算过，直接返回
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">pair&lt;/span> &lt;span class="n">LogExpr&lt;/span> &lt;span class="n">and&lt;/span> &lt;span class="n">PhysProp&lt;/span> &lt;span class="n">is&lt;/span> &lt;span class="n">in&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">look&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">up&lt;/span> &lt;span class="n">table&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">cost&lt;/span> &lt;span class="n">in&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">look&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">up&lt;/span> &lt;span class="n">table&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">Limit&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="n">Plan&lt;/span> &lt;span class="n">and&lt;/span> &lt;span class="n">Cost&lt;/span>
+&lt;span class="k">else&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="n">failure&lt;/span>
+&lt;span class="cm">/* else: optimization required */&lt;/span>
+&lt;span class="c1">// 否则进行优化，由三种优化方式
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// 1. 使用转换方法转换为等价的逻辑表达式，且使用相同物理属性计算
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// 2. 使用实现方法生成物理表达式，此处是本层的物理表达式，所以会递归调用，且计算本层代价TotalCost，此时是使用
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// 代价模型计算代价且使用剪枝
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// Applicability functio决定Implementation是否满足PhysProp
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// 3. 使用enforcer，计算enforcer的代价，且修改PhysProp为满足enforcer的PhysProp，使用新的PhysProp计算LogExpr
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">create&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">set&lt;/span> &lt;span class="n">of&lt;/span> &lt;span class="n">possible&lt;/span> &lt;span class="s">&amp;#34;moves&amp;#34;&lt;/span> &lt;span class="n">from&lt;/span>
+&lt;span class="o">-&lt;/span> &lt;span class="n">applicable&lt;/span> &lt;span class="n">transformations&lt;/span>
+&lt;span class="o">-&lt;/span> &lt;span class="n">algorithms&lt;/span> &lt;span class="n">that&lt;/span> &lt;span class="n">give&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">required&lt;/span> &lt;span class="n">PhysProp&lt;/span>
+&lt;span class="o">-&lt;/span> &lt;span class="n">enforcers&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">required&lt;/span> &lt;span class="n">PhysProp&lt;/span>
+&lt;span class="n">order&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">set&lt;/span> &lt;span class="n">of&lt;/span> &lt;span class="n">moves&lt;/span> &lt;span class="n">by&lt;/span> &lt;span class="n">promise&lt;/span>
+&lt;span class="k">for&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">most&lt;/span> &lt;span class="n">promising&lt;/span> &lt;span class="n">moves&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">move&lt;/span> &lt;span class="n">uses&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">transformation&lt;/span>
+&lt;span class="n">apply&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">transformation&lt;/span> &lt;span class="n">creating&lt;/span> &lt;span class="n">NewLogExpr&lt;/span>
+&lt;span class="n">call&lt;/span> &lt;span class="n">FindBestPlan&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">NewLogExpr&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">PhysProp&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Limit&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="k">else&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">move&lt;/span> &lt;span class="n">uses&lt;/span> &lt;span class="n">an&lt;/span> &lt;span class="n">algorithm&lt;/span>
+&lt;span class="nl">TotalCost&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="o">=&lt;/span> &lt;span class="n">cost&lt;/span> &lt;span class="n">of&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">algorithm&lt;/span>
+&lt;span class="k">for&lt;/span> &lt;span class="n">each&lt;/span> &lt;span class="n">input&lt;/span> &lt;span class="n">I&lt;/span> &lt;span class="k">while&lt;/span> &lt;span class="n">TotalCost&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">Limit&lt;/span>
+&lt;span class="n">determine&lt;/span> &lt;span class="n">required&lt;/span> &lt;span class="n">physical&lt;/span> &lt;span class="n">properties&lt;/span> &lt;span class="n">PP&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">I&lt;/span>
+&lt;span class="n">Cost&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">FindBestPlan&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">I&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">PP&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Limit&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">TotalCost&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="n">add&lt;/span> &lt;span class="n">Cost&lt;/span> &lt;span class="n">to&lt;/span> &lt;span class="n">TotalCost&lt;/span>
+&lt;span class="k">else&lt;/span>&lt;span class="cm">/* move uses an enforcer */&lt;/span>
+&lt;span class="nl">TotalCost&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="o">=&lt;/span> &lt;span class="n">cost&lt;/span> &lt;span class="n">of&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">enforcer&lt;/span>
+&lt;span class="n">modify&lt;/span> &lt;span class="n">PhysProp&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">enforced&lt;/span> &lt;span class="n">property&lt;/span>
+&lt;span class="n">call&lt;/span> &lt;span class="n">FindBestPlan&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">LogExpr&lt;/span> &lt;span class="n">with&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">PhysProp&lt;/span>
+&lt;span class="cm">/* maintain the look-up table of explored facts */&lt;/span>
+&lt;span class="c1">// 如果没有在look-up table找到满足的计划，则insert
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">LogExpr&lt;/span> &lt;span class="n">is&lt;/span> &lt;span class="n">not&lt;/span> &lt;span class="n">in&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">look&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">up&lt;/span> &lt;span class="n">table&lt;/span>
+&lt;span class="n">insert&lt;/span> &lt;span class="n">LogExpr&lt;/span> &lt;span class="n">into&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">look&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">up&lt;/span> &lt;span class="n">table&lt;/span>
+&lt;span class="c1">// 记录左右执行计划
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">insert&lt;/span> &lt;span class="n">PhysProp&lt;/span> &lt;span class="n">and&lt;/span> &lt;span class="n">best&lt;/span> &lt;span class="n">plan&lt;/span> &lt;span class="n">found&lt;/span> &lt;span class="n">into&lt;/span> &lt;span class="n">look&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">up&lt;/span> &lt;span class="n">table&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="n">best&lt;/span> &lt;span class="n">Plan&lt;/span> &lt;span class="n">and&lt;/span> &lt;span class="n">Cost&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>自定向下的搜索，使用三种规则向下扩展搜索空间，使用look-up table记录已搜索的表达式，在表达式没有新的扩展方法，或者达到代价阈值的时候停止搜索，&lt;/p>
+&lt;h2 id="自顶向下和自底向上">自顶向下和自底向上&lt;/h2>
+&lt;ul>
+&lt;li>自顶向下
+volcano，cascades等
+&lt;ol>
+&lt;li>在等价变形的范围不仅仅限于join，关系代数的等价变换都可以实现，所以理论上，这里可以使用一些启发式的算法，而不必要进行分层&lt;/li>
+&lt;li>可以在优化的过程中基于代价模型进行剪枝&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>自底向上
+几乎会枚举所有的执行计划，由更大的搜索空间，且由于在优化的过程中更多的只是为了搜索join order 的执行计划，所以需要提前进行一些启发式的算法，或优化语句结构便于优化器优化，或提前搜索到执行计划结束优化过程。&lt;/li>
+&lt;/ul>
+&lt;h1 id="the-cascades-framework-for-query-optimization">[The Cascades Framework for Query Optimization]&lt;/h1>
+&lt;p>对于volcano的改进和优化&lt;/p>
+&lt;ul>
+&lt;li>把原来的搜索流程拆分为单个的task，使用栈来实现，task之间使用一个DGA来维护调度关系&lt;/li>
+&lt;li>不区分逻辑表达式和物理表达式是&lt;/li>
+&lt;li>rule抽象为task，是具体的对象，apply 的时候区分表达类型&lt;/li>
+&lt;/ul>
+&lt;p>group：
+等价表达式的集合
+expr：
+表达式，等价表达式使用特征输入和特征输出来表示，表达式的输入可以是表达式，也可以是group，可以视为执行计划中的一个片段。
+rule
+抽象实现，分为逻辑表达式的转换rule和逻辑表达式转换到物理表达式的Implementation rule
+是否可以适用某个rule需要判断表达式可以满足rule的某些要求的规则，这个规则抽象为pattern，如果满足pattern，则可以使用此转换方法转换表达式，转换之后的表达式称为Substitution&lt;/p>
+&lt;ul>
+&lt;li>OptimizeGroupTask
+优化任务的入口，初始化的时候是整个ast的集合&lt;/li>
+&lt;li>OptimizeExprTask
+对于group中的所有的表达式，一个表达式可能只是单纯的表达式，也有可能是由其他group作为输入的表达式，所以
+&lt;ol>
+&lt;li>都表达式使用ApplyRuleTask入栈&lt;/li>
+&lt;li>对于所有表达式中的group，使用ExploreGroupTask入栈，此时对于此节点，会先完成ExploreGroupTask，然后再使用ApplyRuleTask&lt;/li>
+&lt;li>如果是物理表达式，则使用CreatePlanTask&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>ApplyRuleTask
+对表达式使用rule转换，使用nextSubstitute之后得到Substitution，可以对新的表达式使用
+&lt;ol>
+&lt;li>ExploreExprTask&lt;/li>
+&lt;li>OptimizeExprTask&lt;/li>
+&lt;li>CreatePlanTask 如果是逻辑表达式，则使用CreatePlanTask&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>ExploreGroupTask
+对group中的所有表达式调用ExploreExprTask&lt;/li>
+&lt;li>ExploreExprTask
+对所有的表达式，调用ApplyRuleTask，在表达式使用ApplyRuleTask之前，会先使用ExploreGroupTask扩展表达式的group&lt;/li>
+&lt;li>CreatePlanTask
+对应的是implementation rule，转换表达式为物理表达式&lt;/li>
+&lt;/ul>
+&lt;p>其中ApplyRuleTask某个表达式的时候，会先递归的使用ExploreGroupTask处理表达式的所有group，所以在transformation某个规则的时候，是整体的引用到整个表达式上&lt;/p></description><category domain="https://poorguyorz.github.io/posts/">posts</category></item><item><title>Columbia Optimizer</title><link>https://poorguyorz.github.io/posts/readbooks/columbia-optimizer/</link><guid isPermaLink="true">https://poorguyorz.github.io/posts/readbooks/columbia-optimizer/</guid><pubDate>Sat, 02 Apr 2022 16:55:12 +0800</pubDate><author>a_designer@qq.com (poor Guy)</author><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><description>&lt;h1 id="start">start&lt;/h1>
 &lt;p>EFFICIENCY IN THE COLUMBIA DATABASE QUERY OPTIMIZER&lt;/p>
 &lt;h2 id="优化器发展版本">优化器发展版本&lt;/h2>
 &lt;ul>
@@ -389,7 +588,7 @@ pg默认在表数量大于13的时候使用遗传算法，可能得到的不是�
 &lt;/li>
 &lt;li>system R
 也是一种自底向上，但是只保留最优和次优解，用于上层的执行计划的生成，最后的执行计划可能不是全局最优&lt;/li>
-&lt;li>Volcano&lt;/li>
+&lt;li>Volcano [The Volcano Optimizer Generator: Extensibility and Efficient Search http://www.cse.iitb.ac.in/infolab/Data/Courses/CS632/Papers/Volcano-graefe.pdf]&lt;/li>
 &lt;li>Cascades
 &lt;ul>
 &lt;li>expression
@@ -535,7 +734,61 @@ B+tree&lt;br>
 读取的时候按页读取，从根节点开始，定位到子页的时候再去读取子叶，直到叶子节点被读取，页的大小是4KB，假设key为8，地址大小为8，则一组key大小为16，则一页可以指向256页，则两层树高的树可以保存1kw的数据，此时磁盘io只有三次&lt;br>
 写的时候会检测节点时候full，如果full，则需要split，如果当前层满了，则增加树的高度，&lt;br>
 * 随机读性能高。如果没有额外的设计，则没有读写放大的问题，且易于实现lock，但是由于写的时候可能会导致树的变化，会有性能问题&lt;/li>
-&lt;li>事务&lt;/li>
+&lt;li>事务
+&lt;ul>
+&lt;li>特性ACID
+&lt;ul>
+&lt;li>
+&lt;p>A 原子性&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>C 一致性&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>I 隔离性&lt;/p>
+&lt;ul>
+&lt;li>隔离级别&lt;/li>
+&lt;/ul>
+&lt;ul>
+&lt;li>读未提交
+&lt;ul>
+&lt;li>脏读
+&lt;ul>
+&lt;li>长时间持有写锁，短时间持有读锁，只能读取别人已经释放锁的数据&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>读已提交
+&lt;ul>
+&lt;li>不可重复读
+&lt;ul>
+&lt;li>长时间持有读锁和写锁，保持数据独占&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>快照都&lt;/li>
+&lt;li>可重复读
+&lt;ul>
+&lt;li>幻读&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>串行化&lt;/li>
+&lt;li>写偏序
+&lt;ul>
+&lt;li>另一个事务修改数据，导致某事物在处理的数据的时候约束条件改变&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>D 持久性&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>
@@ -703,7 +956,9 @@ range分区，负责index的维护，split分区，同时后期维护整个分�
 &lt;/li>
 &lt;li>
 &lt;p>只读表
-数据预加载进缓存，然后从缓存读取&lt;/p>
+数据预加载进缓存，然后从缓存读取 [
+当前为只读，后期设计为懒同步，即数据访问从
+]&lt;/p>
 &lt;ul>
 &lt;li>难点
 数据存储模型
