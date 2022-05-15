@@ -1,4 +1,703 @@
-<?xml version="1.0" encoding="utf-8"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>poor guy</title><link>https://poorguyorz.github.io/</link><description>A Test Blog</description><generator>Hugo 0.92.1 https://gohugo.io/</generator><language>zh-CN</language><managingEditor>a_designer@qq.com (poor Guy)</managingEditor><webMaster>a_designer@qq.com (poor Guy)</webMaster><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><lastBuildDate>Tue, 12 Apr 2022 13:42:56 +0000</lastBuildDate><atom:link rel="self" type="application/rss+xml" href="https://poorguyorz.github.io/rss.xml"/><item><title>VolcanoOptimizer</title><link>https://poorguyorz.github.io/posts/readbooks/volcanooptimizer/</link><guid isPermaLink="true">https://poorguyorz.github.io/posts/readbooks/volcanooptimizer/</guid><pubDate>Mon, 04 Apr 2022 22:10:50 +0800</pubDate><author>a_designer@qq.com (poor Guy)</author><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><description>&lt;h1 id="note">NOTE&lt;/h1>
+<?xml version="1.0" encoding="utf-8"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>poor guy</title><link>https://poorguyorz.github.io/</link><description>A Test Blog</description><generator>Hugo 0.92.1 https://gohugo.io/</generator><language>zh-CN</language><managingEditor>a_designer@qq.com (poor Guy)</managingEditor><webMaster>a_designer@qq.com (poor Guy)</webMaster><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><lastBuildDate>Sun, 15 May 2022 14:37:52 +0000</lastBuildDate><atom:link rel="self" type="application/rss+xml" href="https://poorguyorz.github.io/rss.xml"/><item><title>LevelDB源码阅读</title><link>https://poorguyorz.github.io/posts/readbooks/leveldb/</link><guid isPermaLink="true">https://poorguyorz.github.io/posts/readbooks/leveldb/</guid><pubDate>Sun, 15 May 2022 21:59:53 +0800</pubDate><author>a_designer@qq.com (poor Guy)</author><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><description>&lt;blockquote>
+&lt;p>之前有零碎的阅读代码，但是没有整理，此次花费两天的时间整理整个项目&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="主要组件">主要组件&lt;/h2>
+&lt;h3 id="slice">slice&lt;/h3>
+&lt;p>字符串的浅拷贝实现，使用一个指针和指针长度实现，类似c++后来实现的string_view，如果使用string，则在传递数据的时候会进行拷贝操作，有性能损失。另一个目的是为了自主可控，简单的实现利于数据的血缘追踪&lt;/p>
+&lt;h3 id="status">status&lt;/h3>
+&lt;p>自定义信息模块，把状态码和状态信息进行压缩，压缩格式如下&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c++" data-lang="c++">&lt;span class="n">Status&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">Status&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Code&lt;/span> &lt;span class="n">code&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="n">Slice&lt;/span>&lt;span class="o">&amp;amp;&lt;/span> &lt;span class="n">msg&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="n">Slice&lt;/span>&lt;span class="o">&amp;amp;&lt;/span> &lt;span class="n">msg2&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="n">assert&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">code&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="n">kOk&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="k">const&lt;/span> &lt;span class="kt">uint32_t&lt;/span> &lt;span class="n">len1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">static_cast&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="kt">uint32_t&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">msg&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;span class="k">const&lt;/span> &lt;span class="kt">uint32_t&lt;/span> &lt;span class="n">len2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">static_cast&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="kt">uint32_t&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">msg2&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;span class="k">const&lt;/span> &lt;span class="kt">uint32_t&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">len1&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">len2&lt;/span> &lt;span class="o">?&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mi">2&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">len2&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="kt">char&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="kt">char&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">size&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">memcpy&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">result&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;span class="n">result&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">static_cast&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="kt">char&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">code&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">memcpy&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">result&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">msg&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="p">(),&lt;/span> &lt;span class="n">len1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">len2&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="n">result&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">5&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">len1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="sc">&amp;#39;:&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="n">result&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">6&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">len1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="sc">&amp;#39; &amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">memcpy&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">result&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">7&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">len1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">msg2&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="p">(),&lt;/span> &lt;span class="n">len2&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="n">state_&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">result&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="编码">编码&lt;/h3>
+&lt;p>leveldb中几乎所有的数据都会和数据格式的编码或多或少的有联系，例如整形的变长编码，他会把数据的二进制编码按7拆分，在每个字节的第一位使用1表示是否为数据的结尾，例如int(1)编码为&lt;code>00000001&lt;/code>，&lt;code>11 10101010&lt;/code>会编码为&lt;code>10101010 00000111&lt;/code>，对应压缩和解压代码如下，除了变长之外，还有定长编码，以及对应的32位，64位的实现等，在实际的数据处理中，会有记录数据长度等操作，就会使用编码操作，把数值编码到数据中。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c++" data-lang="c++">&lt;span class="kt">char&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="nf">EncodeVarint32&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">char&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">dst&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">uint32_t&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="c1">// Operate on characters as unsigneds
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="kt">uint8_t&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">ptr&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">reinterpret_cast&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="kt">uint8_t&lt;/span>&lt;span class="o">*&amp;gt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">dst&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="k">static&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">B&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">128&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">v&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="mi">7&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="o">*&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ptr&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">v&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="mi">14&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="o">*&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ptr&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">B&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="o">*&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ptr&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span> &lt;span class="o">&amp;gt;&amp;gt;&lt;/span> &lt;span class="mi">7&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">v&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="mi">21&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="o">*&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ptr&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">B&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="o">*&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ptr&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">v&lt;/span> &lt;span class="o">&amp;gt;&amp;gt;&lt;/span> &lt;span class="mi">7&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">B&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="o">*&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ptr&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span> &lt;span class="o">&amp;gt;&amp;gt;&lt;/span> &lt;span class="mi">14&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">v&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="mi">28&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="k">const&lt;/span> &lt;span class="kt">char&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">GetVarint32PtrFallback&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="kt">char&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">p&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="kt">char&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">limit&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;span class="kt">uint32_t&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">value&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="kt">uint32_t&lt;/span> &lt;span class="n">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">uint32_t&lt;/span> &lt;span class="n">shift&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">shift&lt;/span> &lt;span class="o">&amp;lt;=&lt;/span> &lt;span class="mi">28&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="n">p&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">limit&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">shift&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="mi">7&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="kt">uint32_t&lt;/span> &lt;span class="n">byte&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">reinterpret_cast&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="kt">uint8_t&lt;/span>&lt;span class="o">*&amp;gt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;span class="n">p&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">byte&lt;/span> &lt;span class="o">&amp;amp;&lt;/span> &lt;span class="mi">128&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="c1">// More bytes are present
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">result&lt;/span> &lt;span class="o">|=&lt;/span> &lt;span class="p">((&lt;/span>&lt;span class="n">byte&lt;/span> &lt;span class="o">&amp;amp;&lt;/span> &lt;span class="mi">127&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">shift&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="n">result&lt;/span> &lt;span class="o">|=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">byte&lt;/span> &lt;span class="o">&amp;lt;&amp;lt;&lt;/span> &lt;span class="n">shift&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="o">*&lt;/span>&lt;span class="n">value&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">result&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="k">reinterpret_cast&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="k">const&lt;/span> &lt;span class="kt">char&lt;/span>&lt;span class="o">*&amp;gt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="k">nullptr&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="arean">arean&lt;/h3>
+&lt;p>自定义内存池，设计思路是申请内存和分配内存隔离，申请内存的时候多申请，分配内存的时候从已申请的内存中分配&lt;/p>
+&lt;ul>
+&lt;li>对于大空间，则直接申请，独占一个block，不受block大小的限制，且不改变之前记录的block的使用状态的记录&lt;/li>
+&lt;li>对于小空间
+&lt;ul>
+&lt;li>第一次会申请大小为4k的空间，然后记录当前空间的指针及空间使用情况，然后分配空间&lt;/li>
+&lt;li>之后的如果满足要求，则从之前申请的空间中分配&lt;/li>
+&lt;li>如果不满足，则重新分配，之前残留的空间直接丢弃，且不计入使用空间统计&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c++" data-lang="c++">&lt;span class="kt">char&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">pool&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">area&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">Allocate&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// 不对齐的申请
+&lt;/span>&lt;span class="c1">// char * pool = area-&amp;gt;AllocateAligned(size); // 申请对齐的空间
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="k">auto&lt;/span> &lt;span class="n">mem&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">pool&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="kt">char&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="n">Allocate&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">size&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">alloc_bytes_remaining_&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="kt">char&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">alloc_ptr_&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="n">alloc_ptr_&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">bytes&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="n">alloc_bytes_remaining_&lt;/span> &lt;span class="o">-=&lt;/span> &lt;span class="n">bytes&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="n">result&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="nf">AllocateFallback&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="skiplist">skiplist&lt;/h3>
+&lt;blockquote>
+&lt;p>&lt;a href="https://www.jianshu.com/p/9d8296562806">https://www.jianshu.com/p/9d8296562806&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>跳表使用使用概率均衡的技术，是的大部分操作都可以实现&lt;code>O(log n)&lt;/code>的时间复杂度，可以参考上面的文章，这里总结几个点&lt;/p>
+&lt;ol>
+&lt;li>跳表可以简单的理解为链表的+index的实现，index的目的是为了快速的查找数据&lt;/li>
+&lt;li>跳表在增加节点的时候，使用概率为0.25来确定使得否增加下一层，在这个概率下，空间需要花费的代价为&lt;code>(cost(node) * 1.33)&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c++" data-lang="c++"> &lt;span class="k">static&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="kt">unsigned&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">kBranching&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">4&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="kt">int&lt;/span> &lt;span class="n">height&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="k">while&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">height&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">kMaxHeight&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="n">rnd_&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">OneIn&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">kBranching&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="n">height&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="3">
+&lt;li>查找的时间复杂度可以抽象的理解为二分查找的&lt;code>O(log n)&lt;/code>&lt;/li>
+&lt;li>跳表的操作的时间复杂度和红黑树几乎差不多，但是有一点功能是红黑树无法实现的，即range search，红黑树由于结构特性，无法进行类似的操作，就像B-tree和B+tree，因为B+tree在叶子节点上可以实现range查询&lt;/li>
+&lt;li>跳表结构简单，易于理解，易于实现，&lt;/li>
+&lt;li>insert的时候先查找位置，然后按概率计算层高，再进行插入&lt;/li>
+&lt;li>并发&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c++" data-lang="c++">&lt;span class="n">find&lt;/span> &lt;span class="n">pre&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="n">RandomHeight&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="n">fix&lt;/span> &lt;span class="n">pre&lt;/span> &lt;span class="n">on&lt;/span> &lt;span class="n">random&lt;/span> &lt;span class="n">height&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="k">new&lt;/span> &lt;span class="nf">node&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">height&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="n">set&lt;/span> &lt;span class="n">pointer&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="7">
+&lt;li>leveldb中，skiplist没有delete操作，如果需要实现，则需要实现类似insert中的部分操作，查找到pre，在设置节点即可。&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c++" data-lang="c++">&lt;span class="n">find&lt;/span> &lt;span class="n">pre&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="n">set&lt;/span> &lt;span class="n">pointer&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="k">delete&lt;/span> &lt;span class="n">node&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="writebatch">WriteBatch&lt;/h3>
+&lt;p>写操作的主要操作对象，主要步骤是把操作的数据打包为一个buffer，然后使用&lt;code>WriteBatch::Iterate&lt;/code>操作handler实现insert操作，hanle是一个实现put和delete的接口，所以这里是把数据和操作分离了，这里有几点细节&lt;/p>
+&lt;ol>
+&lt;li>WriteBatch的数据格式为 &lt;code>seq|countkey|{type|key|val}&lt;/code>，batch添加一个数据的时候，除了正常添加数据，还会count加一，用于在&lt;code>WriteBatch::Iterate&lt;/code>的时候检测数据数量是否正确&lt;/li>
+&lt;li>一个batch的数据只有一个sequence，batch写完之后，数值加一，&lt;/li>
+&lt;li>有標記控制是否使用使用同步寫。默認為同步寫，異步寫入的速度快，但是可能導致系統崩潰的時候丟數據，所以爲了分攤大量數據的同步寫的cost，這裏設計WriteBatch來打包數據，進行一次同步寫操作，因爲是順序寫入磁盤，所以寫入速度可以接受&lt;/li>
+&lt;li>写入操作具有原子性，在写数据的时候会先写日志然后再写数据，当写日志之前或者写日志过程中宕机，下次重启时恢复数据库的时候直接丢弃异常日志。或者写完日志之后宕机，系统在下次启动之后都是确保数据的原子性，&lt;/li>
+&lt;/ol>
+&lt;h3 id="posixenv">PosixEnv&lt;/h3>
+&lt;p>posix环境资源的实现，继承自env，目的是便于实现不同平台下的代码，&lt;/p>
+&lt;ul>
+&lt;li>线程池，一个简单的例子 &lt;a href="https://github.com/progschj/ThreadPool">https://github.com/progschj/ThreadPool&lt;/a>&lt;/li>
+&lt;li>日志&lt;/li>
+&lt;li>文件&lt;/li>
+&lt;/ul>
+&lt;h3 id="wal">wal&lt;/h3>
+&lt;blockquote>
+&lt;p>&lt;a href="https://leveldb-handbook.readthedocs.io/zh/latest/journal.html">https://leveldb-handbook.readthedocs.io/zh/latest/journal.html&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>日志在写数据之前记录，写完之后立刻flush，之后才是真正的写数据到memtable，日志文件会一直保存，直到数据落盘才删除，即memtable变为immemtable且compact(数据落盘)之后才删除，如果期间系统异常，则日志文件保存，到下次重启之后回复之后才删除，&lt;/p>
+&lt;hr>
+&lt;p>(log::Writer)
+写数据之前需要预写日志，目的是为了保证数据安全，在操作数据异常的时候可以使用日志恢复数据，按block划分，一个block大小为32k，一个block有四种状态&lt;/p>
+&lt;ol>
+&lt;li>kFullType&lt;br>
+一个block可以存完数据&lt;/li>
+&lt;li>kFirstType&lt;br>
+一个block存不下数据，标记为第一个block&lt;/li>
+&lt;li>kLastType&lt;br>
+最后一个block&lt;/li>
+&lt;li>kMiddleType&lt;br>
+中间的block&lt;/li>
+&lt;/ol>
+&lt;p>每一个block中的数据的组织格式为&lt;code>crc|len(2)|type(1)|values&lt;/code>，其中values的数据来自于前面的WriteBatch打包的数据，是一个整体，没有做太多的处理，主要的调用方法为&lt;/p>
+&lt;ul>
+&lt;li>DBImpl::Write&lt;/li>
+&lt;li>DBImpl::NewDB&lt;/li>
+&lt;li>VersionSet::LogAndApply&lt;/li>
+&lt;li>VersionSet::WriteSnapshot&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;p>(log::Reader)
+wal对应的读取操作&lt;/p>
+&lt;h3 id="cache">Cache&lt;/h3>
+&lt;p>缓存，抽象类，有&lt;code>ShardedLRUCache&lt;/code>一个实现，内部自行额外的设计了几个特殊的结构，测试文件为&lt;code>cache_test.cc&lt;/code>。&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;a href="https://leveldb-handbook.readthedocs.io/zh/latest/cache.html">https://leveldb-handbook.readthedocs.io/zh/latest/cache.html&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;h4 id="lrucache">LRUCache&lt;/h4>
+&lt;ul>
+&lt;li>ShardedLRUCache&lt;br>
+LRUHandle的包装，主要原因是LRUHandle的接口都加锁，所以这里使用ShardedLRUCache包装一下，使用16个LRUHandle来管理缓存，以提高并发时候的操作效率。&lt;code>uint32_t Shard(uint32_t hash) { return hash &amp;gt;&amp;gt; (32 - kNumShardBits); }&lt;/code>会使用前4个bit计算位置，得到对应的LRUHandle对象，之后的操作使用此对象处理，相当于LRUHandle的hash表。&lt;/li>
+&lt;li>LRUCache
+&lt;blockquote>
+&lt;p>&lt;a href="https://leetcode.cn/problems/lru-cache/">https://leetcode.cn/problems/lru-cache/&lt;/a>
+LRU的实现，使用HandleTable作为hash表保存的数据。LRUHandle为链表保存数据，主要细节为&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>使用hash表保存数据&lt;/li>
+&lt;li>使用一个LRUHandle维护使用情况，数据在缓存中的时候，要么只是在缓存中，保存在lru_链表中，或者是使用中的数据，保存在in_use_中&lt;/li>
+&lt;li>使用引用标记数据的使用，只有当引用为0的时候，才会删除数据，当数据存在在缓存中的时候，引用默认为1，为0则表示不缓存且没有外部引用&lt;/li>
+&lt;li>对于重复的key，会直接替换&lt;/li>
+&lt;li>容量不足的时候。替换lru_中的数据，使用中的数据不操作&lt;/li>
+&lt;li>链表在append的时候，使用是添加在链表头节点&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>LRUHandle&lt;br>
+双向链表，在hash表中会保存数据，在LRU中会维护使用情况，
+&lt;ul>
+&lt;li>remove&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c++" data-lang="c++">&lt;span class="kt">void&lt;/span> &lt;span class="n">LRUCache&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">LRU_Remove&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">LRUHandle&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="n">e&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">prev&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">prev&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="n">e&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">prev&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ul>
+&lt;li>LRU_Append&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c++" data-lang="c++">&lt;span class="kt">void&lt;/span> &lt;span class="n">LRUCache&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">LRU_Append&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">LRUHandle&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">list&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">LRUHandle&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="c1">// Make &amp;#34;e&amp;#34; newest entry by inserting just before *list
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">list&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="n">e&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">prev&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">list&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">prev&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="n">e&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">prev&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="n">e&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">prev&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>HandleTable
+LRUHandle的二维数组，使用连地址法来处理冲突&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>缓存有两种，一种是用来缓存的打开的SST table的cache，一种是用来缓存使用的block的cache&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="sst">SST&lt;/h3>
+&lt;p>&lt;img src="https://poorguyorz.github.io/posts/readbooks/image.png" alt="格式圖">
+具體格式如圖，文件最后是footer，保存mata和index的大小和偏移，&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>footer (&lt;code>Footer::EncodeTo&lt;/code>)&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c++" data-lang="c++"> &lt;span class="n">int64&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="mi">2&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">mata&lt;/span>
+&lt;span class="n">int64&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="mi">2&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">index&lt;/span>
+&lt;span class="n">padding&lt;/span>
+&lt;span class="n">magicnum&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>BlockBuilder&lt;br>
+磁盘读写按照一定大小读取比较有效率，leveldb按照4K大小组织文件，4K为一个block，block按照一个一个的条目编码数据，格式为&lt;code>slen|uslen|vlen|uskey|v&lt;/code>，s指的是share，如下的例子&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c++" data-lang="c++"> &lt;span class="p">{&lt;/span>
+&lt;span class="n">string&lt;/span> &lt;span class="n">key1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;abcd&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">v1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;vv1vv&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="n">string&lt;/span> &lt;span class="n">key2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;abce&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">v2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;vv2vv&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="n">string&lt;/span> &lt;span class="n">key3&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;abxf&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">v3&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;vv3vv&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="n">encode&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="mi">0&lt;/span> &lt;span class="mi">4&lt;/span> &lt;span class="mi">5&lt;/span> &lt;span class="n">abcd&lt;/span> &lt;span class="n">vv1vv&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="mi">3&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="mi">5&lt;/span> &lt;span class="n">e&lt;/span> &lt;span class="n">vv2vv&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="mi">2&lt;/span> &lt;span class="mi">2&lt;/span> &lt;span class="mi">5&lt;/span> &lt;span class="n">xf&lt;/span> &lt;span class="n">vv3vv&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>第一个记录不编码，第二个和第一个对比，编码存取，key抽取相同的前缀，记录长度，之后的数据都按前一个数据编码，如果数据太多，可能后面的key和之前的key差距比较大，查找的时候只能全部解码然后寻找key，所以设计可以控制每隔固定数量的key存一个完整的key，称为重启点，按重启点划分为不同的group，此时且记录key的偏移，此时查找的时候可以按照偏移取key然后使用二分查找等方式快速查寻。在持久化的时候，block末尾记录group的大小，再使用一个bit记录压缩格式，再使用4个bit记录crc。这就是block的基本格式
+除了footer使用单独的编码格式之外。其余的mata，index，data都使用block的格式编码数据，&lt;/p>
+&lt;ul>
+&lt;li>写入流程&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c++" data-lang="c++">&lt;span class="n">TableBuilder&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">Add&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">pending_index_entry&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1">// 新的block设置index
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">index_block&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Add&lt;/span>
+&lt;span class="n">filter_block&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">AddKey&lt;/span> &lt;span class="c1">// 设置filter
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">data_block&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Add&lt;/span> &lt;span class="c1">// 添加数据到data_block，如果大小达到限制，flush
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">estimated_block_size&lt;/span> &lt;span class="o">&amp;gt;=&lt;/span> &lt;span class="n">r&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">options&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">block_size&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="n">TableBuilder&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">Flush&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;span class="n">TableBuilder&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">WriteBlock&lt;/span> &lt;span class="c1">// 写block
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">BlockBuilder&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">Finish&lt;/span> &lt;span class="c1">// 打包数据，编码group offset
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">compression&lt;/span> &lt;span class="c1">// 压缩
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">TableBuilder&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">WriteRawBlock&lt;/span> &lt;span class="c1">// 写压缩之后的数据，设置编码格式和crc
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">r&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">pending_index_entry&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">true&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 设置标记为true，记录index
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ul>
+&lt;li>
+&lt;p>读取流程&lt;br>
+讀取的時候逆向操作，校監crc&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>index
+index的一個條目對應的是一個datablock中的最大的key以及block的偏移和大小，key使用FindShortestSeparator計算得出，確保他計算的key是當前保存的datablock中的最大值加1，目的是便於查找&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c++" data-lang="c++"> &lt;span class="nl">start&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">abcdef&lt;/span>
+&lt;span class="nl">limit&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">abcdgh&lt;/span>
+&lt;span class="n">FindShortestSeparator&lt;/span>&lt;span class="o">--&amp;gt;&lt;/span> &lt;span class="n">start&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">abcdf&lt;/span> &lt;span class="c1">// 公共前綴加1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>immemtable的寫入&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>&lt;a href="https://hardcore.feishu.cn/docs/doccn4w8clvork96K3dqQnJRh9g#">https://hardcore.feishu.cn/docs/doccn4w8clvork96K3dqQnJRh9g#&lt;/a>
+&lt;a href="https://my.oschina.net/fileoptions/blog/903206">https://my.oschina.net/fileoptions/blog/903206&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c++" data-lang="c++">
+&lt;span class="n">WriteLevel0Table&lt;/span>
+&lt;span class="p">{&lt;/span>
+&lt;span class="n">mutex_&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Unlock&lt;/span>&lt;span class="p">();&lt;/span> &lt;span class="c1">// 不加鎖是因爲immemtable不可變，所以沒有并發問題
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">s&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">BuildTable&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">dbname_&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">env_&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">options_&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">table_cache_&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">iter&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">meta&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="nl">BuildTable&lt;/span> &lt;span class="p">:{&lt;/span>
+&lt;span class="c1">// get file
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// add values
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">builder&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">Add&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">key&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">iter&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">value&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;span class="n">s&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">builder&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">Finish&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;span class="nl">Finish&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="c1">// filter
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// metaindex
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// index
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// footer
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;span class="n">file&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">sync&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;span class="n">file&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">close&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="n">mutex_&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Lock&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>具體的細節可以參考代碼的文檔，&lt;/p>
+&lt;h3 id="迭代器">迭代器&lt;/h3>
+&lt;p>訪問特定數據結構的抽象，使數據的訪問和存儲分離，可以參考STL的實現，levelDB中對不同的組件實現不同的迭代器&lt;/p>
+&lt;ul>
+&lt;li>MemTableIterator&lt;/li>
+&lt;li>LevelFileNumIterator&lt;/li>
+&lt;li>Block::Iter&lt;/li>
+&lt;/ul>
+&lt;h3 id="version">version&lt;/h3>
+&lt;blockquote>
+&lt;p>&lt;a href="https://leveldb-handbook.readthedocs.io/zh/latest/version.html">https://leveldb-handbook.readthedocs.io/zh/latest/version.html&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>本质上是使用版本号组成key，用来查询数据，之前数据存放的时候，是有记录seq的，version是专为这种行为设计的系统，&lt;/p>
+&lt;h3 id="compact">compact&lt;/h3>
+&lt;p>定期的数据的整理合并操作&lt;/p>
+&lt;hr>
+&lt;ul>
+&lt;li>minor compaction&lt;br>
+immemtable持久化为SST，可以手动使用TEST_CompactMemTable触发，主要方式是设置&lt;code>DBImpl::Write&lt;/code>的WriteBatch参数为null，此时在&lt;code>MakeRoomForWrite&lt;/code>中，会根据参数导致选择compact的分支，会进行CompactMemTable操作，此时之前的数据会固化到文件中。也可以自动触发，当memtable 满了之后，会进行相同的操作。
+&lt;ul>
+&lt;li>TIPS: 此时version中会保存SST的相关信息，包括beginkey和endkey，以及版本信息&lt;/li>
+&lt;li>文件不一定是level0，对于大文件，预测level0可能很快到达限制，可以在一定条件下直接把文件放在较高层。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Major Compaction&lt;br>
+sst之间向下合并，其会把相同key的不同版本的数据合并，可以手动使用TEST_CompactRange触发，此时可以选择需要compact的level和start key和endkey，他会把文件向下层合并，这里需要注意的是
+&lt;ul>
+&lt;li>level0会有重叠的key，compact的时候需要选择beginkey endkey以及他中间覆盖的文件进行compact操作，否则会残留下old key，&lt;/li>
+&lt;li>sst不一定是向下推一层，可以选择想要合并的层数，对于level 0，使用文件个数计算score，对于其他层，使用文件大小计算&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c++" data-lang="c++"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">level&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">level&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">config&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">kNumLevels&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">level&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="kt">double&lt;/span> &lt;span class="n">score&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">level&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="c1">// We treat level-0 specially by bounding the number of files
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// instead of number of bytes for two reasons:
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">//
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// (1) With larger write-buffer sizes, it is nice not to do too
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// many level-0 compactions.
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">//
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// (2) The files in level-0 are merged on every read and
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// therefore we wish to avoid too many files when the individual
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// file size is small (perhaps because of a small write-buffer
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// setting, or very high compression ratios, or lots of
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// overwrites/deletions).
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">score&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">files_&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">level&lt;/span>&lt;span class="p">].&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">/&lt;/span>
+&lt;span class="k">static_cast&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="kt">double&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">config&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">kL0_CompactionTrigger&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="c1">// Compute the ratio of current size to size limit.
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="kt">uint64_t&lt;/span> &lt;span class="n">level_bytes&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">TotalFileSize&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">v&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">files_&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">level&lt;/span>&lt;span class="p">]);&lt;/span>
+&lt;span class="n">score&lt;/span> &lt;span class="o">=&lt;/span>
+&lt;span class="k">static_cast&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="kt">double&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">level_bytes&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="n">MaxBytesForLevel&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">options_&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">level&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">score&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">best_score&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="n">best_level&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">level&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="n">best_score&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">score&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ul>
+&lt;li>sst记录一个查询次数，当一个文件被查询多次且是无效查询的时候的，当达到一定次数就会触发compcat操作，理由是他可能和其他文件有太多的重复的key，需要被清理以平衡io操作，这里的依据是的一次额外的compact操作的cost和多次的无效seek的均衡。&lt;/li>
+&lt;li>他的大致逻辑是当前使用的线程设置manual_compaction_信息，然后调用compact线程使用manual_compaction_执行compact操作&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c++" data-lang="c++">&lt;span class="n">compact&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="n">BackgroundCompaction&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">imm_&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="k">nullptr&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="n">CompactMemTable&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;span class="k">return&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="n">Compaction&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">is_manual&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="c1">// 执行manual compact，优先级最高，获得Compaction
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">c&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">versions_&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">CompactRange&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">level&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">begin&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">end&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">c&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="k">nullptr&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="c1">// 不做处理，不需要compact
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>&lt;span class="k">else&lt;/span> &lt;span class="nf">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="n">is_manual&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">IsTrivialMove&lt;/span>&lt;span class="p">())&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="c1">// 仅仅只需要移动文件，例如最开始的时候下层没有需要合并的文件，直接移动文件，修改元数据即可
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="c1">// 执行compact
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">CompactionState&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">compact&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">CompactionState&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">c&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="n">status&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">DoCompactionWork&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">compact&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="c1">// 多个文件的合并操作，会处理过期或者需要删除的数据
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">DoCompactionWork&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="n">Iterator&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">input&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">versions_&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">MakeInputIterator&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">compact&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">compaction&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;span class="k">while&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">input&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">Valid&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="o">!&lt;/span>&lt;span class="n">shutting_down_&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">load&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">memory_order_acquire&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">has_imm_&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">load&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">std&lt;/span>&lt;span class="o">::&lt;/span>&lt;span class="n">memory_order_relaxed&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="c1">// 如果有minor compact，则优先处理
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;span class="c1">// 判断重叠，重叠太多影响查询，直接终止
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="n">compact&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">compaction&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">ShouldStopBefore&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">key&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="k">break&lt;/span>&lt;span class="err">；&lt;/span>
+&lt;span class="c1">// 处理key
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="c1">// 如果是delete
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// 或者是sequence小于当前使用中的sequence
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="c1">// 或者更高层没有这个key
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="n">drop&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">true&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="n">drop&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="n">compact&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">builder&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">Add&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">key&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">input&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">value&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;p>由于compact的时候，会占用一定的系统资源，所以如果发生compaction的时候&lt;/p>
+&lt;ul>
+&lt;li>如果是minor compact，则减缓写操作，释放一定的系统资源&lt;/li>
+&lt;li>如果是Major Compaction，则暂停操作。等待compact任务完成&lt;/li>
+&lt;/ul></description><category domain="https://poorguyorz.github.io/posts/">posts</category><category domain="https://poorguyorz.github.io/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">源码阅读</category><category domain="https://poorguyorz.github.io/tags/leveldb/">LevelDB</category></item><item><title>VolcanoOptimizer</title><link>https://poorguyorz.github.io/posts/readbooks/volcanooptimizer/</link><guid isPermaLink="true">https://poorguyorz.github.io/posts/readbooks/volcanooptimizer/</guid><pubDate>Mon, 04 Apr 2022 22:10:50 +0800</pubDate><author>a_designer@qq.com (poor Guy)</author><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><description>&lt;h1 id="note">NOTE&lt;/h1>
 &lt;p>论文阅读笔记&lt;a href="http://www.cse.iitb.ac.in/infolab/Data/Courses/CS632/Papers/Volcano-graefe.pdf">The Volcano Optimizer Generator: Extensibility and Efficient Search&lt;/a>&lt;/p>
 &lt;ul>
 &lt;li>
