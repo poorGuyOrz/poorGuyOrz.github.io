@@ -1,0 +1,515 @@
+<!doctype html><html lang=zh-cn><head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#"><meta charset=utf-8><meta name=generator content="Hugo 0.92.1"><meta name=theme-color content="#16171d"><meta name=color-scheme content="light dark"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=format-detection content="telephone=no, date=no, address=no, email=no"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><title>Postgres Storage | Wakak</title><link rel=stylesheet href=/css/meme.min.1b6ee04060cad065b8297da49efc0afd7df2746bf3de07dcc16ed38df2626334.css><script src=/js/meme.min.4c8facfc8134c52bd7bf6bbfa3a7e68b06b47ae04968222e28e7831f5b1a7592.js></script>
+<link rel=preconnect href=https://fonts.gstatic.com crossorigin><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Noto+Serif+SC:wght@400;500;700&family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" media=print onload="this.media='all'"><noscript><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Noto+Serif+SC:wght@400;500;700&family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript><meta name=author content="Wakaka"><meta name=description content="存储 内存 共享内存 本地内存 缓存 内存上下文 缓存空间管理 数据块的缓存，减少磁盘IO，有共享……"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=mask-icon href=/icons/safari-pinned-tab.svg color=#2a6df4><link rel=apple-touch-icon sizes=180x180 href=/icons/apple-touch-icon.png><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-title content="Wakak"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta name=mobile-web-app-capable content="yes"><meta name=application-name content="Wakak"><meta name=msapplication-starturl content="../../../"><meta name=msapplication-TileColor content="#fff"><meta name=msapplication-TileImage content="../../../icons/mstile-150x150.png"><link rel=manifest href=/manifest.json><link rel=canonical href=https://poorguyorz.github.io/posts/postgres/storage/><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","datePublished":"2022-07-21T09:15:05+08:00","dateModified":"2022-07-21T18:20:48+08:00","url":"https://poorguyorz.github.io/posts/postgres/storage/","headline":"Postgres Storage","description":"存储 内存 共享内存 本地内存 缓存 内存上下文 缓存空间管理 数据块的缓存，减少磁盘IO，有共享……","inLanguage":"zh-CN","articleSection":"posts","wordCount":4192,"image":"https://poorguyorz.github.io/icons/apple-touch-icon.png","author":{"@type":"Person","description":"Viva La Vida","email":"a_designer@qq.com","image":"https://poorguyorz.github.io/icons/apple-touch-icon.png","url":"https://poorguyorz.github.io/","name":"Wakaka"},"license":"[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)","publisher":{"@type":"Organization","name":"Wakak","logo":{"@type":"ImageObject","url":"https://poorguyorz.github.io/icons/apple-touch-icon.png"},"url":"https://poorguyorz.github.io/"},"mainEntityOfPage":{"@type":"WebSite","@id":"https://poorguyorz.github.io/"}}</script><meta property="og:title" content="Postgres Storage"><meta property="og:description" content="存储 内存 共享内存 本地内存 缓存 内存上下文 缓存空间管理 数据块的缓存，减少磁盘IO，有共享……"><meta property="og:url" content="https://poorguyorz.github.io/posts/postgres/storage/"><meta property="og:site_name" content="Wakak"><meta property="og:locale" content="zh"><meta property="og:image" content="https://poorguyorz.github.io/icons/apple-touch-icon.png"><meta property="og:type" content="article"><meta property="article:published_time" content="2022-07-21T09:15:05+08:00"><meta property="article:modified_time" content="2022-07-21T18:20:48+08:00"><meta property="article:section" content="posts"></head><body><div class="container bgimages"><header class=header><div class=header-wrapper><div class="header-inner single"><div class=site-brand><a href=/ class=brand>Wakak</a></div><nav class=nav><ul class=menu id=menu><li class="menu-item active"><a href=/posts/><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon archive"><path d="M32 448c0 17.7 14.3 32 32 32h384c17.7.0 32-14.3 32-32V160H32v288zm160-212c0-6.6 5.4-12 12-12h104c6.6.0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H204c-6.6.0-12-5.4-12-12v-8zM480 32H32C14.3 32 0 46.3.0 64v48c0 8.8 7.2 16 16 16h480c8.8.0 16-7.2 16-16V64c0-17.7-14.3-32-32-32z"/></svg><span class=menu-item-name>Posts</span></a></li><li class=menu-item><a href=/tags/><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="icon tags"><path d="M497.941 225.941 286.059 14.059A48 48 0 00252.118.0H48C21.49.0.0 21.49.0 48v204.118a48 48 0 0014.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882.0l204.118-204.118c18.745-18.745 18.745-49.137.0-67.882zM112 160c-26.51.0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882.0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397.0h48.721a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882z"/></svg><span class=menu-item-name>Tags</span></a></li><li class=menu-item><a id=theme-switcher href=#><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-light"><path d="M193.2 104.5 242 7a18 18 0 0128 0l48.8 97.5L422.2 70A18 18 0 01442 89.8l-34.5 103.4L505 242a18 18 0 010 28l-97.5 48.8L442 422.2A18 18 0 01422.2 442l-103.4-34.5L270 505a18 18 0 01-28 0l-48.8-97.5L89.8 442A18 18 0 0170 422.2l34.5-103.4-97.5-48.8a18 18 0 010-28l97.5-48.8L70 89.8A18 18 0 0189.8 70zM256 128a128 128 0 10.01.0M256 160a96 96 0 10.01.0"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-dark"><path d="M27 412A256 256 0 10181 5a11.5 11.5.0 00-5 20A201.5 201.5.0 0142 399a11.5 11.5.0 00-15 13"/></svg></a></li></ul></nav></div></div><input type=checkbox id=nav-toggle aria-hidden=true>
+<label for=nav-toggle class=nav-toggle></label>
+<label for=nav-toggle class=nav-curtain></label></header><main class="main single" id=main><div class=main-inner><article class="content post h-entry" data-align=justify data-type=posts><h1 class="post-title p-name">Postgres Storage</h1><div class=post-meta><time datetime=2022-07-21T09:15:05+08:00 class="post-meta-item published dt-published"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6.0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5.0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v52h48c26.5.0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3.0 6-2.7 6-6z"/></svg>&nbsp;2022.7.21</time>
+<span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3.0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9.0l60.1 60.1c18.8 18.7 18.8 49.1.0 67.9zM284.2 99.8 21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3.0-17l-111-111c-4.8-4.7-12.4-4.7-17.1.0zM124.1 339.9c-5.5-5.5-5.5-14.3.0-19.8l154-154c5.5-5.5 14.3-5.5 19.8.0s5.5 14.3.0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8.0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;4192</span>
+<span class="post-meta-item reading-time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5.0-2e2-89.5-2e2-2e2S145.5 56 256 56s2e2 89.5 2e2 2e2-89.5 2e2-2e2 2e2zm61.8-104.4-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6.0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;9&nbsp;分钟</span></div><div class="post-body e-content"><h2 id=存储>存储</h2><h3 id=内存>内存</h3><ul><li><p>共享内存</p></li><li><p>本地内存</p></li><li><p>缓存</p></li><li><p>内存上下文</p></li><li><p>缓存空间管理<br>数据块的缓存，减少磁盘IO，有共享缓存和进程缓存</p></li><li><p>Cache<br>数据块之外的缓存，例如系统表</p><ul><li>系统表缓存不会缓存整个表，是以block为单位缓存？</li></ul></li><li><p>虚拟文件描述符<br>系统中文件有打开的上限，使用VFD可以突破这种限制，本质上是一个LRU缓存</p></li><li><p>空闲空间定位<br>快速定位磁盘中的空闲空间以插入数据</p></li><li><p>进程间通信
+使用共享内存或者信号量通信</p></li></ul><h4 id=读取过程>读取过程</h4><ol><li>从系统表中读取表的元数据信息构造元组信息</li><li>尝试从缓存读取数据</li><li>使用SMGR从磁盘读取数据到缓存中，SMGR是一个抽象层，用于实现不同存储介质的管理</li><li>SMGR和存储介质之间使用VFD来管理文件描述符，以突破系统的FD限制</li></ol><ul><li>标记删除，vacuum清理数据</li><li>FSM记录空闲空间</li></ul><h3 id=磁盘>磁盘</h3><ul><li><p>表文件</p></li><li><p>SMGR</p></li><li><p>VFD</p></li><li><p>FSM</p></li></ul><h4 id=page-结构>Page 结构</h4><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c++ data-lang=c++>
+<span class=k>typedef</span> <span class=k>struct</span> <span class=nc>PageHeaderData</span>
+<span class=p>{</span>
+  <span class=cm>/* XXX LSN is member of *any* block, not only page-organized ones */</span>
+  <span class=n>PageXLogRecPtr</span> <span class=n>pd_lsn</span><span class=p>;</span>        <span class=cm>/* LSN: next byte after last byte of xlog record for last change to this page */</span>
+  <span class=n>uint16</span>    <span class=n>pd_checksum</span><span class=p>;</span>        <span class=cm>/* checksum */</span>
+  <span class=n>uint16</span>    <span class=n>pd_flags</span><span class=p>;</span>           <span class=cm>/* flag bits, see below */</span>
+  <span class=n>LocationIndex</span> <span class=n>pd_lower</span><span class=p>;</span>       <span class=cm>/* offset to start of free space */</span>
+  <span class=n>LocationIndex</span> <span class=n>pd_upper</span><span class=p>;</span>       <span class=cm>/* offset to end of free space */</span>
+  <span class=n>LocationIndex</span> <span class=n>pd_special</span><span class=p>;</span>     <span class=cm>/* offset to start of special space */</span>
+  <span class=n>uint16</span> <span class=n>pd_pagesize_version</span><span class=p>;</span>
+  <span class=n>TransactionId</span> <span class=n>pd_prune_xid</span><span class=p>;</span>   <span class=cm>/* oldest prunable XID, or zero if none */</span>
+  <span class=n>ItemIdData</span>  <span class=n>pd_linp</span><span class=p>[</span><span class=n>FLEXIBLE_ARRAY_MEMBER</span><span class=p>];</span> <span class=cm>/* line pointer array */</span>
+<span class=p>}</span> <span class=n>PageHeaderData</span><span class=p>;</span>
+
+<span class=kt>void</span>
+<span class=nf>PageInit</span><span class=p>(</span><span class=n>Page</span> <span class=n>page</span><span class=p>,</span> <span class=n>Size</span> <span class=n>pageSize</span><span class=p>,</span> <span class=n>Size</span> <span class=n>specialSize</span><span class=p>)</span>
+<span class=p>{</span>
+  <span class=n>PageHeader</span>  <span class=n>p</span> <span class=o>=</span> <span class=p>(</span><span class=n>PageHeader</span><span class=p>)</span> <span class=n>page</span><span class=p>;</span>
+
+  <span class=n>specialSize</span> <span class=o>=</span> <span class=n>MAXALIGN</span><span class=p>(</span><span class=n>specialSize</span><span class=p>);</span>
+
+  <span class=n>Assert</span><span class=p>(</span><span class=n>pageSize</span> <span class=o>==</span> <span class=n>BLCKSZ</span><span class=p>);</span>
+  <span class=n>Assert</span><span class=p>(</span><span class=n>pageSize</span> <span class=o>&gt;</span> <span class=n>specialSize</span> <span class=o>+</span> <span class=n>SizeOfPageHeaderData</span><span class=p>);</span>
+
+  <span class=cm>/* Make sure all fields of page are zero, as well as unused space */</span>
+  <span class=n>MemSet</span><span class=p>(</span><span class=n>p</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>pageSize</span><span class=p>);</span>
+
+  <span class=n>p</span><span class=o>-&gt;</span><span class=n>pd_flags</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+  <span class=n>p</span><span class=o>-&gt;</span><span class=n>pd_lower</span> <span class=o>=</span> <span class=n>SizeOfPageHeaderData</span><span class=p>;</span>
+  <span class=n>p</span><span class=o>-&gt;</span><span class=n>pd_upper</span> <span class=o>=</span> <span class=n>pageSize</span> <span class=o>-</span> <span class=n>specialSize</span><span class=p>;</span>
+  <span class=n>p</span><span class=o>-&gt;</span><span class=n>pd_special</span> <span class=o>=</span> <span class=n>pageSize</span> <span class=o>-</span> <span class=n>specialSize</span><span class=p>;</span>
+  <span class=n>PageSetPageSizeAndVersion</span><span class=p>(</span><span class=n>page</span><span class=p>,</span> <span class=n>pageSize</span><span class=p>,</span> <span class=n>PG_PAGE_LAYOUT_VERSION</span><span class=p>);</span>
+  <span class=cm>/* p-&gt;pd_prune_xid = InvalidTransactionId;    done by above MemSet */</span>
+<span class=p>}</span>
+</code></pre></td></tr></table></div></div></div><p>大小为pageSize，默认为8k，最开始是PageHeader，
+RelationPutHeapTuple insert tuple到page中，根据head中的信息，计算insert的位置，其中page中的数据从首位向中兴靠齐，尾部为数据，前面为offset</p><ul><li>数据的变动以page为单位，不直接和存储交互，先把数据块读到缓存，然后在进行insert或者update或者delete，具体的函数有<ul><li>heap_update</li><li>heap_multi_insert</li><li>heap_insert</li></ul></li></ul><p>tuple结构如下</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c++ data-lang=c++><span class=k>struct</span> <span class=nc>HeapTupleHeaderData</span>
+<span class=p>{</span>
+  <span class=k>union</span>
+  <span class=p>{</span>
+    <span class=n>HeapTupleFields</span> <span class=n>t_heap</span><span class=p>;</span>
+    <span class=n>DatumTupleFields</span> <span class=n>t_datum</span><span class=p>;</span>
+  <span class=p>}</span>      <span class=n>t_choice</span><span class=p>;</span>
+  <span class=c1>// 一个union，在内存中的时候t_heap记录事务相关的信息，在磁盘中的时候，事务信息不在使用，此时转换为数据长度等信息
+</span><span class=c1></span>
+  <span class=n>ItemPointerData</span> <span class=n>t_ctid</span><span class=p>;</span>    <span class=cm>/* current TID of this or newer tuple (or a * speculative insertion token) */</span>
+
+  <span class=cm>/* Fields below here must match MinimalTupleData! */</span>
+
+<span class=cp>#define FIELDNO_HEAPTUPLEHEADERDATA_INFOMASK2 2
+</span><span class=cp></span>  <span class=c1>// hot相关信息，
+</span><span class=c1></span>  <span class=c1>//   hot指的是数据在更新的时候，如果有index,会同事更新index，即使没有修改到index属性的数据，此时index中也会有一条数据的链表，为了节约空间，在满足
+</span><span class=c1></span>  <span class=c1>//   1. 没有修改到index属性数据
+</span><span class=c1></span>  <span class=c1>//   2. 数组修改限于在同一个page内，此时index不会有额外的数据，查找的时候从index找到最老的数据，按照数据链查找到最新数据即可
+</span><span class=c1></span>  <span class=n>uint16</span>    <span class=n>t_infomask2</span><span class=p>;</span>  <span class=cm>/* number of attributes + various flags */</span>
+
+<span class=cp>#define FIELDNO_HEAPTUPLEHEADERDATA_INFOMASK 3
+</span><span class=cp></span>  <span class=n>uint16</span>    <span class=n>t_infomask</span><span class=p>;</span>    <span class=cm>/* various flag bits, see below */</span>
+
+<span class=cp>#define FIELDNO_HEAPTUPLEHEADERDATA_HOFF 4
+</span><span class=cp></span>  <span class=n>uint8</span>    <span class=n>t_hoff</span><span class=p>;</span>      <span class=cm>/* sizeof header incl. bitmap, padding */</span>
+
+  <span class=cm>/* ^ - 23 bytes - ^ */</span>
+
+<span class=cp>#define FIELDNO_HEAPTUPLEHEADERDATA_BITS 5
+</span><span class=cp></span>  <span class=n>bits8</span>    <span class=n>t_bits</span><span class=p>[</span><span class=n>FLEXIBLE_ARRAY_MEMBER</span><span class=p>];</span>  <span class=cm>/* bitmap of NULLs */</span>
+
+  <span class=cm>/* MORE DATA FOLLOWS AT END OF STRUCT */</span>
+<span class=p>};</span>
+</code></pre></td></tr></table></div></div></div><p>page具体的操作代码在<code>storage/page</code>目录下，建议进行15445的实验，可以更好的理解page相关的操作，这里page的操作总体类似，主要是具体的数据结构和某些特定的方法需要时间进行记忆，但是大的方向上似曾相识。</p><p>Each table and index is stored in a separate file. For ordinary relations, these files are named after the table or index&rsquo;s <firstterm>filenode</firstterm> number,
+which can be found in <structname>pg_class</structname>.<structfield>relfilenode</structfield>. But
+for temporary relations, the file name is of the form
+<literal>t<replaceable>BBB</replaceable>_<replaceable>FFF</replaceable></literal>, where <replaceable>BBB</replaceable>
+is the backend ID of the backend which created the file, and <replaceable>FFF</replaceable>
+is the filenode number. In either case, in addition to the main file (a/k/a
+main fork), each table and index has a <firstterm>free space map</firstterm> (see <xref linkend=storage-fsm>), which stores information about free space available in
+the relation. The free space map is stored in a file named with the filenode
+number plus the suffix <literal>_fsm</literal>. Tables also have a
+<firstterm>visibility map</firstterm>, stored in a fork with the suffix <literal>_vm</literal>,
+to track which pages are known to have no dead tuples. The visibility map is
+described further in <xref linkend=storage-vm>. Unlogged tables and indexes
+have a third fork, known as the initialization fork, which is stored in a fork
+with the suffix <literal>_init</literal> (see <xref linkend=storage-init>).</p><ul><li>these files are named after the table or index’s filenode number, which can be found in pg_class.relfilenode.</li><li>for temporary relations, the file name is of the form tBBB_FFF, where BBB is the backend ID of the backend which created the file, and FFF is the filenode number.</li><li>each table and index has a free space map (see ), which stores information about free space available in the relation.</li><li>Tables also have a visibility map, to track which pages are known to have no dead tuples.</li></ul><para>Tablespaces make the scenario more complicated. Each user-defined tablespace
+has a symbolic link inside the <varname>PGDATA</varname><filename>/pg_tblspc</filename>
+directory, which points to the physical tablespace directory (i.e., the
+location specified in the tablespace's <command>CREATE TABLESPACE</command> command).
+This symbolic link is named after
+the tablespace's OID. Inside the physical tablespace directory there is
+a subdirectory with a name that depends on the <productname>PostgreSQL</productname>
+server version, such as <literal>PG_9.0_201008051</literal>. (The reason for using
+this subdirectory is so that successive versions of the database can use
+the same <command>CREATE TABLESPACE</command> location value without conflicts.)
+Within the version-specific subdirectory, there is
+a subdirectory for each database that has elements in the tablespace, named
+after the database's OID. Tables and indexes are stored within that
+directory, using the filenode naming scheme.
+The <literal>pg_default</literal> tablespace is not accessed through
+<filename>pg_tblspc</filename>, but corresponds to
+<varname>PGDATA</varname><filename>/base</filename>. Similarly, the <literal>pg_global</literal>
+tablespace is not accessed through <filename>pg_tblspc</filename>, but corresponds to
+<varname>PGDATA</varname><filename>/global</filename>.</para><ul><li>pg_relation_filepath(oid)</li></ul><para><productname>PostgreSQL</productname> uses a fixed page size (commonly
+8 kB), and does not allow tuples to span multiple pages. Therefore, it is
+not possible to store very large field values directly. To overcome
+this limitation, large field values are compressed and/or broken up into
+multiple physical rows. This happens transparently to the user, with only
+small impact on most of the backend code. The technique is affectionately
+known as <acronym>TOAST</acronym> (or <quote>the best thing since sliced bread</quote>).
+The <acronym>TOAST</acronym> infrastructure is also used to improve handling of
+large data values in-memory.</para><ul><li>TOAST<br>大字段数据，在字段数据大于2k的时候，会触发相应的机制，把数据按2k切分，存储到TOAST表中，原表使用专门的指针指向数据</li></ul><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c++ data-lang=c++>
+<span class=cp>#0  GetPageWithFreeSpace (rel=0x61951eb6c3c4, spaceNeeded=3280) at freespace.c:134
+</span><span class=cp>#1  0x000055d41e4a9a8c in RelationGetBufferForTuple (relation=0x7f3d795c2160, len=32, otherBuffer=0, options=0, bistate=0x0, vmbuffer=0x7ffeab8f6d54, vmbuffer_other=0x0) at hio.c:409
+</span><span class=cp>#2  0x000055d41e49078b in heap_insert (relation=0x7f3d795c2160, tup=0x55d41fd92818, cid=0, options=0, bistate=0x0) at heapam.c:2051
+</span><span class=cp>#3  0x000055d41e4a039d in heapam_tuple_insert (relation=0x7f3d795c2160, slot=0x55d41fd92780, cid=0, options=0, bistate=0x0) at heapam_handler.c:252
+</span><span class=cp>#4  0x000055d41e7402d6 in table_tuple_insert (rel=0x7f3d795c2160, slot=0x55d41fd92780, cid=0, options=0, bistate=0x0) at ../../../src/include</span><span class=cpf>/access/tableam.h:1376</span><span class=cp>
+</span><span class=cp>#5  0x000055d41e742093 in ExecInsert (context=0x7ffeab8f6fe0, resultRelInfo=0x55d41fd91b70, slot=0x55d41fd92780, canSetTag=true, inserted_tuple=0x0, insert_destrel=0x0)
+</span><span class=cp></span>    <span class=n>at</span> <span class=n>nodeModifyTable</span><span class=p>.</span><span class=nl>c</span><span class=p>:</span><span class=mi>1058</span>
+<span class=cp>#6  0x000055d41e746203 in ExecModifyTable (pstate=0x55d41fd91958) at nodeModifyTable.c:3700
+</span><span class=cp>#7  0x000055d41e704dd8 in ExecProcNodeFirst (node=0x55d41fd91958) at execProcnode.c:463
+</span><span class=cp>#8  0x000055d41e6f85f1 in ExecProcNode (node=0x55d41fd91958) at ../../../src/include</span><span class=cpf>/executor/executor.h:259</span><span class=cp>
+</span><span class=cp>#9  0x000055d41e6fb2c9 in ExecutePlan (estate=0x55d41fd916e0, planstate=0x55d41fd91958, use_parallel_mode=false, operation=CMD_INSERT, sendTuples=false, numberTuples=0,
+</span><span class=cp></span>    <span class=n>direction</span><span class=o>=</span><span class=n>ForwardScanDirection</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=mh>0x55d41fd7a718</span><span class=p>,</span> <span class=n>execute_once</span><span class=o>=</span><span class=nb>true</span><span class=p>)</span> <span class=n>at</span> <span class=n>execMain</span><span class=p>.</span><span class=nl>c</span><span class=p>:</span><span class=mi>1636</span>
+<span class=cp>#10 0x000055d41e6f8ccb in standard_ExecutorRun (queryDesc=0x55d41fd742c0, direction=ForwardScanDirection, count=0, execute_once=true) at execMain.c:363
+</span><span class=cp>#11 0x000055d41e6f8ada in ExecutorRun (queryDesc=0x55d41fd742c0, direction=ForwardScanDirection, count=0, execute_once=true) at execMain.c:307
+</span><span class=cp>#12 0x000055d41e999ed0 in ProcessQuery (plan=0x55d41fd7a628, sourceText=0x55d41fc53e40 &#34;insert into t values(1);&#34;, params=0x0, queryEnv=0x0, dest=0x55d41fd7a718, qc=0x7ffeab8f7440)
+</span><span class=cp></span>    <span class=n>at</span> <span class=n>pquery</span><span class=p>.</span><span class=nl>c</span><span class=p>:</span><span class=mi>160</span>
+<span class=cp>#13 0x000055d41e99ba25 in PortalRunMulti (portal=0x55d41fcc1bb0, isTopLevel=true, setHoldSnapshot=false, dest=0x55d41fd7a718, altdest=0x55d41fd7a718, qc=0x7ffeab8f7440)
+</span><span class=cp></span>    <span class=n>at</span> <span class=n>pquery</span><span class=p>.</span><span class=nl>c</span><span class=p>:</span><span class=mi>1277</span>
+
+</code></pre></td></tr></table></div></div></div><h2 id=smgr>SMGR</h2><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c++ data-lang=c++>
+<span class=cm>/*
+</span><span class=cm> * This struct of function pointers defines the API between smgr.c and
+</span><span class=cm> * any individual storage manager module.  Note that smgr subfunctions are
+</span><span class=cm> * generally expected to report problems via elog(ERROR).  An exception is
+</span><span class=cm> * that smgr_unlink should use elog(WARNING), rather than erroring out,
+</span><span class=cm> * because we normally unlink relations during post-commit/abort cleanup,
+</span><span class=cm> * and so it&#39;s too late to raise an error.  Also, various conditions that
+</span><span class=cm> * would normally be errors should be allowed during bootstrap and/or WAL
+</span><span class=cm> * recovery --- see comments in md.c for details.
+</span><span class=cm> */</span>
+<span class=k>typedef</span> <span class=k>struct</span> <span class=nc>f_smgr</span>
+<span class=p>{</span>
+  <span class=kt>void</span>    <span class=p>(</span><span class=o>*</span><span class=n>smgr_init</span><span class=p>)</span> <span class=p>(</span><span class=kt>void</span><span class=p>);</span>  <span class=cm>/* may be NULL */</span>
+  <span class=kt>void</span>    <span class=p>(</span><span class=o>*</span><span class=n>smgr_shutdown</span><span class=p>)</span> <span class=p>(</span><span class=kt>void</span><span class=p>);</span>  <span class=cm>/* may be NULL */</span>
+  <span class=kt>void</span>    <span class=p>(</span><span class=o>*</span><span class=n>smgr_open</span><span class=p>)</span> <span class=p>(</span><span class=n>SMgrRelation</span> <span class=n>reln</span><span class=p>);</span>
+  <span class=kt>void</span>    <span class=p>(</span><span class=o>*</span><span class=n>smgr_close</span><span class=p>)</span> <span class=p>(</span><span class=n>SMgrRelation</span> <span class=n>reln</span><span class=p>,</span> <span class=n>ForkNumber</span> <span class=n>forknum</span><span class=p>);</span>
+  <span class=kt>void</span>    <span class=p>(</span><span class=o>*</span><span class=n>smgr_create</span><span class=p>)</span> <span class=p>(</span><span class=n>SMgrRelation</span> <span class=n>reln</span><span class=p>,</span> <span class=n>ForkNumber</span> <span class=n>forknum</span><span class=p>,</span>
+                <span class=kt>bool</span> <span class=n>isRedo</span><span class=p>);</span>
+  <span class=kt>bool</span>    <span class=p>(</span><span class=o>*</span><span class=n>smgr_exists</span><span class=p>)</span> <span class=p>(</span><span class=n>SMgrRelation</span> <span class=n>reln</span><span class=p>,</span> <span class=n>ForkNumber</span> <span class=n>forknum</span><span class=p>);</span>
+  <span class=kt>void</span>    <span class=p>(</span><span class=o>*</span><span class=n>smgr_unlink</span><span class=p>)</span> <span class=p>(</span><span class=n>RelFileLocatorBackend</span> <span class=n>rlocator</span><span class=p>,</span> <span class=n>ForkNumber</span> <span class=n>forknum</span><span class=p>,</span>
+                <span class=kt>bool</span> <span class=n>isRedo</span><span class=p>);</span>
+  <span class=kt>void</span>    <span class=p>(</span><span class=o>*</span><span class=n>smgr_extend</span><span class=p>)</span> <span class=p>(</span><span class=n>SMgrRelation</span> <span class=n>reln</span><span class=p>,</span> <span class=n>ForkNumber</span> <span class=n>forknum</span><span class=p>,</span>
+                <span class=n>BlockNumber</span> <span class=n>blocknum</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=n>buffer</span><span class=p>,</span> <span class=kt>bool</span> <span class=n>skipFsync</span><span class=p>);</span>
+  <span class=kt>bool</span>    <span class=p>(</span><span class=o>*</span><span class=n>smgr_prefetch</span><span class=p>)</span> <span class=p>(</span><span class=n>SMgrRelation</span> <span class=n>reln</span><span class=p>,</span> <span class=n>ForkNumber</span> <span class=n>forknum</span><span class=p>,</span>
+                  <span class=n>BlockNumber</span> <span class=n>blocknum</span><span class=p>);</span>
+  <span class=kt>void</span>    <span class=p>(</span><span class=o>*</span><span class=n>smgr_read</span><span class=p>)</span> <span class=p>(</span><span class=n>SMgrRelation</span> <span class=n>reln</span><span class=p>,</span> <span class=n>ForkNumber</span> <span class=n>forknum</span><span class=p>,</span>
+                <span class=n>BlockNumber</span> <span class=n>blocknum</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=n>buffer</span><span class=p>);</span>
+  <span class=kt>void</span>    <span class=p>(</span><span class=o>*</span><span class=n>smgr_write</span><span class=p>)</span> <span class=p>(</span><span class=n>SMgrRelation</span> <span class=n>reln</span><span class=p>,</span> <span class=n>ForkNumber</span> <span class=n>forknum</span><span class=p>,</span>
+                 <span class=n>BlockNumber</span> <span class=n>blocknum</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=n>buffer</span><span class=p>,</span> <span class=kt>bool</span> <span class=n>skipFsync</span><span class=p>);</span>
+  <span class=kt>void</span>    <span class=p>(</span><span class=o>*</span><span class=n>smgr_writeback</span><span class=p>)</span> <span class=p>(</span><span class=n>SMgrRelation</span> <span class=n>reln</span><span class=p>,</span> <span class=n>ForkNumber</span> <span class=n>forknum</span><span class=p>,</span>
+                   <span class=n>BlockNumber</span> <span class=n>blocknum</span><span class=p>,</span> <span class=n>BlockNumber</span> <span class=n>nblocks</span><span class=p>);</span>
+  <span class=n>BlockNumber</span> <span class=p>(</span><span class=o>*</span><span class=n>smgr_nblocks</span><span class=p>)</span> <span class=p>(</span><span class=n>SMgrRelation</span> <span class=n>reln</span><span class=p>,</span> <span class=n>ForkNumber</span> <span class=n>forknum</span><span class=p>);</span>
+  <span class=kt>void</span>    <span class=p>(</span><span class=o>*</span><span class=n>smgr_truncate</span><span class=p>)</span> <span class=p>(</span><span class=n>SMgrRelation</span> <span class=n>reln</span><span class=p>,</span> <span class=n>ForkNumber</span> <span class=n>forknum</span><span class=p>,</span>
+                  <span class=n>BlockNumber</span> <span class=n>nblocks</span><span class=p>);</span>
+  <span class=kt>void</span>    <span class=p>(</span><span class=o>*</span><span class=n>smgr_immedsync</span><span class=p>)</span> <span class=p>(</span><span class=n>SMgrRelation</span> <span class=n>reln</span><span class=p>,</span> <span class=n>ForkNumber</span> <span class=n>forknum</span><span class=p>);</span>
+<span class=p>}</span> <span class=n>f_smgr</span><span class=p>;</span>
+
+<span class=k>static</span> <span class=k>const</span> <span class=n>f_smgr</span> <span class=n>smgrsw</span><span class=p>[]</span> <span class=o>=</span> <span class=p>{</span>
+  <span class=cm>/* magnetic disk */</span>
+  <span class=p>{</span>
+    <span class=p>.</span><span class=n>smgr_init</span> <span class=o>=</span> <span class=n>mdinit</span><span class=p>,</span>
+    <span class=p>.</span><span class=n>smgr_shutdown</span> <span class=o>=</span> <span class=nb>NULL</span><span class=p>,</span>
+    <span class=p>.</span><span class=n>smgr_open</span> <span class=o>=</span> <span class=n>mdopen</span><span class=p>,</span>
+    <span class=p>.</span><span class=n>smgr_close</span> <span class=o>=</span> <span class=n>mdclose</span><span class=p>,</span>
+    <span class=p>.</span><span class=n>smgr_create</span> <span class=o>=</span> <span class=n>mdcreate</span><span class=p>,</span>
+    <span class=p>.</span><span class=n>smgr_exists</span> <span class=o>=</span> <span class=n>mdexists</span><span class=p>,</span>
+    <span class=p>.</span><span class=n>smgr_unlink</span> <span class=o>=</span> <span class=n>mdunlink</span><span class=p>,</span>
+    <span class=p>.</span><span class=n>smgr_extend</span> <span class=o>=</span> <span class=n>mdextend</span><span class=p>,</span>
+    <span class=p>.</span><span class=n>smgr_prefetch</span> <span class=o>=</span> <span class=n>mdprefetch</span><span class=p>,</span>
+    <span class=p>.</span><span class=n>smgr_read</span> <span class=o>=</span> <span class=n>mdread</span><span class=p>,</span>
+    <span class=p>.</span><span class=n>smgr_write</span> <span class=o>=</span> <span class=n>mdwrite</span><span class=p>,</span>
+    <span class=p>.</span><span class=n>smgr_writeback</span> <span class=o>=</span> <span class=n>mdwriteback</span><span class=p>,</span>
+    <span class=p>.</span><span class=n>smgr_nblocks</span> <span class=o>=</span> <span class=n>mdnblocks</span><span class=p>,</span>
+    <span class=p>.</span><span class=n>smgr_truncate</span> <span class=o>=</span> <span class=n>mdtruncate</span><span class=p>,</span>
+    <span class=p>.</span><span class=n>smgr_immedsync</span> <span class=o>=</span> <span class=n>mdimmedsync</span><span class=p>,</span>
+  <span class=p>}</span>
+<span class=p>};</span>
+</code></pre></td></tr></table></div></div></div><p>操作不同介质的文件抽象层，在f_smgr中定义了操作的接口，当前默认实现为smgrsw中的对磁盘操作的函数，理论上支持其他存储介质，只需要实现对应的接口即可，当前只是作为一个简单的中转，具体的文件操作在<code>smgr/md.c</code>中</p><h3 id=vfd>VFD</h3><p>使用LRU缓存维护的fd，管理打开的文件描述符，主要代码在<code>file/fd.c</code>中，主要结构为</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c++ data-lang=c++><span class=k>typedef</span> <span class=k>struct</span> <span class=nc>vfd</span>
+<span class=p>{</span>
+  <span class=kt>int</span>      <span class=n>fd</span><span class=p>;</span>        <span class=cm>/* current FD, or VFD_CLOSED if none */</span>
+  <span class=kt>unsigned</span> <span class=kt>short</span> <span class=n>fdstate</span><span class=p>;</span>    <span class=cm>/* bitflags for VFD&#39;s state */</span>
+  <span class=n>ResourceOwner</span> <span class=n>resowner</span><span class=p>;</span>    <span class=cm>/* owner, for automatic cleanup */</span>
+  <span class=n>File</span>    <span class=n>nextFree</span><span class=p>;</span>    <span class=cm>/* link to next free VFD, if in freelist */</span>
+  <span class=n>File</span>    <span class=n>lruMoreRecently</span><span class=p>;</span>  <span class=cm>/* doubly linked recency-of-use list */</span>
+  <span class=n>File</span>    <span class=n>lruLessRecently</span><span class=p>;</span>
+  <span class=n>off_t</span>    <span class=n>fileSize</span><span class=p>;</span>    <span class=cm>/* current size of file (0 if not temporary) */</span>
+  <span class=kt>char</span>     <span class=o>*</span><span class=n>fileName</span><span class=p>;</span>    <span class=cm>/* name of file, or NULL for unused VFD */</span>
+  <span class=cm>/* NB: fileName is malloc&#39;d, and must be free&#39;d when closing the VFD */</span>
+  <span class=kt>int</span>      <span class=n>fileFlags</span><span class=p>;</span>    <span class=cm>/* open(2) flags for (re)opening the file */</span>
+  <span class=n>mode_t</span>    <span class=n>fileMode</span><span class=p>;</span>    <span class=cm>/* mode to pass to open(2) */</span>
+<span class=p>}</span> <span class=n>Vfd</span><span class=p>;</span>
+</code></pre></td></tr></table></div></div></div><h3 id=fsm>FSM</h3><p>free space map，page中的数据在删除且vacuum之后，会有数据空洞，此时为了节约空间，在后续insert的时候，会尝试把数据insert到之前的page中，但是遍历page查找空间类似全表扫，所以为了加快这个过程，使用额外的数据结构记录空闲page的大小，insert的时候直接定位page</p><ol><li>空闲空间不是精确统计，page默认大小为8k，把8k划分为255份，一份大小为32字节，此时使用一个字节就可以记录page中大约空闲的空间，</li><li>为了快速定位，fsm使用二叉树来维护，一个page大小为8192，除了header剩下的空间约为8000字节，使用叶子节点标记page大小，此时一个page大约可以记录4000个page，</li><li>一般使用三层fsm，此时前两层为辅助块，最后层page数目为4000^3，完全可以记录所有的数据块的使用情况，所以最初的时候fsm文件大小为 8192* 3，此时只使用到3个块记录大小，后期数据扩展的时候，此时fsm文件大小也会进行扩展</li></ol><p>It is important to keep the map small so that it can be searched rapidly.
+Therefore, we don&rsquo;t attempt to record the exact free space on a page.
+We allocate one map byte to each page, allowing us to record free space
+at a granularity of 1/256th of a page. Another way to say it is that
+the stored value is the free space divided by BLCKSZ/256 (rounding down).
+We assume that the free space must always be less than BLCKSZ, since
+all pages have some overhead; so the maximum map value is 255.</p><p>The binary tree is stored on each FSM page as an array. Because the page
+header takes some space on a page, the binary tree isn&rsquo;t perfect. That is,
+a few right-most leaf nodes are missing, and there are some useless non-leaf
+nodes at the right. So the tree looks something like this:</p><pre tabindex=0><code>       0
+   1       2
+ 3   4   5   6
+7 8 9 A B
+</code></pre><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c++ data-lang=c++><span class=cm>/*
+</span><span class=cm> * Structure of a FSM page. See src/backend/storage/freespace/README for
+</span><span class=cm> * details.
+</span><span class=cm> */</span>
+<span class=k>typedef</span> <span class=k>struct</span>
+<span class=p>{</span>
+  <span class=cm>/*
+</span><span class=cm>   * fsm_search_avail() tries to spread the load of multiple backends by
+</span><span class=cm>   * returning different pages to different backends in a round-robin
+</span><span class=cm>   * fashion. fp_next_slot points to the next slot to be returned (assuming
+</span><span class=cm>   * there&#39;s enough space on it for the request). It&#39;s defined as an int,
+</span><span class=cm>   * because it&#39;s updated without an exclusive lock. uint16 would be more
+</span><span class=cm>   * appropriate, but int is more likely to be atomically
+</span><span class=cm>   * fetchable/storable.
+</span><span class=cm>   */</span>
+  <span class=kt>int</span>      <span class=n>fp_next_slot</span><span class=p>;</span>
+
+  <span class=cm>/*
+</span><span class=cm>   * fp_nodes contains the binary tree, stored in array. The first
+</span><span class=cm>   * NonLeafNodesPerPage elements are upper nodes, and the following
+</span><span class=cm>   * LeafNodesPerPage elements are leaf nodes. Unused nodes are zero.
+</span><span class=cm>   */</span>
+  <span class=n>uint8</span>    <span class=n>fp_nodes</span><span class=p>[</span><span class=n>FLEXIBLE_ARRAY_MEMBER</span><span class=p>];</span>
+<span class=p>}</span> <span class=n>FSMPageData</span><span class=p>;</span>
+</code></pre></td></tr></table></div></div></div><p>fp_next_slot记录下一此使用的节点，目的是</p><ol><li>在多进程写同一个表时候，避免对同一个page的竞争</li><li>记录下一个page，在顺序读写的时候可以有更高的性能</li></ol><p>具体的查找算法为</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c++ data-lang=c++>
+  <span class=cm>/*----------
+</span><span class=cm>   * Start the search from the target slot.  At every step, move one
+</span><span class=cm>   * node to the right, then climb up to the parent.  Stop when we reach
+</span><span class=cm>   * a node with enough free space (as we must, since the root has enough
+</span><span class=cm>   * space).
+</span><span class=cm>   *
+</span><span class=cm>   * The idea is to gradually expand our &#34;search triangle&#34;, that is, all
+</span><span class=cm>   * nodes covered by the current node, and to be sure we search to the
+</span><span class=cm>   * right from the start point.  At the first step, only the target slot
+</span><span class=cm>   * is examined.  When we move up from a left child to its parent, we are
+</span><span class=cm>   * adding the right-hand subtree of that parent to the search triangle.
+</span><span class=cm>   * When we move right then up from a right child, we are dropping the
+</span><span class=cm>   * current search triangle (which we know doesn&#39;t contain any suitable
+</span><span class=cm>   * page) and instead looking at the next-larger-size triangle to its
+</span><span class=cm>   * right.  So we never look left from our original start point, and at
+</span><span class=cm>   * each step the size of the search triangle doubles, ensuring it takes
+</span><span class=cm>   * only log2(N) work to search N pages.
+</span><span class=cm>   *
+</span><span class=cm>   * The &#34;move right&#34; operation will wrap around if it hits the right edge
+</span><span class=cm>   * of the tree, so the behavior is still good if we start near the right.
+</span><span class=cm>   * Note also that the move-and-climb behavior ensures that we can&#39;t end
+</span><span class=cm>   * up on one of the missing nodes at the right of the leaf level.
+</span><span class=cm>   *
+</span><span class=cm>   * For example, consider this tree:
+</span><span class=cm>   *
+</span><span class=cm>   *       7
+</span><span class=cm>   *     7     6
+</span><span class=cm>   *   5   7   6   5
+</span><span class=cm>   *  4 5 5 7 2 6 5 2
+</span><span class=cm>   *        T
+</span><span class=cm>   *
+</span><span class=cm>   * Assume that the target node is the node indicated by the letter T,
+</span><span class=cm>   * and we&#39;re searching for a node with value of 6 or higher. The search
+</span><span class=cm>   * begins at T. At the first iteration, we move to the right, then to the
+</span><span class=cm>   * parent, arriving at the rightmost 5. At the second iteration, we move
+</span><span class=cm>   * to the right, wrapping around, then climb up, arriving at the 7 on the
+</span><span class=cm>   * third level.  7 satisfies our search, so we descend down to the bottom,
+</span><span class=cm>   * following the path of sevens.  This is in fact the first suitable page
+</span><span class=cm>   * to the right of (allowing for wraparound) our start point.
+</span><span class=cm>   *----------
+</span><span class=cm>   */</span>
+</code></pre></td></tr></table></div></div></div><p>结合代码理解</p><ol><li>先判断root节点</li><li>从fp_next_slot或者midel node开始，向右上查找，直到找到复合的node</li><li>从这里开始向下查找</li></ol><p>代码就是简单的对二叉树的操作，所有代码在<code>freespace/fsmpage.c</code>中，vacuum的时候会触发sfm的操作，具体的代码在<code>freespce/freespace.c</code>中。</p><h3 id=vm>VM</h3><p>可见性映射表，记录数据变动的page，pg支持多版本，在数据变动的时候不会立即清除数据，而指挥打上tag，等待后续的vacuum进程进行数据的清理，vm记录数据的变动，让vacuum可以快速的清理数据，vacuum有两种模式，一种是lazy vacuum，一种是full vacuum，lazy 的时候不会跨page清理，此时可以使用vm文件，但是full vacuum的时候一般需要全表扫描，基本不会有太大的最用，
+vm是简单的bit位，0代表有数据变动，</p><h2 id=内存-1>内存</h2><p>内存上下文，简单的理解就是一定范围内的内存池？</p></div></article><div class=updated-badge-container><span title="Updated @ 2022-07-21 18:20:48 +0800" style=cursor:help><svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2022-07-21</text><text x="915" y="140" textLength="650" transform="scale(.1)">2022-07-21</text></g></svg></span></div><div class=post-gitinfo><div class=post-gitinfo-left><div class="gitinfo-item commit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="icon git-icon"><path d="M384 144c0-44.2-35.8-80-80-80s-80 35.8-80 80c0 36.4 24.3 67.1 57.5 76.8-.6 16.1-4.2 28.5-11 36.9-15.4 19.2-49.3 22.4-85.2 25.7-28.2 2.6-57.4 5.4-81.3 16.9v-144c32.5-10.2 56-40.5 56-76.3.0-44.2-35.8-80-80-80S0 35.8.0 80c0 35.8 23.5 66.1 56 76.3v199.3C23.5 365.9.0 396.2.0 432c0 44.2 35.8 80 80 80s80-35.8 80-80c0-34-21.2-63.1-51.2-74.6 3.1-5.2 7.8-9.8 14.9-13.4 16.2-8.2 40.4-10.4 66.1-12.8 42.2-3.9 90-8.4 118.2-43.4 14-17.4 21.1-39.8 21.6-67.9 31.6-10.8 54.4-40.7 54.4-75.9zM80 64c8.8.0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16zm0 384c-8.8.0-16-7.2-16-16s7.2-16 16-16 16 7.2 16 16-7.2 16-16 16zm224-320c8.8.0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16z"/></svg>35fa7df</div><div class="gitinfo-item commit-msg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512" class="icon msg-icon"><path d="M20 424.229h20V279.771H20c-11.046.0-20-8.954-20-20V212c0-11.046 8.954-20 20-20h112c11.046.0 20 8.954 20 20v212.229h20c11.046.0 20 8.954 20 20V492c0 11.046-8.954 20-20 20H20c-11.046.0-20-8.954-20-20v-47.771c0-11.046 8.954-20 20-20zM96 0C56.235.0 24 32.235 24 72s32.235 72 72 72 72-32.235 72-72S135.764.0 96 0z"/></svg>🚗 ☁ code read : postgres storage</div></div></div><div class=post-tags><a href=/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/ rel=tag class=post-tags-link><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49.0 48 0h204.118a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882.0L14.059 286.059A48 48 0 010 252.118zM112 64c-26.51.0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>数据库</a>
+<a href=/tags/postgres/ rel=tag class=post-tags-link><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49.0 48 0h204.118a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882.0L14.059 286.059A48 48 0 010 252.118zM112 64c-26.51.0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>Postgres</a>
+<a href=/tags/%E5%AD%98%E5%82%A8/ rel=tag class=post-tags-link><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49.0 48 0h204.118a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882.0L14.059 286.059A48 48 0 010 252.118zM112 64c-26.51.0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>存储</a></div><ul class=post-nav><li class=post-nav-next><a href=/posts/postgres/env/ rel=next>Postgres源码编译及调试 ></a></li></ul></div></main><div id=back-to-top class=back-to-top><a href=#><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6.0-33.9L207 39c9.4-9.4 24.6-9.4 33.9.0l194.3 194.3c9.4 9.4 9.4 24.6.0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3.0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a></div><footer id=footer class=footer><div class=footer-inner><div class=site-info>2022–2022&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3.0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;Wakaka</div></div></footer></div><script>'serviceWorker'in navigator&&window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js')})</script></body></html>
