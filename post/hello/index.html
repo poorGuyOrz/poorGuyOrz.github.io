@@ -1,0 +1,360 @@
+<!doctype html><html lang=en>
+<head>
+<title>
+Hello Friend ::
+Hello Friend — A simple theme for Hugo
+</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="&amp;ldquo;Hello, friend?&amp;rdquo; That&amp;rsquo;s lame. Maybe I should give you a name&amp;hellip; But that&amp;rsquo;s a slippery slope. You&amp;rsquo;re only in my head. We have to remember that&amp;hellip; Shit. It&amp;rsquo;s actually happened. I&amp;rsquo;m talking to an imaginary person.
+— Mr. Robot S01E01
+ attention #   注意在每次提交之前格式化下代码，检查下代码语法是否正确，评分系统会检查代码格式和编码规范，不正确直接编译失败 make format make check-lint make check-clang-tidy   lab0 C++ Primer #  目的是为了熟悉C++的使用，照顾之前没有使用过C++的同学，比较简单的题目
+ 实现矩阵 实现矩阵的加法乘法以及一个复合运算  容易出问题的地方
+ 矩阵使用二维数组，不能直接new，需要先new row，再new col，析构的时候也是需要分步进行，否则会有内存泄漏 智能指针使用get可以获得原始指针，他们之间不能直接隐式转换 测试中只有add和mult运算的测试案例，没有复合运算的，需要自己添加测试，否则不确定自己实现是否正确，因为模板有个懒运算的特性，没有使用的模板。是不会检测错误的 但是评分系统有更全面的测试，所以最好自己简单测试以下  diff --git a/src/include/primer/p0_starter.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://poorguyorz.github.io/post/hello/>
+<link rel=stylesheet href=https://poorguyorz.github.io/assets/style.css>
+<link rel=stylesheet href=https://poorguyorz.github.io/style.css>
+<link rel=apple-touch-icon-precomposed sizes=144x144 href=https://poorguyorz.github.io/img/apple-touch-icon-144-precomposed.png>
+<link rel="shortcut icon" href=https://poorguyorz.github.io/img/favicon.png>
+<link href=https://poorguyorz.github.io/assets/fonts/Inter-Italic.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<link href=https://poorguyorz.github.io/assets/fonts/Inter-Regular.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<link href=https://poorguyorz.github.io/assets/fonts/Inter-Medium.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<link href=https://poorguyorz.github.io/assets/fonts/Inter-MediumItalic.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<link href=https://poorguyorz.github.io/assets/fonts/Inter-Bold.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<link href=https://poorguyorz.github.io/assets/fonts/Inter-BoldItalic.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Hello Friend">
+<meta name=twitter:description content="&#34;Hello, friend?&#34; That's lame. Maybe I should give you a name?">
+<meta property="og:title" content="Hello Friend">
+<meta property="og:description" content="&#34;Hello, friend?&#34; That's lame. Maybe I should give you a name?">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://poorguyorz.github.io/post/hello/"><meta property="article:section" content="post">
+<meta property="article:published_time" content="1986-09-17T00:00:00+00:00">
+<meta property="article:modified_time" content="1986-09-17T00:00:00+00:00"><meta property="og:site_name" content="Hello Friend">
+</head>
+<body class=dark-theme>
+<div class=container>
+<header class=header>
+<span class=header__inner>
+<a href=/ class=logo style=text-decoration:none>
+<span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg>
+</span>
+<span class=logo__text>hello friend</span>
+<span class=logo__cursor></span>
+</a>
+<span class=header__right>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/archive>Archive</a></li>
+<li><a href=/showcase>Showcase</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/archive>Archive</a></li>
+<li><a href=/showcase>Showcase</a></li>
+</ul>
+</nav>
+<span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+</span>
+<span class=theme-toggle><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg>
+</span>
+</span>
+</span>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>Hello Friend</h1>
+<div class=post-meta>
+<span class=post-date>
+1986-09-17
+</span>
+<span class=post-author>— Written by Elliot</span>
+</div>
+<figure class=post-cover>
+<img src=https://poorguyorz.github.io/img/hello.jpg alt="Hello Friend">
+</figure>
+<div class=post-content>
+<blockquote>
+<p>&ldquo;Hello, friend?&rdquo; That&rsquo;s lame.
+Maybe I should give you a name&mldr;
+But that&rsquo;s a slippery slope.
+You&rsquo;re only in my head.
+We have to remember that&mldr;
+Shit.
+It&rsquo;s actually happened.
+I&rsquo;m talking to an imaginary person.</p>
+<p><strong>— Mr. Robot S01E01</strong></p>
+</blockquote>
+<h2 id=attention>
+attention
+<a href=#attention class=h-anchor aria-hidden=true>#</a>
+</h2>
+<ul>
+<li>注意在每次提交之前格式化下代码，检查下代码语法是否正确，评分系统会检查代码格式和编码规范，不正确直接编译失败
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>  make format
+  make check-lint
+  make check-clang-tidy
+</code></pre></div></li>
+</ul>
+<h2 id=lab0-c-primer>
+lab0 C++ Primer
+<a href=#lab0-c-primer class=h-anchor aria-hidden=true>#</a>
+</h2>
+<p>目的是为了熟悉C++的使用，照顾之前没有使用过C++的同学，比较简单的题目</p>
+<ul>
+<li>实现矩阵</li>
+<li>实现矩阵的加法乘法以及一个复合运算</li>
+</ul>
+<p>容易出问题的地方</p>
+<ol>
+<li>矩阵使用二维数组，不能直接new，需要先new row，再new col，析构的时候也是需要分步进行，否则会有内存泄漏</li>
+<li>智能指针使用get可以获得原始指针，他们之间不能直接隐式转换</li>
+<li>测试中只有add和mult运算的测试案例，没有复合运算的，需要自己添加测试，否则不确定自己实现是否正确，因为模板有个懒运算的特性，没有使用的模板。是不会检测错误的
+但是评分系统有更全面的测试，所以最好自己简单测试以下</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c++ data-lang=c++>diff <span style=color:#f92672>--</span>git a<span style=color:#f92672>/</span>src<span style=color:#f92672>/</span>include<span style=color:#f92672>/</span>primer<span style=color:#f92672>/</span>p0_starter.h b<span style=color:#f92672>/</span>src<span style=color:#f92672>/</span>include<span style=color:#f92672>/</span>primer<span style=color:#f92672>/</span>p0_starter.h
+index <span style=color:#ae81ff>81f</span>bb56..c87003f <span style=color:#ae81ff>100644</span>
+<span style=color:#f92672>---</span> a<span style=color:#f92672>/</span>src<span style=color:#f92672>/</span>include<span style=color:#f92672>/</span>primer<span style=color:#f92672>/</span>p0_starter.h
+<span style=color:#f92672>+++</span> b<span style=color:#f92672>/</span>src<span style=color:#f92672>/</span>include<span style=color:#f92672>/</span>primer<span style=color:#f92672>/</span>p0_starter.h
+<span style=color:#960050;background-color:#1e0010>@@</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>35</span>,<span style=color:#ae81ff>7</span> <span style=color:#f92672>+</span><span style=color:#ae81ff>35</span>,<span style=color:#ae81ff>7</span> <span style=color:#960050;background-color:#1e0010>@@</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Matrix</span> {
+    <span style=color:#f92672>*</span> <span style=color:#960050;background-color:#1e0010>@</span>param cols The number of columns
+    <span style=color:#f92672>*</span>
+    <span style=color:#960050;background-color:#1e0010>*/</span>
+<span style=color:#f92672>-</span>  Matrix(<span style=color:#66d9ef>int</span> rows, <span style=color:#66d9ef>int</span> cols) {}
+<span style=color:#f92672>+</span>  Matrix(<span style=color:#66d9ef>int</span> rows, <span style=color:#66d9ef>int</span> cols) <span style=color:#f92672>:</span> rows_(rows), cols_(cols) {}
+ 
+   <span style=color:#75715e>/** The number of rows in the matrix */</span>
+   <span style=color:#66d9ef>int</span> rows_;
+<span style=color:#960050;background-color:#1e0010>@@</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>112</span>,<span style=color:#ae81ff>19</span> <span style=color:#f92672>+</span><span style=color:#ae81ff>112</span>,<span style=color:#ae81ff>25</span> <span style=color:#960050;background-color:#1e0010>@@</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>RowMatrix</span> <span style=color:#f92672>:</span> <span style=color:#66d9ef>public</span> Matrix<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> {
+    <span style=color:#f92672>*</span> <span style=color:#960050;background-color:#1e0010>@</span>param rows The number of rows
+    <span style=color:#f92672>*</span> <span style=color:#960050;background-color:#1e0010>@</span>param cols The number of columns
+    <span style=color:#960050;background-color:#1e0010>*/</span>
+<span style=color:#f92672>-</span>  RowMatrix(<span style=color:#66d9ef>int</span> rows, <span style=color:#66d9ef>int</span> cols) <span style=color:#f92672>:</span> Matrix<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span>(rows, cols) {}
+<span style=color:#f92672>+</span>  RowMatrix(<span style=color:#66d9ef>int</span> rows, <span style=color:#66d9ef>int</span> cols) <span style=color:#f92672>:</span> Matrix<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span>(rows, cols) {
+<span style=color:#f92672>+</span>    data_ <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> T <span style=color:#f92672>*</span>[rows];
+<span style=color:#f92672>+</span>    <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i <span style=color:#f92672>&lt;</span> rows; i<span style=color:#f92672>++</span>) {
+<span style=color:#f92672>+</span>      data_[i] <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> T[cols];
+<span style=color:#f92672>+</span>      memset(data_[i], <span style=color:#ae81ff>0</span>, <span style=color:#66d9ef>sizeof</span>(T) <span style=color:#f92672>*</span> cols);
+<span style=color:#f92672>+</span>    }
+<span style=color:#f92672>+</span>  }
+ 
+   <span style=color:#75715e>/**
+</span><span style=color:#75715e>    * TODO(P0): Add implementation
+</span><span style=color:#75715e>    * @return The number of rows in the matrix
+</span><span style=color:#75715e>    */</span>
+<span style=color:#f92672>-</span>  <span style=color:#66d9ef>int</span> GetRowCount() <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>override</span> { <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>; }
+<span style=color:#f92672>+</span>  <span style=color:#66d9ef>int</span> GetRowCount() <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>override</span> { <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>-&gt;</span>rows_; }
+ 
+   <span style=color:#75715e>/**
+</span><span style=color:#75715e>    * TODO(P0): Add implementation
+</span><span style=color:#75715e>    * @return The number of columns in the matrix
+</span><span style=color:#75715e>    */</span>
+<span style=color:#f92672>-</span>  <span style=color:#66d9ef>int</span> GetColumnCount() <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>override</span> { <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>; }
+<span style=color:#f92672>+</span>  <span style=color:#66d9ef>int</span> GetColumnCount() <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>override</span> { <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>-&gt;</span>cols_; }
+ 
+   <span style=color:#75715e>/**
+</span><span style=color:#75715e>    * TODO(P0): Add implementation
+</span><span style=color:#75715e>@@ -139,7 +145,11 @@ class RowMatrix : public Matrix&lt;T&gt; {
+</span><span style=color:#75715e>    * @throws OUT_OF_RANGE if either index is out of range
+</span><span style=color:#75715e>    */</span>
+   T <span style=color:#a6e22e>GetElement</span>(<span style=color:#66d9ef>int</span> i, <span style=color:#66d9ef>int</span> j) <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>override</span> {
+<span style=color:#f92672>-</span>    <span style=color:#66d9ef>throw</span> NotImplementedException{<span style=color:#e6db74>&#34;RowMatrix::GetElement() not implemented.&#34;</span>};
+<span style=color:#f92672>+</span>    <span style=color:#66d9ef>if</span> (i <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>||</span> i <span style=color:#f92672>&gt;=</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>-&gt;</span>rows_ <span style=color:#f92672>||</span> j <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>||</span> j <span style=color:#f92672>&gt;=</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>-&gt;</span>cols_) {
+<span style=color:#f92672>+</span>      <span style=color:#66d9ef>throw</span> Exception(ExceptionType<span style=color:#f92672>::</span>OUT_OF_RANGE, <span style=color:#e6db74>&#34;RowMatrix::GetElement() out of range&#34;</span>);
+<span style=color:#f92672>+</span>    }
+<span style=color:#f92672>+</span>
+<span style=color:#f92672>+</span>    <span style=color:#66d9ef>return</span> data_[i][j];
+   }
+ 
+   <span style=color:#75715e>/**
+</span><span style=color:#75715e>@@ -152,7 +162,13 @@ class RowMatrix : public Matrix&lt;T&gt; {
+</span><span style=color:#75715e>    * @param val The value to insert
+</span><span style=color:#75715e>    * @throws OUT_OF_RANGE if either index is out of range
+</span><span style=color:#75715e>    */</span>
+<span style=color:#f92672>-</span>  <span style=color:#66d9ef>void</span> SetElement(<span style=color:#66d9ef>int</span> i, <span style=color:#66d9ef>int</span> j, T val) <span style=color:#66d9ef>override</span> {}
+<span style=color:#f92672>+</span>  <span style=color:#66d9ef>void</span> SetElement(<span style=color:#66d9ef>int</span> i, <span style=color:#66d9ef>int</span> j, T val) <span style=color:#66d9ef>override</span> {
+<span style=color:#f92672>+</span>    <span style=color:#66d9ef>if</span> (i <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>||</span> i <span style=color:#f92672>&gt;=</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>-&gt;</span>rows_ <span style=color:#f92672>||</span> j <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>||</span> j <span style=color:#f92672>&gt;=</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>-&gt;</span>cols_) {
+<span style=color:#f92672>+</span>      <span style=color:#66d9ef>throw</span> Exception(ExceptionType<span style=color:#f92672>::</span>OUT_OF_RANGE, <span style=color:#e6db74>&#34;RowMatrix::GetElement() out of range&#34;</span>);
+<span style=color:#f92672>+</span>    }
+<span style=color:#f92672>+</span>
+<span style=color:#f92672>+</span>    data_[i][j] <span style=color:#f92672>=</span> val;
+<span style=color:#f92672>+</span>  }
+ 
+   <span style=color:#75715e>/**
+</span><span style=color:#75715e>    * TODO(P0): Add implementation
+</span><span style=color:#75715e>@@ -166,7 +182,15 @@ class RowMatrix : public Matrix&lt;T&gt; {
+</span><span style=color:#75715e>    * @throws OUT_OF_RANGE if `source` is incorrect size
+</span><span style=color:#75715e>    */</span>
+   <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>FillFrom</span>(<span style=color:#66d9ef>const</span> std<span style=color:#f92672>::</span>vector<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#f92672>&amp;</span>source) <span style=color:#66d9ef>override</span> {
+<span style=color:#f92672>-</span>    <span style=color:#66d9ef>throw</span> NotImplementedException{<span style=color:#e6db74>&#34;RowMatrix::FillFrom() not implemented.&#34;</span>};
+<span style=color:#f92672>+</span>    <span style=color:#66d9ef>if</span> (<span style=color:#66d9ef>static_cast</span><span style=color:#f92672>&lt;</span><span style=color:#66d9ef>int</span><span style=color:#f92672>&gt;</span>(source.size()) <span style=color:#f92672>!=</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>-&gt;</span>rows_ <span style=color:#f92672>*</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>-&gt;</span>cols_) {
+<span style=color:#f92672>+</span>      <span style=color:#66d9ef>throw</span> Exception(ExceptionType<span style=color:#f92672>::</span>OUT_OF_RANGE, <span style=color:#e6db74>&#34;RowMatrix::GetElement() out of range&#34;</span>);
+<span style=color:#f92672>+</span>    }
+<span style=color:#f92672>+</span>
+<span style=color:#f92672>+</span>    <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i <span style=color:#f92672>&lt;</span> GetRowCount(); i<span style=color:#f92672>++</span>) {
+<span style=color:#f92672>+</span>      <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>int</span> j <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; j <span style=color:#f92672>&lt;</span> GetColumnCount(); j<span style=color:#f92672>++</span>) {
+<span style=color:#f92672>+</span>        data_[i][j] <span style=color:#f92672>=</span> source[i <span style=color:#f92672>*</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>-&gt;</span>cols_ <span style=color:#f92672>+</span> j];
+<span style=color:#f92672>+</span>      }
+<span style=color:#f92672>+</span>    }
+   }
+ 
+   <span style=color:#75715e>/**
+</span><span style=color:#75715e>@@ -174,7 +198,12 @@ class RowMatrix : public Matrix&lt;T&gt; {
+</span><span style=color:#75715e>    *
+</span><span style=color:#75715e>    * Destroy a RowMatrix instance.
+</span><span style=color:#75715e>    */</span>
+<span style=color:#f92672>-</span>  <span style=color:#f92672>~</span>RowMatrix() <span style=color:#66d9ef>override</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>default</span>;
+<span style=color:#f92672>+</span>  <span style=color:#f92672>~</span>RowMatrix() <span style=color:#66d9ef>override</span> {
+<span style=color:#f92672>+</span>    <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i <span style=color:#f92672>&lt;</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>-&gt;</span>rows_; i<span style=color:#f92672>++</span>) {
+<span style=color:#f92672>+</span>      <span style=color:#66d9ef>delete</span>[] data_[i];
+<span style=color:#f92672>+</span>    }
+<span style=color:#f92672>+</span>    <span style=color:#66d9ef>delete</span>[] data_;
+<span style=color:#f92672>+</span>  };
+ 
+  <span style=color:#66d9ef>private</span><span style=color:#f92672>:</span>
+   <span style=color:#75715e>/**
+</span><span style=color:#75715e>@@ -204,7 +233,17 @@ class RowMatrixOperations {
+</span><span style=color:#75715e>    */</span>
+   <span style=color:#66d9ef>static</span> std<span style=color:#f92672>::</span>unique_ptr<span style=color:#f92672>&lt;</span>RowMatrix<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;&gt;</span> Add(<span style=color:#66d9ef>const</span> RowMatrix<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#f92672>*</span>matrixA, <span style=color:#66d9ef>const</span> RowMatrix<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#f92672>*</span>matrixB) {
+     <span style=color:#75715e>// TODO(P0): Add implementation
+</span><span style=color:#75715e></span><span style=color:#f92672>-</span>    <span style=color:#66d9ef>return</span> std<span style=color:#f92672>::</span>unique_ptr<span style=color:#f92672>&lt;</span>RowMatrix<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;&gt;</span>(<span style=color:#66d9ef>nullptr</span>);
+<span style=color:#f92672>+</span>    <span style=color:#66d9ef>if</span> (matrixA<span style=color:#f92672>-&gt;</span>GetRowCount() <span style=color:#f92672>!=</span> matrixB<span style=color:#f92672>-&gt;</span>GetRowCount() <span style=color:#f92672>||</span> matrixA<span style=color:#f92672>-&gt;</span>GetColumnCount() <span style=color:#f92672>!=</span> matrixB<span style=color:#f92672>-&gt;</span>GetColumnCount()) {
+<span style=color:#f92672>+</span>      <span style=color:#66d9ef>throw</span> Exception(ExceptionType<span style=color:#f92672>::</span>OUT_OF_RANGE, <span style=color:#e6db74>&#34;RowMatrix::GetElement() out of range&#34;</span>);
+<span style=color:#f92672>+</span>    }
+<span style=color:#f92672>+</span>
+<span style=color:#f92672>+</span>    <span style=color:#66d9ef>auto</span> matrix <span style=color:#f92672>=</span> std<span style=color:#f92672>::</span>make_unique<span style=color:#f92672>&lt;</span>RowMatrix<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;&gt;</span>(matrixB<span style=color:#f92672>-&gt;</span>GetRowCount(), matrixB<span style=color:#f92672>-&gt;</span>GetColumnCount());
+<span style=color:#f92672>+</span>    <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i <span style=color:#f92672>&lt;</span> matrixB<span style=color:#f92672>-&gt;</span>GetRowCount(); i<span style=color:#f92672>++</span>) {
+<span style=color:#f92672>+</span>      <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>int</span> j <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; j <span style=color:#f92672>&lt;</span> matrixB<span style=color:#f92672>-&gt;</span>GetColumnCount(); j<span style=color:#f92672>++</span>) {
+<span style=color:#f92672>+</span>        matrix<span style=color:#f92672>-&gt;</span>SetElement(i, j, matrixA<span style=color:#f92672>-&gt;</span>GetElement(i, j) <span style=color:#f92672>+</span> matrixB<span style=color:#f92672>-&gt;</span>GetElement(i, j));
+<span style=color:#f92672>+</span>      }
+<span style=color:#f92672>+</span>    }
+<span style=color:#f92672>+</span>    <span style=color:#66d9ef>return</span> matrix;
+   }
+ 
+   <span style=color:#75715e>/**
+</span><span style=color:#75715e>@@ -216,7 +255,21 @@ class RowMatrixOperations {
+</span><span style=color:#75715e>    */</span>
+   <span style=color:#66d9ef>static</span> std<span style=color:#f92672>::</span>unique_ptr<span style=color:#f92672>&lt;</span>RowMatrix<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;&gt;</span> Multiply(<span style=color:#66d9ef>const</span> RowMatrix<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#f92672>*</span>matrixA, <span style=color:#66d9ef>const</span> RowMatrix<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#f92672>*</span>matrixB) {
+     <span style=color:#75715e>// TODO(P0): Add implementation
+</span><span style=color:#75715e></span><span style=color:#f92672>-</span>    <span style=color:#66d9ef>return</span> std<span style=color:#f92672>::</span>unique_ptr<span style=color:#f92672>&lt;</span>RowMatrix<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;&gt;</span>(<span style=color:#66d9ef>nullptr</span>);
+<span style=color:#f92672>+</span>    <span style=color:#66d9ef>if</span> (matrixA<span style=color:#f92672>-&gt;</span>GetColumnCount() <span style=color:#f92672>!=</span> matrixB<span style=color:#f92672>-&gt;</span>GetRowCount()) {
+<span style=color:#f92672>+</span>      <span style=color:#66d9ef>throw</span> Exception(ExceptionType<span style=color:#f92672>::</span>OUT_OF_RANGE, <span style=color:#e6db74>&#34;RowMatrix::GetElement() out of range&#34;</span>);
+<span style=color:#f92672>+</span>    }
+<span style=color:#f92672>+</span>
+<span style=color:#f92672>+</span>    <span style=color:#66d9ef>auto</span> matrix <span style=color:#f92672>=</span> std<span style=color:#f92672>::</span>make_unique<span style=color:#f92672>&lt;</span>RowMatrix<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;&gt;</span>(matrixA<span style=color:#f92672>-&gt;</span>GetRowCount(), matrixB<span style=color:#f92672>-&gt;</span>GetColumnCount());
+<span style=color:#f92672>+</span>
+<span style=color:#f92672>+</span>    <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i <span style=color:#f92672>&lt;</span> matrix<span style=color:#f92672>-&gt;</span>GetRowCount(); i<span style=color:#f92672>++</span>) {
+<span style=color:#f92672>+</span>      <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>int</span> j <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; j <span style=color:#f92672>&lt;</span> matrix<span style=color:#f92672>-&gt;</span>GetColumnCount(); j<span style=color:#f92672>++</span>) {
+<span style=color:#f92672>+</span>        <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>int</span> k <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; k <span style=color:#f92672>&lt;</span> matrixA<span style=color:#f92672>-&gt;</span>GetColumnCount(); k<span style=color:#f92672>++</span>) {
+<span style=color:#f92672>+</span>          <span style=color:#66d9ef>auto</span> v <span style=color:#f92672>=</span> matrix<span style=color:#f92672>-&gt;</span>GetElement(i, j);
+<span style=color:#f92672>+</span>          matrix<span style=color:#f92672>-&gt;</span>SetElement(i, j, matrixA<span style=color:#f92672>-&gt;</span>GetElement(i, k) <span style=color:#f92672>*</span> matrixB<span style=color:#f92672>-&gt;</span>GetElement(k, j) <span style=color:#f92672>+</span> v);
+<span style=color:#f92672>+</span>        }
+<span style=color:#f92672>+</span>      }
+<span style=color:#f92672>+</span>    }
+<span style=color:#f92672>+</span>    <span style=color:#66d9ef>return</span> matrix;
+   }
+ 
+   <span style=color:#75715e>/**
+</span><span style=color:#75715e>@@ -230,7 +283,13 @@ class RowMatrixOperations {
+</span><span style=color:#75715e>   static std::unique_ptr&lt;RowMatrix&lt;T&gt;&gt; GEMM(const RowMatrix&lt;T&gt; *matrixA, const RowMatrix&lt;T&gt; *matrixB,
+</span><span style=color:#75715e>                                             const RowMatrix&lt;T&gt; *matrixC) {
+</span><span style=color:#75715e>     // TODO(P0): Add implementation
+</span><span style=color:#75715e>-    return std::unique_ptr&lt;RowMatrix&lt;T&gt;&gt;(nullptr);
+</span><span style=color:#75715e>+    if (matrixA-&gt;GetColumnCount() != matrixB-&gt;GetRowCount() || matrixA-&gt;GetRowCount() != matrixC-&gt;GetRowCount() ||
+</span><span style=color:#75715e>+        matrixB-&gt;GetColumnCount() != matrixC-&gt;GetColumnCount()) {
+</span><span style=color:#75715e>+      throw Exception(ExceptionType::OUT_OF_RANGE, &#34;RowMatrix::GetElement() out of range&#34;);
+</span><span style=color:#75715e>+    }
+</span><span style=color:#75715e>+
+</span><span style=color:#75715e>+    auto mult = Add(Multiply(matrixA, matrixB).get(), matrixC);
+</span><span style=color:#75715e>+    return mult;
+</span><span style=color:#75715e>   }
+</span><span style=color:#75715e> };
+</span><span style=color:#75715e> }  // namespace bustub
+</span><span style=color:#75715e>
+</span></code></pre></div><h2 id=lab1>
+lab1
+<a href=#lab1 class=h-anchor aria-hidden=true>#</a>
+</h2>
+<p>共有三个任务，是依赖关系，必须按顺序实现</p>
+<h3 id=lru-replacement-policy>
+LRU REPLACEMENT POLICY
+<a href=#lru-replacement-policy class=h-anchor aria-hidden=true>#</a>
+</h3>
+<p>实现lru替换算法，常见算法，leetcode上有类似的题目，甚至比这个更难一点，这里只需要实现几个简单的函数即可，用于替换frame_id_t</p>
+<p>使用链表map实现，其中链表保存数据，map用于快速查找，这里的代码简单所以大部分人写出来的代码理论上差别不大，自己没有头绪的话可以简单的看下他人的实现，但是不要照抄</p>
+<p>头文件实现</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c++ data-lang=c++>  std<span style=color:#f92672>::</span>mutex latch_;
+  size_t capacity_;
+  std<span style=color:#f92672>::</span>list<span style=color:#f92672>&lt;</span>frame_id_t<span style=color:#f92672>&gt;</span> lru_list_;
+  std<span style=color:#f92672>::</span>unordered_map<span style=color:#f92672>&lt;</span>frame_id_t, std<span style=color:#f92672>::</span>list<span style=color:#f92672>&lt;</span>frame_id_t<span style=color:#f92672>&gt;::</span>iterator<span style=color:#f92672>&gt;</span> lru_map_;
+</code></pre></div><ul>
+<li>
+<p><code>bool LRUReplacer::Victim(frame_id_t *frame_id)</code><br>
+选择替换的frame_id_t</p>
+<ol>
+<li>检查map是否为空，为空则直接返回false</li>
+<li>返回链表的最后一个元素，且把他从链表和map中删除</li>
+</ol>
+</li>
+<li>
+<p><code>void LRUReplacer::Pin(frame_id_t frame_id)</code><br>
+pin的意思是此时有其他线程使用此frame_id，所以他是不可替换的，也就不需要使用LRUReplacer维护，所以直接从LRUReplacer中删除</p>
+<ol>
+<li>使用map查找frame_id，如果没有查找到，则直接返回，这里如果直接从list中查找，则可能时间复杂度比较高</li>
+<li>如果有，则从list和map中删除</li>
+</ol>
+</li>
+<li>
+<p><code>void LRUReplacer::Unpin(frame_id_t frame_id)</code><br>
+Unpin的意思是其他操作不使用此frame_id，可以使用LRUReplacer维护frame_id，等待替换</p>
+<ol>
+<li>查找frame_id，如果存在，则直接返回</li>
+<li>如果不存在，则检查是否full，如果满了，则删除链表最后的元素，同时更新map</li>
+<li>添加frame_id到链表头部，更新map</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c++ data-lang=c++><span style=color:#66d9ef>void</span> LRUReplacer<span style=color:#f92672>::</span>Unpin(frame_id_t frame_id) {
+  latch_.lock();
+
+  <span style=color:#66d9ef>if</span> (lru_map_.find(frame_id) <span style=color:#f92672>==</span> lru_map_.end()) {
+    <span style=color:#66d9ef>while</span> (lru_map_.size() <span style=color:#f92672>&gt;=</span> capacity_) {
+      <span style=color:#66d9ef>auto</span> frame <span style=color:#f92672>=</span> lru_list_.back();
+      lru_map_.erase(frame);
+      lru_list_.pop_back();
+    }
+
+    lru_list_.push_front(frame_id);
+    lru_map_[frame_id] <span style=color:#f92672>=</span> lru_list_.begin();
+  }
+
+  latch_.unlock();
+}
+</code></pre></div></li>
+</ul>
+<p>上面的操作全部需要加锁</p>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<a href=/ class=logo style=text-decoration:none>
+<span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg>
+</span>
+<span class=logo__text>hello friend</span>
+<span class=logo__cursor></span>
+</a>
+<div class=copyright>
+<span>© 2022 Powered by
+<a href=https://gohugo.io target=_blank rel=noopener>Hugo</a></span>
+<span>Theme created by
+<a href=https://twitter.com/panr target=_blank rel=noopener>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://poorguyorz.github.io/assets/main.js></script>
+<script src=https://poorguyorz.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>
