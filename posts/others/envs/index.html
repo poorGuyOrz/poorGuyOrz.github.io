@@ -255,7 +255,20 @@ SHOW VARIABLES LIKE 'validate_password%';查看密码策略
 使用set global validate_password_length=6;修改策略
 
 
-</code></pre>
+</code></pre><h2 id=nodejs-升级>
+Nodejs 升级
+<a href=#nodejs-%e5%8d%87%e7%ba%a7 class=h-anchor aria-hidden=true>#</a>
+</h2>
+<p>安装Slidev的时候，需要升级node</p>
+<ol>
+<li>清除缓存<br>
+<code>sudo npm cache clean -f</code></li>
+<li>安装版本管理工具<br>
+<code>sudo npm install n -g</code></li>
+<li>使用版本管理工具安装指定node或者升级到最新node版本<br>
+<code>sudo n stable （安装node最新版本</code></li>
+</ol>
+<p>退出当前session，重新进入，node -v检查</p>
 </div>
 <div class=pagination>
 <div class=pagination__title>

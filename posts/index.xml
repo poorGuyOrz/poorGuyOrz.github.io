@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Hello Friend</title><link>https://poorguyorz.github.io/posts/</link><description>Recent content in Posts on Hello Friend</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Fri, 22 Jul 2022 09:24:24 +0800</lastBuildDate><atom:link href="https://poorguyorz.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Postgres Optimizer</title><link>https://poorguyorz.github.io/posts/postgres/opt/</link><pubDate>Fri, 22 Jul 2022 09:24:24 +0800</pubDate><guid>https://poorguyorz.github.io/posts/postgres/opt/</guid><description>
-Postgres优化器代码调研</description></item><item><title>Postgres Storage</title><link>https://poorguyorz.github.io/posts/postgres/storage/</link><pubDate>Thu, 21 Jul 2022 09:15:05 +0800</pubDate><guid>https://poorguyorz.github.io/posts/postgres/storage/</guid><description>
+&lt;img src="https://poorguyorz.github.io/img/hello.jpg"/>
+本文从源码级别进行优化器的分析，对Postgres优化器代码调研</description></item><item><title>Postgres Storage</title><link>https://poorguyorz.github.io/posts/postgres/storage/</link><pubDate>Thu, 21 Jul 2022 09:15:05 +0800</pubDate><guid>https://poorguyorz.github.io/posts/postgres/storage/</guid><description>
 存储 # 内存 # 共享内存
 本地内存
 缓存
