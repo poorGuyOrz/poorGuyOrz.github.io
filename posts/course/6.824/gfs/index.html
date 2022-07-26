@@ -2,7 +2,7 @@
 <head>
 <title>
 GFS ::
-Hello Friend — A simple theme for Hugo
+Esoye — My note blog
 </title>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
@@ -16,7 +16,7 @@ Hello Friend — A simple theme for Hugo
 chunkserver保存chunk数据，同时维护server上的chunk信息，GFS把大文件切分为64M的chunk文件，64M的原因是
  Google实际存储的数据较大其大部分时候使用顺序读写文件，所以大文件的读写时间可以在接受范围内 大文加可以减少master中的元数据信息，读写的时候，可以对一个大文件进行多次读写，避免了小文件需要多次向master查询位置信息 大文件可以避免小文件反复从server读取，使server变成热点  chunk一般是3个数据副本
 读取操作 #   C sends filename and offset to coordinator (CO) (if not cached) CO finds chunk handle for that offset CO replies with list of chunkhandles + chunkservers only those with latest version C caches handle + chunkserver list C sends request to nearest chunkserver chunk handle, offset chunk server reads from chunk file on disk, returns to client  一致性问题 #  弱一致性。易实现， 随机写会有offset重复的问题，但是master限定操作顺序，理论上最终的数据是一致的，但是在client看来，数据是不确定的，因为副本不是要求立刻同步的， append only限定append的offset，所以每个offset上数据是一致的">
-<meta name=keywords content>
+<meta name=keywords content="数据库">
 <meta name=robots content="noodp">
 <link rel=canonical href=https://Esoye.github.io/posts/course/6.824/gfs/>
 <link rel=stylesheet href=https://Esoye.github.io/assets/style.css>
@@ -55,7 +55,7 @@ chunkserver保存chunk数据，同时维护server上的chunk信息，GFS把大�
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://Esoye.github.io/posts/course/6.824/gfs/"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2022-05-30T16:36:40+08:00">
-<meta property="article:modified_time" content="2022-05-30T16:36:40+08:00"><meta property="og:site_name" content="Hello Friend">
+<meta property="article:modified_time" content="2022-05-30T16:36:40+08:00"><meta property="og:site_name" content="Esoye">
 </head>
 <body class=dark-theme>
 <div class=container>
@@ -64,7 +64,7 @@ chunkserver保存chunk数据，同时维护server上的chunk信息，GFS把大�
 <a href=/ class=logo style=text-decoration:none>
 <span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg>
 </span>
-<span class=logo__text>hello friend</span>
+<span class=logo__text>Esoye</span>
 <span class=logo__cursor></span>
 </a>
 <span class=header__right>
@@ -186,7 +186,7 @@ append only限定append的offset，所以每个offset上数据是一致的</p>
 <a href=/ class=logo style=text-decoration:none>
 <span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg>
 </span>
-<span class=logo__text>hello friend</span>
+<span class=logo__text>Esoye</span>
 <span class=logo__cursor></span>
 </a>
 <div class=copyright>

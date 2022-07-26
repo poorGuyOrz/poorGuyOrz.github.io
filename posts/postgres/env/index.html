@@ -2,7 +2,7 @@
 <head>
 <title>
 Postgres源码编译及调试 ::
-Hello Friend — A simple theme for Hugo
+Esoye — My note blog
 </title>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
@@ -13,7 +13,7 @@ Hello Friend — A simple theme for Hugo
 ./configure --enable-depend --enable-cassert --enable-debug make sudo make install 启动  ./initdb -D /home/wen/postgres/data ./pg_ctl -D /home/wen/postgres/data start ./pg_ctl -D /home/wen/postgres/data stop ./psql -p 5432 直接安装之后的文件在/usr/local/pgsql/bin中
 使用VSCode调试  可以使用VSCode进行调试，只需要配置launch.json即可。文件如下，其中program不重要，具体想调试那个进程，是使用processId选定的，调试的时候会有一个窗口让你选择调试进程。
 { // 使用 IntelliSense 了解相关属性。  // 悬停以查看现有属性的描述。  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387  &amp;#34;version&amp;#34;: &amp;#34;0.2.0&amp;#34;, &amp;#34;configurations&amp;#34;: [ { &amp;#34;name&amp;#34;: &amp;#34;(gdb) 附加&amp;#34;, &amp;#34;type&amp;#34;: &amp;#34;cppdbg&amp;#34;, &amp;#34;request&amp;#34;: &amp;#34;attach&amp;#34;, &amp;#34;program&amp;#34;: &amp;#34;/usr/local/pgsql/bin/postgres&amp;#34;, &amp;#34;processId&amp;#34;: &amp;#34;${command:pickProcess}&amp;#34;, &amp;#34;MIMode&amp;#34;: &amp;#34;gdb&amp;#34;, &amp;#34;setupCommands&amp;#34;: [ { &amp;#34;description&amp;#34;: &amp;#34;为 gdb 启用整齐打印&amp;#34;, &amp;#34;text&amp;#34;: &amp;#34;-enable-pretty-printing&amp;#34;, &amp;#34;ignoreFailures&amp;#34;: true }, { &amp;#34;description&amp;#34;: &amp;#34;将反汇编风格设置为 Intel&amp;#34;, &amp;#34;text&amp;#34;: &amp;#34;-gdb-set disassembly-flavor intel&amp;#34;, &amp;#34;ignoreFailures&amp;#34;: true } ] } ] } 这里有几个进程需要进行区分，由于pg是典型的CS架构，">
-<meta name=keywords content>
+<meta name=keywords content="数据库">
 <meta name=robots content="noodp">
 <link rel=canonical href=https://Esoye.github.io/posts/postgres/env/>
 <link rel=stylesheet href=https://Esoye.github.io/assets/style.css>
@@ -46,7 +46,7 @@ Hello Friend — A simple theme for Hugo
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://Esoye.github.io/posts/postgres/env/"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2022-07-20T17:54:05+08:00">
-<meta property="article:modified_time" content="2022-07-20T17:54:05+08:00"><meta property="og:site_name" content="Hello Friend">
+<meta property="article:modified_time" content="2022-07-20T17:54:05+08:00"><meta property="og:site_name" content="Esoye">
 </head>
 <body class=dark-theme>
 <div class=container>
@@ -55,7 +55,7 @@ Hello Friend — A simple theme for Hugo
 <a href=/ class=logo style=text-decoration:none>
 <span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg>
 </span>
-<span class=logo__text>hello friend</span>
+<span class=logo__text>Esoye</span>
 <span class=logo__cursor></span>
 </a>
 <span class=header__right>
@@ -196,7 +196,7 @@ gdb 调试
 <a href=/ class=logo style=text-decoration:none>
 <span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg>
 </span>
-<span class=logo__text>hello friend</span>
+<span class=logo__text>Esoye</span>
 <span class=logo__cursor></span>
 </a>
 <div class=copyright>

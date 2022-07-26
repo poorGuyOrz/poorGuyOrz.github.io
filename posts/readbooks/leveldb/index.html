@@ -2,7 +2,7 @@
 <head>
 <title>
 LevelDB源码阅读 ::
-Hello Friend — A simple theme for Hugo
+Esoye — My note blog
 </title>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
@@ -11,7 +11,7 @@ Hello Friend — A simple theme for Hugo
 slice #  字符串的浅拷贝实现，使用一个指针和指针长度实现，类似c++后来实现的string_view，如果使用string，则在传递数据的时候会进行拷贝操作，有性能损失。另一个目的是为了自主可控，确保数据在传输的过程中不会造成太多的数据副本。所以拷贝构造函数使用的是默认的系统函数，使用浅拷贝
 Slice(const Slice&amp;amp;) = default; Slice&amp;amp; operator=(const Slice&amp;amp;) = default; status #  自定义信息模块，把状态码和状态信息进行压缩，压缩格式如下
 Status::Status(Code code, const Slice&amp;amp; msg, const Slice&amp;amp; msg2) { assert(code != kOk); const uint32_t len1 = static_cast&amp;lt;uint32_t&amp;gt;(msg.size()); const uint32_t len2 = static_cast&amp;lt;uint32_t&amp;gt;(msg2.size()); const uint32_t size = len1 + (len2 ? (2 + len2) : 0); char* result = new char[size + 5]; std::memcpy(result, &amp;amp;size, sizeof(size)); result[4] = static_cast&amp;lt;char&amp;gt;(code); std::memcpy(result + 5, msg.">
-<meta name=keywords content>
+<meta name=keywords content="数据库">
 <meta name=robots content="noodp">
 <link rel=canonical href=https://Esoye.github.io/posts/readbooks/leveldb/>
 <link rel=stylesheet href=https://Esoye.github.io/assets/style.css>
@@ -40,7 +40,7 @@ Status::Status(Code code, const Slice& msg, const Slice& msg2) { assert(code != 
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://Esoye.github.io/posts/readbooks/leveldb/"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2022-05-15T21:59:53+08:00">
-<meta property="article:modified_time" content="2022-05-15T21:59:53+08:00"><meta property="og:site_name" content="Hello Friend">
+<meta property="article:modified_time" content="2022-05-15T21:59:53+08:00"><meta property="og:site_name" content="Esoye">
 </head>
 <body class=dark-theme>
 <div class=container>
@@ -49,7 +49,7 @@ Status::Status(Code code, const Slice& msg, const Slice& msg2) { assert(code != 
 <a href=/ class=logo style=text-decoration:none>
 <span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg>
 </span>
-<span class=logo__text>hello friend</span>
+<span class=logo__text>Esoye</span>
 <span class=logo__cursor></span>
 </a>
 <span class=header__right>
@@ -593,7 +593,7 @@ sst之间向下合并，其会把相同key的不同版本的数据合并，可�
 <a href=/ class=logo style=text-decoration:none>
 <span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg>
 </span>
-<span class=logo__text>hello friend</span>
+<span class=logo__text>Esoye</span>
 <span class=logo__cursor></span>
 </a>
 <div class=copyright>
