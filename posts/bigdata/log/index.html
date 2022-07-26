@@ -12,17 +12,17 @@ Hello Friend — A simple theme for Hugo
    c++ 编译出来的是可执行文件，是ELF格式的，他本来就有一些格式上的划分，C++在他的基础上进行了更细的划分，分为五个部分，从高地址到底地址依次为：     1. 内核虚拟内存   进程的虚拟印象   2. 栈   程序自动控制，具体为程序的函数调用，保存局部变量，有大小，可以使用ulimit -s 查看，也可以自行设置，但是建议系统默认即可   * 函数调用机制   调用的时候是一个一个的栈帧，函数参数会在调用者的栈帧中开辟空间，从右到左，所以函数列表的默认值必须从右到左的初始化， 可能和这个有关系，然后被调用者构造栈帧，依次执行     3. 共享库的内存印象 3. 堆 空间有程序员自行维护，向上增长(TIPS: 由于C的历史原因，C++的内存结构还是说堆区，但是在区别new/malloc 和delete/free 的时候，他们的差别之一可能会在内存上有点区别 C的malloc/free可能会说是在堆上分配空间，但是对于C++可能会说的是在自由存储区上分配，自由存储区和堆是不同的概念，堆是操作系统上的概念，但是自由存储区是一个抽象概念 一般new可以是在堆上分配空间，但是可能存在在其他情况，例如在栈上使用new，所以他们不是一个概念，面试的时候说到这里，可以装逼😎) 4. 可写/全局区 对应elf中data段和bss段，data段保存的是已初始化的全局变量或者静态变量，bss保存的是未初始化的数据 5. 只读区 text段，保存编译之后的指令，不可变 6. 常量区 保存全局变量，不可变，rodata段，记得使用其他手段去尝试修改常量的时候会报错。 TIPS: const修饰的参数不一定是常量，例如他修饰一个函数的参数的时候，参数还是只是在栈中，只是约定不能修改。 7.">
 <meta name=keywords content>
 <meta name=robots content="noodp">
-<link rel=canonical href=https://poorguyorz.github.io/posts/bigdata/log/>
-<link rel=stylesheet href=https://poorguyorz.github.io/assets/style.css>
-<link rel=stylesheet href=https://poorguyorz.github.io/style.css>
-<link rel=apple-touch-icon-precomposed sizes=144x144 href=https://poorguyorz.github.io/img/apple-touch-icon-144-precomposed.png>
-<link rel="shortcut icon" href=https://poorguyorz.github.io/img/favicon.png>
-<link href=https://poorguyorz.github.io/assets/fonts/Inter-Italic.woff2 rel=preload type=font/woff2 as=font crossorigin>
-<link href=https://poorguyorz.github.io/assets/fonts/Inter-Regular.woff2 rel=preload type=font/woff2 as=font crossorigin>
-<link href=https://poorguyorz.github.io/assets/fonts/Inter-Medium.woff2 rel=preload type=font/woff2 as=font crossorigin>
-<link href=https://poorguyorz.github.io/assets/fonts/Inter-MediumItalic.woff2 rel=preload type=font/woff2 as=font crossorigin>
-<link href=https://poorguyorz.github.io/assets/fonts/Inter-Bold.woff2 rel=preload type=font/woff2 as=font crossorigin>
-<link href=https://poorguyorz.github.io/assets/fonts/Inter-BoldItalic.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<link rel=canonical href=https://Esoye.github.io/posts/bigdata/log/>
+<link rel=stylesheet href=https://Esoye.github.io/assets/style.css>
+<link rel=stylesheet href=https://Esoye.github.io/style.css>
+<link rel=apple-touch-icon-precomposed sizes=144x144 href=https://Esoye.github.io/img/apple-touch-icon-144-precomposed.png>
+<link rel="shortcut icon" href=https://Esoye.github.io/img/favicon.png>
+<link href=https://Esoye.github.io/assets/fonts/Inter-Italic.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<link href=https://Esoye.github.io/assets/fonts/Inter-Regular.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<link href=https://Esoye.github.io/assets/fonts/Inter-Medium.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<link href=https://Esoye.github.io/assets/fonts/Inter-MediumItalic.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<link href=https://Esoye.github.io/assets/fonts/Inter-Bold.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<link href=https://Esoye.github.io/assets/fonts/Inter-BoldItalic.woff2 rel=preload type=font/woff2 as=font crossorigin>
 <meta name=twitter:card content="summary">
 <meta name=twitter:title content="面试">
 <meta name=twitter:description content="面试 #  只是一个技术汇总
@@ -35,7 +35,7 @@ Hello Friend — A simple theme for Hugo
  内存   内存结构 [https://segmentfault.com/a/1190000039348996]
    c++ 编译出来的是可执行文件，是ELF格式的，他本来就有一些格式上的划分，C++在他的基础上进行了更细的划分，分为五个部分，从高地址到底地址依次为：     1. 内核虚拟内存   进程的虚拟印象   2. 栈   程序自动控制，具体为程序的函数调用，保存局部变量，有大小，可以使用ulimit -s 查看，也可以自行设置，但是建议系统默认即可   * 函数调用机制   调用的时候是一个一个的栈帧，函数参数会在调用者的栈帧中开辟空间，从右到左，所以函数列表的默认值必须从右到左的初始化， 可能和这个有关系，然后被调用者构造栈帧，依次执行     3. 共享库的内存印象 3. 堆 空间有程序员自行维护，向上增长(TIPS: 由于C的历史原因，C++的内存结构还是说堆区，但是在区别new/malloc 和delete/free 的时候，他们的差别之一可能会在内存上有点区别 C的malloc/free可能会说是在堆上分配空间，但是对于C++可能会说的是在自由存储区上分配，自由存储区和堆是不同的概念，堆是操作系统上的概念，但是自由存储区是一个抽象概念 一般new可以是在堆上分配空间，但是可能存在在其他情况，例如在栈上使用new，所以他们不是一个概念，面试的时候说到这里，可以装逼😎) 4. 可写/全局区 对应elf中data段和bss段，data段保存的是已初始化的全局变量或者静态变量，bss保存的是未初始化的数据 5. 只读区 text段，保存编译之后的指令，不可变 6. 常量区 保存全局变量，不可变，rodata段，记得使用其他手段去尝试修改常量的时候会报错。 TIPS: const修饰的参数不一定是常量，例如他修饰一个函数的参数的时候，参数还是只是在栈中，只是约定不能修改。 7.">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://poorguyorz.github.io/posts/bigdata/log/"><meta property="article:section" content="posts">
+<meta property="og:url" content="https://Esoye.github.io/posts/bigdata/log/"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2022-03-24T20:26:11+08:00">
 <meta property="article:modified_time" content="2022-03-24T20:26:11+08:00"><meta property="og:site_name" content="Hello Friend">
 </head>
@@ -951,13 +951,13 @@ memtableDB 维护内存中的表，使用的是hash表，key为table name，valu
 </div>
 <div class=pagination__buttons>
 <span class="button previous">
-<a href=https://poorguyorz.github.io/posts/readbooks/columbia-optimizer/>
+<a href=https://Esoye.github.io/posts/readbooks/columbia-optimizer/>
 <span class=button__icon>←</span>
 <span class=button__text>Columbia Optimizer</span>
 </a>
 </span>
 <span class="button next">
-<a href=https://poorguyorz.github.io/posts/readbooks/%E7%8E%B0%E4%BB%A3c++%E7%99%BD%E7%9A%AE%E4%B9%A6/>
+<a href=https://Esoye.github.io/posts/readbooks/%E7%8E%B0%E4%BB%A3c++%E7%99%BD%E7%9A%AE%E4%B9%A6/>
 <span class=button__text>现代C++白皮书</span>
 <span class=button__icon>→</span>
 </a>
@@ -982,8 +982,8 @@ memtableDB 维护内存中的表，使用的是hash表，key为table name，valu
 </div>
 </div>
 </footer>
-<script src=https://poorguyorz.github.io/assets/main.js></script>
-<script src=https://poorguyorz.github.io/assets/prism.js></script>
+<script src=https://Esoye.github.io/assets/main.js></script>
+<script src=https://Esoye.github.io/assets/prism.js></script>
 </div>
 </body>
 </html>
