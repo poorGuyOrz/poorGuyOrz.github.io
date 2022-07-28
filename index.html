@@ -123,10 +123,10 @@ FSM
 源码编译 # 源码下载 直接下载最新源码，github上的源码每一个提交都保证是可编译运行的 git clone git@github.com:postgres/postgres.git 依赖安装
 按照官网上的说明安装依赖，这里提前安装过但是没有记载，所以不贴了，也可以直接编译，在中间遇到确实的依赖再进行安装
 编译
-为了能使用gdb调试，需要使用debug模式调试，我自己之前编译的时候发现即使指定-enable-debug在编译的时候发现也使用了-O2，所以这里建议直接修改configure中的-O和-O2为-g,
-./configure --enable-depend --enable-cassert --enable-debug make sudo make install 启动 ./initdb -D /home/wen/postgres/data ./pg_ctl -D /home/wen/postgres/data start ./pg_ctl -D /home/wen/postgres/data stop ./psql -p 5432 直接安装之后的文件在/usr/local/pgsql/bin中
+为了能使用gdb调试，需要使用debug模式调试，我自己之前编译的时候发现即使指定-enable-debug在编译的时候发现也使用了-O2，所以这里建议直接修改configure中的-O和-O2为-g，pg的数据指定-D的 位置，所以在一个环境中，一个编译出来的数据库可以有多个运行环境，或者可以有多个编译环境，多个运行环境，所以需要自己按需配置
+./configure --enable-depend --enable-cassert --enable-debug --prefix=location make sudo make install 启动 ./initdb -D /home/wen/postgres/data ./pg_ctl -D /home/wen/postgres/data start ./pg_ctl -D /home/wen/postgres/data stop ./psql -p 5432 直接安装之后的文件在/usr/local/pgsql/bin中
 使用VSCode调试 可以使用VSCode进行调试，只需要配置launch.json即可。文件如下，其中program不重要，具体想调试那个进程，是使用processId选定的，调试的时候会有一个窗口让你选择调试进程。
-{ // 使用 IntelliSense 了解相关属性。 // 悬停以查看现有属性的描述。 // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387 "version": "0.2.0", "configurations": [ { "name": "(gdb) 附加", "type": "cppdbg", "request": "attach", "program": "/usr/local/pgsql/bin/postgres", "processId": "${command:pickProcess}", "MIMode": "gdb", "setupCommands": [ { "description": "为 gdb 启用整齐打印", "text": "-enable-pretty-printing", "ignoreFailures": true }, { "description": "将反汇编风格设置为 Intel", "text": "-gdb-set disassembly-flavor intel", "ignoreFailures": true } ] } ] } 这里有几个进程需要进行区分，由于pg是典型的CS架构，
+{ // 使用 IntelliSense 了解相关属性。 // 悬停以查看现有属性的描述。 // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387 "version": "0.2.0", "configurations": [ { "name": "(gdb) 附加", "type": "cppdbg", "request": "attach", "program": "/usr/local/pgsql/bin/postgres", "processId": "${command:pickProcess}", "MIMode": "gdb", "setupCommands": [ { "description": "为 gdb 启用整齐打印", "text": "-enable-pretty-printing", "ignoreFailures": true }, { "description": "将反汇编风格设置为 Intel", "text": "-gdb-set disassembly-flavor intel", "ignoreFailures": true } ] } ] } 分布式PG # 分布式PG版本 postgres-xc和postgres-xl，源码内部使用宏控制，编译分布式的时候。需要使用分布式环境运行，官网上有个指导步骤可以运行一个极简集群，且是在单机上，但是我是用Ubuntu一直无法搭建成功， 这里把相关的命令写出来，后续再进行研究
 </div>
 <div><a class="read-more button" href=/posts/postgres/env/>Read more →</a></div>
 </div>

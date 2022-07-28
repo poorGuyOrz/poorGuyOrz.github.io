@@ -9,10 +9,10 @@ Esoye — My note blog
 <meta name=description content="源码编译 #   源码下载 直接下载最新源码，github上的源码每一个提交都保证是可编译运行的  git clone git@github.com:postgres/postgres.git  依赖安装
 按照官网上的说明安装依赖，这里提前安装过但是没有记载，所以不贴了，也可以直接编译，在中间遇到确实的依赖再进行安装
   编译
-  为了能使用gdb调试，需要使用debug模式调试，我自己之前编译的时候发现即使指定-enable-debug在编译的时候发现也使用了-O2，所以这里建议直接修改configure中的-O和-O2为-g,
-./configure --enable-depend --enable-cassert --enable-debug make sudo make install 启动  ./initdb -D /home/wen/postgres/data ./pg_ctl -D /home/wen/postgres/data start ./pg_ctl -D /home/wen/postgres/data stop ./psql -p 5432 直接安装之后的文件在/usr/local/pgsql/bin中
+  为了能使用gdb调试，需要使用debug模式调试，我自己之前编译的时候发现即使指定-enable-debug在编译的时候发现也使用了-O2，所以这里建议直接修改configure中的-O和-O2为-g，pg的数据指定-D的 位置，所以在一个环境中，一个编译出来的数据库可以有多个运行环境，或者可以有多个编译环境，多个运行环境，所以需要自己按需配置
+./configure --enable-depend --enable-cassert --enable-debug --prefix=location make sudo make install 启动  ./initdb -D /home/wen/postgres/data ./pg_ctl -D /home/wen/postgres/data start ./pg_ctl -D /home/wen/postgres/data stop ./psql -p 5432 直接安装之后的文件在/usr/local/pgsql/bin中
 使用VSCode调试  可以使用VSCode进行调试，只需要配置launch.json即可。文件如下，其中program不重要，具体想调试那个进程，是使用processId选定的，调试的时候会有一个窗口让你选择调试进程。
-{ // 使用 IntelliSense 了解相关属性。  // 悬停以查看现有属性的描述。  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387  &amp;#34;version&amp;#34;: &amp;#34;0.2.0&amp;#34;, &amp;#34;configurations&amp;#34;: [ { &amp;#34;name&amp;#34;: &amp;#34;(gdb) 附加&amp;#34;, &amp;#34;type&amp;#34;: &amp;#34;cppdbg&amp;#34;, &amp;#34;request&amp;#34;: &amp;#34;attach&amp;#34;, &amp;#34;program&amp;#34;: &amp;#34;/usr/local/pgsql/bin/postgres&amp;#34;, &amp;#34;processId&amp;#34;: &amp;#34;${command:pickProcess}&amp;#34;, &amp;#34;MIMode&amp;#34;: &amp;#34;gdb&amp;#34;, &amp;#34;setupCommands&amp;#34;: [ { &amp;#34;description&amp;#34;: &amp;#34;为 gdb 启用整齐打印&amp;#34;, &amp;#34;text&amp;#34;: &amp;#34;-enable-pretty-printing&amp;#34;, &amp;#34;ignoreFailures&amp;#34;: true }, { &amp;#34;description&amp;#34;: &amp;#34;将反汇编风格设置为 Intel&amp;#34;, &amp;#34;text&amp;#34;: &amp;#34;-gdb-set disassembly-flavor intel&amp;#34;, &amp;#34;ignoreFailures&amp;#34;: true } ] } ] } 这里有几个进程需要进行区分，由于pg是典型的CS架构，">
+{ // 使用 IntelliSense 了解相关属性。  // 悬停以查看现有属性的描述。  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387  &amp;#34;version&amp;#34;: &amp;#34;0.2.0&amp;#34;, &amp;#34;configurations&amp;#34;: [ { &amp;#34;name&amp;#34;: &amp;#34;(gdb) 附加&amp;#34;, &amp;#34;type&amp;#34;: &amp;#34;cppdbg&amp;#34;, &amp;#34;request&amp;#34;: &amp;#34;attach&amp;#34;, &amp;#34;program&amp;#34;: &amp;#34;/usr/local/pgsql/bin/postgres&amp;#34;, &amp;#34;processId&amp;#34;: &amp;#34;${command:pickProcess}&amp;#34;, &amp;#34;MIMode&amp;#34;: &amp;#34;gdb&amp;#34;, &amp;#34;setupCommands&amp;#34;: [ { &amp;#34;description&amp;#34;: &amp;#34;为 gdb 启用整齐打印&amp;#34;, &amp;#34;text&amp;#34;: &amp;#34;-enable-pretty-printing&amp;#34;, &amp;#34;ignoreFailures&amp;#34;: true }, { &amp;#34;description&amp;#34;: &amp;#34;将反汇编风格设置为 Intel&amp;#34;, &amp;#34;text&amp;#34;: &amp;#34;-gdb-set disassembly-flavor intel&amp;#34;, &amp;#34;ignoreFailures&amp;#34;: true } ] } ] } 分布式PG #  分布式PG版本 postgres-xc和postgres-xl，源码内部使用宏控制，编译分布式的时候。需要使用分布式环境运行，官网上有个指导步骤可以运行一个极简集群，且是在单机上，但是我是用Ubuntu一直无法搭建成功， 这里把相关的命令写出来，后续再进行研究">
 <meta name=keywords content="数据库">
 <meta name=robots content="noodp">
 <link rel=canonical href=https://Esoye.github.io/posts/postgres/env/>
@@ -31,18 +31,18 @@ Esoye — My note blog
 <meta name=twitter:description content="源码编译 #   源码下载 直接下载最新源码，github上的源码每一个提交都保证是可编译运行的  git clone git@github.com:postgres/postgres.git  依赖安装
 按照官网上的说明安装依赖，这里提前安装过但是没有记载，所以不贴了，也可以直接编译，在中间遇到确实的依赖再进行安装
   编译
-  为了能使用gdb调试，需要使用debug模式调试，我自己之前编译的时候发现即使指定-enable-debug在编译的时候发现也使用了-O2，所以这里建议直接修改configure中的-O和-O2为-g,
-./configure --enable-depend --enable-cassert --enable-debug make sudo make install 启动  ./initdb -D /home/wen/postgres/data ./pg_ctl -D /home/wen/postgres/data start ./pg_ctl -D /home/wen/postgres/data stop ./psql -p 5432 直接安装之后的文件在/usr/local/pgsql/bin中
+  为了能使用gdb调试，需要使用debug模式调试，我自己之前编译的时候发现即使指定-enable-debug在编译的时候发现也使用了-O2，所以这里建议直接修改configure中的-O和-O2为-g，pg的数据指定-D的 位置，所以在一个环境中，一个编译出来的数据库可以有多个运行环境，或者可以有多个编译环境，多个运行环境，所以需要自己按需配置
+./configure --enable-depend --enable-cassert --enable-debug --prefix=location make sudo make install 启动  ./initdb -D /home/wen/postgres/data ./pg_ctl -D /home/wen/postgres/data start ./pg_ctl -D /home/wen/postgres/data stop ./psql -p 5432 直接安装之后的文件在/usr/local/pgsql/bin中
 使用VSCode调试  可以使用VSCode进行调试，只需要配置launch.json即可。文件如下，其中program不重要，具体想调试那个进程，是使用processId选定的，调试的时候会有一个窗口让你选择调试进程。
-{ // 使用 IntelliSense 了解相关属性。  // 悬停以查看现有属性的描述。  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387  &#34;version&#34;: &#34;0.2.0&#34;, &#34;configurations&#34;: [ { &#34;name&#34;: &#34;(gdb) 附加&#34;, &#34;type&#34;: &#34;cppdbg&#34;, &#34;request&#34;: &#34;attach&#34;, &#34;program&#34;: &#34;/usr/local/pgsql/bin/postgres&#34;, &#34;processId&#34;: &#34;${command:pickProcess}&#34;, &#34;MIMode&#34;: &#34;gdb&#34;, &#34;setupCommands&#34;: [ { &#34;description&#34;: &#34;为 gdb 启用整齐打印&#34;, &#34;text&#34;: &#34;-enable-pretty-printing&#34;, &#34;ignoreFailures&#34;: true }, { &#34;description&#34;: &#34;将反汇编风格设置为 Intel&#34;, &#34;text&#34;: &#34;-gdb-set disassembly-flavor intel&#34;, &#34;ignoreFailures&#34;: true } ] } ] } 这里有几个进程需要进行区分，由于pg是典型的CS架构，">
+{ // 使用 IntelliSense 了解相关属性。  // 悬停以查看现有属性的描述。  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387  &#34;version&#34;: &#34;0.2.0&#34;, &#34;configurations&#34;: [ { &#34;name&#34;: &#34;(gdb) 附加&#34;, &#34;type&#34;: &#34;cppdbg&#34;, &#34;request&#34;: &#34;attach&#34;, &#34;program&#34;: &#34;/usr/local/pgsql/bin/postgres&#34;, &#34;processId&#34;: &#34;${command:pickProcess}&#34;, &#34;MIMode&#34;: &#34;gdb&#34;, &#34;setupCommands&#34;: [ { &#34;description&#34;: &#34;为 gdb 启用整齐打印&#34;, &#34;text&#34;: &#34;-enable-pretty-printing&#34;, &#34;ignoreFailures&#34;: true }, { &#34;description&#34;: &#34;将反汇编风格设置为 Intel&#34;, &#34;text&#34;: &#34;-gdb-set disassembly-flavor intel&#34;, &#34;ignoreFailures&#34;: true } ] } ] } 分布式PG #  分布式PG版本 postgres-xc和postgres-xl，源码内部使用宏控制，编译分布式的时候。需要使用分布式环境运行，官网上有个指导步骤可以运行一个极简集群，且是在单机上，但是我是用Ubuntu一直无法搭建成功， 这里把相关的命令写出来，后续再进行研究">
 <meta property="og:title" content="Postgres源码编译及调试">
 <meta property="og:description" content="源码编译 #   源码下载 直接下载最新源码，github上的源码每一个提交都保证是可编译运行的  git clone git@github.com:postgres/postgres.git  依赖安装
 按照官网上的说明安装依赖，这里提前安装过但是没有记载，所以不贴了，也可以直接编译，在中间遇到确实的依赖再进行安装
   编译
-  为了能使用gdb调试，需要使用debug模式调试，我自己之前编译的时候发现即使指定-enable-debug在编译的时候发现也使用了-O2，所以这里建议直接修改configure中的-O和-O2为-g,
-./configure --enable-depend --enable-cassert --enable-debug make sudo make install 启动  ./initdb -D /home/wen/postgres/data ./pg_ctl -D /home/wen/postgres/data start ./pg_ctl -D /home/wen/postgres/data stop ./psql -p 5432 直接安装之后的文件在/usr/local/pgsql/bin中
+  为了能使用gdb调试，需要使用debug模式调试，我自己之前编译的时候发现即使指定-enable-debug在编译的时候发现也使用了-O2，所以这里建议直接修改configure中的-O和-O2为-g，pg的数据指定-D的 位置，所以在一个环境中，一个编译出来的数据库可以有多个运行环境，或者可以有多个编译环境，多个运行环境，所以需要自己按需配置
+./configure --enable-depend --enable-cassert --enable-debug --prefix=location make sudo make install 启动  ./initdb -D /home/wen/postgres/data ./pg_ctl -D /home/wen/postgres/data start ./pg_ctl -D /home/wen/postgres/data stop ./psql -p 5432 直接安装之后的文件在/usr/local/pgsql/bin中
 使用VSCode调试  可以使用VSCode进行调试，只需要配置launch.json即可。文件如下，其中program不重要，具体想调试那个进程，是使用processId选定的，调试的时候会有一个窗口让你选择调试进程。
-{ // 使用 IntelliSense 了解相关属性。  // 悬停以查看现有属性的描述。  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387  &#34;version&#34;: &#34;0.2.0&#34;, &#34;configurations&#34;: [ { &#34;name&#34;: &#34;(gdb) 附加&#34;, &#34;type&#34;: &#34;cppdbg&#34;, &#34;request&#34;: &#34;attach&#34;, &#34;program&#34;: &#34;/usr/local/pgsql/bin/postgres&#34;, &#34;processId&#34;: &#34;${command:pickProcess}&#34;, &#34;MIMode&#34;: &#34;gdb&#34;, &#34;setupCommands&#34;: [ { &#34;description&#34;: &#34;为 gdb 启用整齐打印&#34;, &#34;text&#34;: &#34;-enable-pretty-printing&#34;, &#34;ignoreFailures&#34;: true }, { &#34;description&#34;: &#34;将反汇编风格设置为 Intel&#34;, &#34;text&#34;: &#34;-gdb-set disassembly-flavor intel&#34;, &#34;ignoreFailures&#34;: true } ] } ] } 这里有几个进程需要进行区分，由于pg是典型的CS架构，">
+{ // 使用 IntelliSense 了解相关属性。  // 悬停以查看现有属性的描述。  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387  &#34;version&#34;: &#34;0.2.0&#34;, &#34;configurations&#34;: [ { &#34;name&#34;: &#34;(gdb) 附加&#34;, &#34;type&#34;: &#34;cppdbg&#34;, &#34;request&#34;: &#34;attach&#34;, &#34;program&#34;: &#34;/usr/local/pgsql/bin/postgres&#34;, &#34;processId&#34;: &#34;${command:pickProcess}&#34;, &#34;MIMode&#34;: &#34;gdb&#34;, &#34;setupCommands&#34;: [ { &#34;description&#34;: &#34;为 gdb 启用整齐打印&#34;, &#34;text&#34;: &#34;-enable-pretty-printing&#34;, &#34;ignoreFailures&#34;: true }, { &#34;description&#34;: &#34;将反汇编风格设置为 Intel&#34;, &#34;text&#34;: &#34;-gdb-set disassembly-flavor intel&#34;, &#34;ignoreFailures&#34;: true } ] } ] } 分布式PG #  分布式PG版本 postgres-xc和postgres-xl，源码内部使用宏控制，编译分布式的时候。需要使用分布式环境运行，官网上有个指导步骤可以运行一个极简集群，且是在单机上，但是我是用Ubuntu一直无法搭建成功， 这里把相关的命令写出来，后续再进行研究">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://Esoye.github.io/posts/postgres/env/"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2022-07-20T17:54:05+08:00">
@@ -105,8 +105,9 @@ Esoye — My note blog
 <p>编译</p>
 </li>
 </ol>
-<p>为了能使用gdb调试，需要使用debug模式调试，我自己之前编译的时候发现即使指定<code>-enable-debug</code>在编译的时候发现也使用了<code>-O2</code>，所以这里建议直接修改<code>configure</code>中的<code>-O</code>和<code>-O2</code>为<code>-g</code>,</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>./configure --enable-depend --enable-cassert --enable-debug
+<p>为了能使用gdb调试，需要使用debug模式调试，我自己之前编译的时候发现即使指定<code>-enable-debug</code>在编译的时候发现也使用了<code>-O2</code>，所以这里建议直接修改<code>configure</code>中的<code>-O</code>和<code>-O2</code>为<code>-g</code>，pg的数据指定-D的
+位置，所以在一个环境中，一个编译出来的数据库可以有多个运行环境，或者可以有多个编译环境，多个运行环境，所以需要自己按需配置</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>./configure --enable-depend --enable-cassert --enable-debug --prefix<span style=color:#f92672>=</span>location
 
 make
 
@@ -151,17 +152,236 @@ sudo make install
     }
   ]
 }
-</code></pre></div><p>这里有几个进程需要进行区分，由于pg是典型的CS架构，</p>
+</code></pre></div><h2 id=分布式pg>
+分布式PG
+<a href=#%e5%88%86%e5%b8%83%e5%bc%8fpg class=h-anchor aria-hidden=true>#</a>
+</h2>
+<p>分布式PG版本 postgres-xc和postgres-xl，源码内部使用宏控制，编译分布式的时候。需要使用分布式环境运行，官网上有个指导步骤可以运行一个极简集群，且是在单机上，但是我是用Ubuntu一直无法搭建成功，
+这里把相关的命令写出来，后续再进行研究</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>
+</code></pre></div><p>最后使用<a href=git@github.com:dafei1288/postgres-xl-docker.git>docker</a>搭建集群，下载代码之后，可以使用postges-xl，也可以使用postgres-xc，两者之间无太大区别，</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Dockerfile data-lang=Dockerfile><span style=color:#75715e>#===============================================================================</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>FROM</span><span style=color:#e6db74> centos:centos7</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>ARG</span> PG_HOME<span style=color:#f92672>=</span>/var/lib/postgresql<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>ARG</span> PG_LIB<span style=color:#f92672>=</span>/usr/local/lib/postgresql<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>ARG</span> PG_USER<span style=color:#f92672>=</span>postgres
+
+<span style=color:#75715e>#-------------------------------------------------------------------------------</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> echo <span style=color:#e6db74>&#34;root:root&#34;</span> | chpasswd<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e>#RUN yum upgrade</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> yum install -y <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                flex <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                bison <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                readline-devel <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                zlib-devel  <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                openjade <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                docbook-style-dsssl <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                gcc <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                automake <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                autoconf <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                libtool <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                make <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                gcc-c++ <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                net-tools <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                iproute <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                lsof <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                ant <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                java<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> yum clean all<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e>#${PG_HOME}/data</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> useradd <span style=color:#e6db74>${</span>PG_USER<span style=color:#e6db74>}</span> -d <span style=color:#e6db74>${</span>PG_HOME<span style=color:#e6db74>}</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    mkdir -p <span style=color:#e6db74>${</span>PG_LIB<span style=color:#e6db74>}</span> <span style=color:#e6db74>${</span>PG_HOME<span style=color:#e6db74>}</span>   <span style=color:#f92672>&amp;&amp;</span> <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    chown -R <span style=color:#e6db74>${</span>PG_USER<span style=color:#e6db74>}</span>:<span style=color:#e6db74>${</span>PG_USER<span style=color:#e6db74>}</span> <span style=color:#e6db74>${</span>PG_LIB<span style=color:#e6db74>}</span> <span style=color:#e6db74>${</span>PG_HOME<span style=color:#e6db74>}</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e>#-------------------------------------------------------------------------------</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>WORKDIR</span><span style=color:#e6db74> ${PG_HOME}</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> --chown<span style=color:#f92672>=</span>postgres:postgres lib/ ./lib/<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e>#-------------------------------------------------------------------------------</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>USER</span><span style=color:#e6db74> ${PG_USER}</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>WORKDIR</span><span style=color:#e6db74> ${PG_HOME}/lib/postgres-xc</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> ./configure --prefix <span style=color:#e6db74>${</span>PG_LIB<span style=color:#e6db74>}</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    make <span style=color:#f92672>&amp;&amp;</span> <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    cd contrib/pgxc_monitor <span style=color:#f92672>&amp;&amp;</span> <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    make<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>WORKDIR</span><span style=color:#e6db74> ${PG_HOME}/lib/benchmarksql</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> ant<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e>#-------------------------------------------------------------------------------</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>USER</span><span style=color:#e6db74> root</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>WORKDIR</span><span style=color:#e6db74> ${PG_HOME}/lib/postgres-xc</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> make install <span style=color:#f92672>&amp;&amp;</span> <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    cd contrib/pgxc_monitor <span style=color:#f92672>&amp;&amp;</span> <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    make install<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e>#-------------------------------------------------------------------------------</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>USER</span><span style=color:#e6db74> ${PG_USER}</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>WORKDIR</span><span style=color:#e6db74> ${PG_HOME}</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>ENV</span> PATH<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>PG_LIB<span style=color:#e6db74>}</span>/bin:$PATH <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    PGDATA<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>PG_HOME<span style=color:#e6db74>}</span>/data <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    PG_USER_HEALTHCHECK<span style=color:#f92672>=</span>_healthcheck<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> bin/* <span style=color:#e6db74>${</span>PG_LIB<span style=color:#e6db74>}</span>/bin/<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> ci/ ./ci/<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>VOLUME</span><span style=color:#e6db74> ${PG_HOME}</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e>#===============================================================================</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span></code></pre></div><p>compose 文件如下，</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#34;3&#34;</span>
+<span style=color:#f92672>services</span>:
+  <span style=color:#f92672>db_gtm_1</span>:
+    <span style=color:#f92672>environment</span>:
+      - <span style=color:#ae81ff>PG_HOST=0.0.0.0</span>
+      - <span style=color:#ae81ff>PG_NODE=gtm_1</span>
+      - <span style=color:#ae81ff>PG_PORT=6666</span>
+    <span style=color:#f92672>build</span>: <span style=color:#ae81ff>.</span>
+    <span style=color:#f92672>command</span>: <span style=color:#ae81ff>docker-cmd-gtm</span>
+    <span style=color:#f92672>entrypoint</span>: <span style=color:#ae81ff>docker-entrypoint-gtm</span>
+    <span style=color:#f92672>volumes</span>:
+      - <span style=color:#ae81ff>db_gtm_1:/var/lib/postgresql</span>
+    <span style=color:#f92672>networks</span>:
+      - <span style=color:#ae81ff>db_a</span>
+    <span style=color:#f92672>healthcheck</span>:
+      <span style=color:#f92672>test</span>: [<span style=color:#e6db74>&#34;CMD&#34;</span>, <span style=color:#e6db74>&#34;docker-healthcheck-gtm&#34;</span>]
+  <span style=color:#f92672>db_coord_1</span>:
+    <span style=color:#f92672>ports</span>:
+      - <span style=color:#e6db74>&#34;25432:5432&#34;</span>
+    <span style=color:#f92672>environment</span>:
+      - <span style=color:#ae81ff>PG_GTM_HOST=db_gtm_1</span>
+      - <span style=color:#ae81ff>PG_GTM_PORT=6666</span>
+      - <span style=color:#ae81ff>PG_HOST=0.0.0.0</span>
+      - <span style=color:#ae81ff>PG_NODE=coord_1</span>
+      - <span style=color:#ae81ff>PG_PORT=5432</span>
+    <span style=color:#f92672>build</span>: <span style=color:#ae81ff>.</span>
+    <span style=color:#f92672>command</span>: <span style=color:#ae81ff>docker-cmd-coord</span>
+    <span style=color:#f92672>entrypoint</span>: <span style=color:#ae81ff>docker-entrypoint-coord</span>
+    <span style=color:#f92672>volumes</span>:
+      - <span style=color:#ae81ff>db_coord_1:/var/lib/postgresql</span>
+    <span style=color:#f92672>depends_on</span>:
+      - <span style=color:#ae81ff>db_gtm_1</span>
+    <span style=color:#f92672>networks</span>:
+      - <span style=color:#ae81ff>db_a</span>
+      - <span style=color:#ae81ff>db_b</span>
+    <span style=color:#f92672>healthcheck</span>:
+      <span style=color:#f92672>test</span>: [<span style=color:#e6db74>&#34;CMD&#34;</span>, <span style=color:#e6db74>&#34;docker-healthcheck-coord&#34;</span>]
+  <span style=color:#f92672>db_coord_2</span>:
+    <span style=color:#f92672>ports</span>:
+      - <span style=color:#e6db74>&#34;25433:5432&#34;</span>
+    <span style=color:#f92672>environment</span>:
+      - <span style=color:#ae81ff>PG_GTM_HOST=db_gtm_1</span>
+      - <span style=color:#ae81ff>PG_GTM_PORT=6666</span>
+      - <span style=color:#ae81ff>PG_HOST=0.0.0.0</span>
+      - <span style=color:#ae81ff>PG_NODE=coord_2</span>
+      - <span style=color:#ae81ff>PG_PORT=5432</span>
+    <span style=color:#f92672>build</span>: <span style=color:#ae81ff>.</span>
+    <span style=color:#f92672>command</span>: <span style=color:#ae81ff>docker-cmd-coord</span>
+    <span style=color:#f92672>entrypoint</span>: <span style=color:#ae81ff>docker-entrypoint-coord</span>
+    <span style=color:#f92672>volumes</span>:
+      - <span style=color:#ae81ff>db_coord_2:/var/lib/postgresql</span>
+    <span style=color:#f92672>depends_on</span>:
+      - <span style=color:#ae81ff>db_gtm_1</span>
+    <span style=color:#f92672>networks</span>:
+      - <span style=color:#ae81ff>db_a</span>
+      - <span style=color:#ae81ff>db_b</span>
+    <span style=color:#f92672>healthcheck</span>:
+      <span style=color:#f92672>test</span>: [<span style=color:#e6db74>&#34;CMD&#34;</span>, <span style=color:#e6db74>&#34;docker-healthcheck-coord&#34;</span>]
+  <span style=color:#f92672>db_data_1</span>:
+    <span style=color:#f92672>ports</span>:
+      - <span style=color:#e6db74>&#34;25434:5432&#34;</span>
+    <span style=color:#f92672>environment</span>:
+      - <span style=color:#ae81ff>PG_GTM_HOST=db_gtm_1</span>
+      - <span style=color:#ae81ff>PG_GTM_PORT=6666</span>
+      - <span style=color:#ae81ff>PG_HOST=0.0.0.0</span>
+      - <span style=color:#ae81ff>PG_NODE=data_1</span>
+      - <span style=color:#ae81ff>PG_PORT=5432</span>
+    <span style=color:#f92672>build</span>: <span style=color:#ae81ff>.</span>
+    <span style=color:#f92672>command</span>: <span style=color:#ae81ff>docker-cmd-data</span>
+    <span style=color:#f92672>entrypoint</span>: <span style=color:#ae81ff>docker-entrypoint-data</span>
+    <span style=color:#f92672>depends_on</span>:
+      - <span style=color:#ae81ff>db_gtm_1</span>
+    <span style=color:#f92672>volumes</span>:
+      - <span style=color:#ae81ff>db_data_1:/var/lib/postgresql</span>
+    <span style=color:#f92672>networks</span>:
+      - <span style=color:#ae81ff>db_a</span>
+      - <span style=color:#ae81ff>db_b</span>
+    <span style=color:#f92672>healthcheck</span>:
+      <span style=color:#f92672>test</span>: [<span style=color:#e6db74>&#34;CMD&#34;</span>, <span style=color:#e6db74>&#34;docker-healthcheck-data&#34;</span>]
+  <span style=color:#f92672>db_data_2</span>:
+    <span style=color:#f92672>ports</span>:
+      - <span style=color:#e6db74>&#34;25435:5432&#34;</span>
+    <span style=color:#f92672>environment</span>:
+      - <span style=color:#ae81ff>PG_GTM_HOST=db_gtm_1</span>
+      - <span style=color:#ae81ff>PG_GTM_PORT=6666</span>
+      - <span style=color:#ae81ff>PG_HOST=0.0.0.0</span>
+      - <span style=color:#ae81ff>PG_NODE=data_2</span>
+      - <span style=color:#ae81ff>PG_PORT=5432</span>
+    <span style=color:#f92672>build</span>: <span style=color:#ae81ff>.</span>
+    <span style=color:#f92672>command</span>: <span style=color:#ae81ff>docker-cmd-data</span>
+    <span style=color:#f92672>entrypoint</span>: <span style=color:#ae81ff>docker-entrypoint-data</span>
+    <span style=color:#f92672>depends_on</span>:
+      - <span style=color:#ae81ff>db_gtm_1</span>
+    <span style=color:#f92672>volumes</span>:
+      - <span style=color:#ae81ff>db_data_2:/var/lib/postgresql</span>
+    <span style=color:#f92672>networks</span>:
+      - <span style=color:#ae81ff>db_a</span>
+      - <span style=color:#ae81ff>db_b</span>
+    <span style=color:#f92672>healthcheck</span>:
+      <span style=color:#f92672>test</span>: [<span style=color:#e6db74>&#34;CMD&#34;</span>, <span style=color:#e6db74>&#34;docker-healthcheck-data&#34;</span>]
+<span style=color:#f92672>volumes</span>:
+  <span style=color:#f92672>db_gtm_1</span>: {}
+  <span style=color:#f92672>db_coord_1</span>: {}
+  <span style=color:#f92672>db_coord_2</span>: {}
+  <span style=color:#f92672>db_data_1</span>: {}
+  <span style=color:#f92672>db_data_2</span>: {}
+<span style=color:#f92672>networks</span>:
+  <span style=color:#f92672>db_a</span>:
+    <span style=color:#f92672>internal</span>: <span style=color:#66d9ef>true</span>
+  <span style=color:#f92672>db_b</span>:
+    <span style=color:#f92672>internal</span>: <span style=color:#66d9ef>true</span>
+
+</code></pre></div><p>直接配置好对应的文件位置，直接运行即可</p>
+<h3 id=benchmark>
+benchmark
+<a href=#benchmark class=h-anchor aria-hidden=true>#</a>
+</h3>
+<p>按照说明文档直接顺序执行即可，但是需要注意pg运行的时候配置文件中conn指定的database，需要和前面要求执行的语句的database一样，</p>
+<p>benchmark如果需要有效测试，需要注意根据测试环境设置对应的参数，</p>
+<ol>
+<li>warehouse
+BenchmarkSQL数据库每个warehouse大小大概是100MB，如果该参数设置为10，那整个数据库的大小大概在1000MB。建议将数据库的大小设置为服务器物理内存的2-5倍，如果服务器内存为16GB，那么warehouse设置建议在328～819之间。</li>
+<li>terminals
+terminals指的是并发连接数，建议设置为服务器CPU总线程数的2-6倍。如果服务器为双核16线程（单核8线程），那么建议配置在32～96之间</li>
+<li>runTxnsPerTerminal
+每个终端（terminal）运行的固定事务数量，例如：如果该值设置为10，意味着每个terminal运行10个事务，如果有32个终端，那整体运行320个事务后，测试结束。该参数配置为非0值时，下面的runMins参数必须设置为0</li>
+<li>runMins
+要测试的整体时间，单位为分钟，如果runMins设置为60，那么测试持续1小时候结束。该值设置为非0值时，runTxnsPerTerminal参数必须设置为0。这两个参数不能同时设置为正整数，如果设置其中一个，另一个必须为0，主要区别是runMins定义时间长度来控制测试时间；runTxnsPerTerminal定义事务总数来控制时间</li>
+<li>limitTxnsPerMin
+每分钟事务总数限制，该参数主要控制每分钟处理的事务数，事务数受terminals参数的影响，如果terminals数量大于limitTxnsPerMin值，意味着并发数大于每分钟事务总数，该参数会失效，想想也是如此，如果有1000个并发同时发起，那每分钟事务数设置为300就没意义了，上来就是1000个并发，所以要让该参数有效，可以设置数量大于并发数，或者让其失效，测试过程中目前采用的是默认300</li>
+</ol>
+<p>测试过程中的整体逻辑通过一个例子来说明：假如limitTxnsPerMin参数使用默认300，termnals终端数量设置为150并发，实际会计算一个值A=limitTxnsPerMin/terminals=2（此处需要注意，A为int类型，如果terminals的值大于limitTxnsPerMin，得到的A值必然为0，为0时该参数失效），此处记住A=2；接下来，在整个测试运行过程中，软件会记录一个事务的开始时间和结束时间，假设为B=2000毫秒；然后用60000（毫秒，代表1分钟）除以A得到一个值C=60000/2=30000，假如事务运行时间B&lt;C，那么该事务执行完后，sleep C-B秒再开启下一个事务；假如B>C，意味着事务超过了预期时间，那么马上进行下一个事务。在本例子中，每分钟300个事务，设置了150个并发，每分钟执行2个并发，每个并发执行2秒钟完成，每个并发sleep 28秒，这样可以保证一分钟有两个并发，反推回来整体并发数为300/分钟</p>
+<p>以上内容来自网络，自己测试的时候可以仔细阅读</p>
+<h2 id=gdb-调试>
+gdb 调试
+<a href=#gdb-%e8%b0%83%e8%af%95 class=h-anchor aria-hidden=true>#</a>
+</h2>
+<p>这里有几个进程需要进行区分，由于pg是典型的CS架构，</p>
 <ul>
 <li>你可以调试psql进程，也就是你命令行执行的进程，</li>
 <li>也可以调试守护进程，他接收到新的链接之后会fork一个新进程，</li>
 <li>也可以调试他fork出来的进程，这才是你命令行对应的执行进程，语句的解析执行都是在这个进程中</li>
 <li>也可以调试其他的进程，，例如vocumm进程，，walwrite进程等</li>
 </ul>
-<h2 id=gdb-调试>
-gdb 调试
-<a href=#gdb-%e8%b0%83%e8%af%95 class=h-anchor aria-hidden=true>#</a>
-</h2>
 <ol>
 <li>使用脚本可以在gdb中打印出具体的执行计划的节点树</li>
 </ol>
