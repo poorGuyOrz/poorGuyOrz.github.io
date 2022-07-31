@@ -1,0 +1,266 @@
+<!doctype html><html lang=en>
+<head>
+<title>
+Antdbbuild ::
+Esoye — My note blog
+</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="AntDB环境搭建 #   下载源码 安装必须的依赖  sudo apt-get install flex sudo apt-get install bison sudo apt-get install libreadline6-dev sudo apt-get install libssl-dev sudo apt-get install libpam-dev sudo apt-get install libxml2 sudo apt-get install libxml2-dev sudo apt-get install libxslt-dev sudo apt-get install libldap-dev sudo apt-get install libperl-dev sudo apt-get install libpython2-dev sudo apt-get install python3-dev sudo apt-get install zlib1g-dev sudo apt-get install libssh2-1-dev  mkdir build &amp;amp;&amp;amp; cd build然后执行../configure --prefix=/home/wen/postgres/build/antdb/build --with-segsize=4 --with-wal-blocksize=64 --enable-grammar-oracle --with-perl --with-python --with-pam --with-ldap --with-libxml --with-libxslt --enable-thread-safety --disable-debug --disable-cassert --enable-depend CFLAGS='-O2' 中间有任何出错的地方，需要自行尝试解决，需要自行指定安装路径，建议列表几下需要安装的节点，路径IP以及PORT，直接在下面的配置文件中设置相关的命令，直接执行命令mk即可">
+<meta name=keywords content="数据库">
+<meta name=robots content="noodp">
+<link rel=canonical href=https://Esoye.github.io/posts/postgres/antdbbuild/>
+<link rel=stylesheet href=https://Esoye.github.io/assets/style.css>
+<link rel=stylesheet href=https://Esoye.github.io/style.css>
+<link rel=apple-touch-icon-precomposed sizes=144x144 href=https://Esoye.github.io/img/apple-touch-icon-144-precomposed.png>
+<link rel="shortcut icon" href=https://Esoye.github.io/img/favicon.png>
+<link href=https://Esoye.github.io/assets/fonts/Inter-Italic.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<link href=https://Esoye.github.io/assets/fonts/Inter-Regular.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<link href=https://Esoye.github.io/assets/fonts/Inter-Medium.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<link href=https://Esoye.github.io/assets/fonts/Inter-MediumItalic.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<link href=https://Esoye.github.io/assets/fonts/Inter-Bold.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<link href=https://Esoye.github.io/assets/fonts/Inter-BoldItalic.woff2 rel=preload type=font/woff2 as=font crossorigin>
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Antdbbuild">
+<meta name=twitter:description content="AntDB环境搭建，由于只有一个机器，所以可能会在一个环境运行多个postgres集群实例，所以和常规的集群搭建不一样，所以特意记录下来">
+<meta property="og:title" content="Antdbbuild">
+<meta property="og:description" content="AntDB环境搭建，由于只有一个机器，所以可能会在一个环境运行多个postgres集群实例，所以和常规的集群搭建不一样，所以特意记录下来">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://Esoye.github.io/posts/postgres/antdbbuild/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2022-07-29T14:00:48+08:00">
+<meta property="article:modified_time" content="2022-07-29T14:00:48+08:00"><meta property="og:site_name" content="Esoye">
+</head>
+<body class=dark-theme>
+<div class=container>
+<header class=header>
+<span class=header__inner>
+<a href=/ class=logo style=text-decoration:none>
+<span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg>
+</span>
+<span class=logo__text>Esoye</span>
+<span class=logo__cursor></span>
+</a>
+<span class=header__right>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/archive>Archive</a></li>
+<li><a href=/showcase>Showcase</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/archive>Archive</a></li>
+<li><a href=/showcase>Showcase</a></li>
+</ul>
+</nav>
+<span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+</span>
+<span class=theme-toggle><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg>
+</span>
+</span>
+</span>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>Antdbbuild</h1>
+<div class=post-meta>
+<span class=post-date>
+2022-07-29
+</span>
+</div>
+<span class=post-tags>
+<a href=https://Esoye.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/>#数据库</a>&nbsp;
+<a href=https://Esoye.github.io/tags/antdb/>#AntDB</a>&nbsp;
+<a href=https://Esoye.github.io/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/>#环境搭建</a>&nbsp;
+</span>
+<div class=post-content>
+<h2 id=antdb环境搭建>
+AntDB环境搭建
+<a href=#antdb%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba class=h-anchor aria-hidden=true>#</a>
+</h2>
+<ol>
+<li>下载源码</li>
+<li>安装必须的依赖</li>
+</ol>
+<pre tabindex=0><code class=language-shll data-lang=shll>sudo apt-get install flex 
+sudo apt-get install bison 
+sudo apt-get install libreadline6-dev 
+sudo apt-get install libssl-dev 
+sudo apt-get install libpam-dev 
+sudo apt-get install libxml2 
+sudo apt-get install libxml2-dev 
+sudo apt-get install libxslt-dev 
+sudo apt-get install libldap-dev 
+sudo apt-get install libperl-dev 
+sudo apt-get install libpython2-dev 
+sudo apt-get install python3-dev
+sudo apt-get install zlib1g-dev 
+sudo apt-get install libssh2-1-dev
+</code></pre><ol start=3>
+<li>
+<p><del><code>mkdir build && cd build</code>然后执行<code>../configure --prefix=/home/wen/postgres/build/antdb/build --with-segsize=4 --with-wal-blocksize=64 --enable-grammar-oracle --with-perl --with-python --with-pam --with-ldap --with-libxml --with-libxslt --enable-thread-safety --disable-debug --disable-cassert --enable-depend CFLAGS='-O2'</code>
+中间有任何出错的地方，需要自行尝试解决，需要自行指定安装路径，建议列表几下需要安装的节点，路径IP以及PORT</del>，直接在下面的配置文件中设置相关的命令，直接执行命令<code>mk</code>即可</p>
+</li>
+<li>
+<p>配置环境变量</p>
+</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># env.sh</span>
+export ADBHOME<span style=color:#f92672>=</span>/home/wen/postgres/build/antdb/build
+export PATH<span style=color:#f92672>=</span>$ADBHOME/bin:$PATH
+export LD_LIBRARY_PATH<span style=color:#f92672>=</span>$ADBHOME/lib:$LD_LIBRARY_PATH
+export PGDATABASE<span style=color:#f92672>=</span>postgres
+
+export mgrdata<span style=color:#f92672>=</span>/home/wen/postgres/build/antdb/data
+alias adbmgr<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;psql -p 65000 -d postgres &#39;</span>
+alias mgr_stop<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;mgr_ctl stop -D $mgrdata/mgr -m fast&#39;</span>
+alias mgr_start<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;mgr_ctl start -D $mgrdata/mgr&#39;</span>
+alias cdd<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;cd </span>$mgrdata<span style=color:#e6db74>&#34;</span>
+alias pcn1<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;psql -d postgres -p 65022&#34;</span>
+alias pcn2<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;psql -d postgres -p 65023&#34;</span>
+alias pdn1<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;psql -d postgres -p 65013&#34;</span>
+alias pdn2<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;psql -d postgres -p 65014&#34;</span>
+alias pgtm<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;psql -d postgres -p 65011&#34;</span>
+
+alias mk<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;cd /home/wen/postgres/build/antdb/make &amp;&amp; \
+</span><span style=color:#e6db74>/home/wen/postgres/AntDB/configure --prefix=</span>$ADBHOME<span style=color:#e6db74> \
+</span><span style=color:#e6db74>--with-segsize=4 \
+</span><span style=color:#e6db74>--with-wal-blocksize=64 \
+</span><span style=color:#e6db74>--enable-grammar-oracle \
+</span><span style=color:#e6db74>--with-perl \
+</span><span style=color:#e6db74>--with-python \
+</span><span style=color:#e6db74>--with-pam \
+</span><span style=color:#e6db74>--with-ldap \
+</span><span style=color:#e6db74>--with-libxml \
+</span><span style=color:#e6db74>--with-libxslt \
+</span><span style=color:#e6db74>--enable-thread-safety \
+</span><span style=color:#e6db74>--disable-debug \
+</span><span style=color:#e6db74>--disable-cassert \
+</span><span style=color:#e6db74>--enable-depend CFLAGS=&#39;-g&#39; &amp;&amp; \
+</span><span style=color:#e6db74>make &amp;&amp; make install
+</span><span style=color:#e6db74>&#34;</span>
+
+<span style=color:#75715e># .bashrn</span>
+alias cda<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;cd /home/wen/postgres/AntDB &amp;&amp; source env.sh&#34;</span>
+</code></pre></div><ol start=5>
+<li>
+<p>初始化adbmgr<code>initmgr -D $mgrdata/mgr</code></p>
+</li>
+<li>
+<p>配置adbmgr</p>
+</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>cat  &gt;&gt; <span style=color:#e6db74>${</span>mgrdata<span style=color:#e6db74>}</span>/mgr/postgresql.conf <span style=color:#e6db74>&lt;&lt; EOF
+</span><span style=color:#e6db74>port = 65000
+</span><span style=color:#e6db74>listen_addresses = &#39;*&#39;
+</span><span style=color:#e6db74>log_directory = &#39;pg_log&#39;
+</span><span style=color:#e6db74>log_destination =&#39;csvlog&#39;
+</span><span style=color:#e6db74>logging_collector = on
+</span><span style=color:#e6db74>log_min_messages = error
+</span><span style=color:#e6db74>max_wal_senders = 3
+</span><span style=color:#e6db74>hot_standby = on
+</span><span style=color:#e6db74>wal_level = replica
+</span><span style=color:#e6db74>EOF</span>
+
+cat  &gt;&gt; <span style=color:#e6db74>${</span>mgrdata<span style=color:#e6db74>}</span>/mgr/pg_hba.conf <span style=color:#e6db74>&lt;&lt; EOF
+</span><span style=color:#e6db74>host    replication     all          10.0.0.0/8                 trust
+</span><span style=color:#e6db74>host    all             all          10.0.0.0/8                 trust
+</span><span style=color:#e6db74>EOF</span>
+</code></pre></div><ol start=7>
+<li>
+<p>使用前面配置中的命令启动adbmgr <code>mgr_start</code></p>
+</li>
+<li>
+<p>添加主机</p>
+</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>add</span> <span style=color:#66d9ef>host</span> adb01(port<span style=color:#f92672>=</span><span style=color:#ae81ff>22</span>,protocol<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;ssh&#39;</span>,adbhome<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;/home/wen/postgres/build/antdb/data/adb01&#39;</span>,address<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;192.168.150.132&#34;</span>,agentport<span style=color:#f92672>=</span><span style=color:#ae81ff>65001</span>,<span style=color:#66d9ef>user</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;wen&#39;</span>);
+deploy <span style=color:#66d9ef>all</span> password <span style=color:#e6db74>&#39;wen&#39;</span>;
+<span style=color:#66d9ef>start</span> agent <span style=color:#66d9ef>all</span> password <span style=color:#e6db74>&#39;wen&#39;</span>;
+
+<span style=color:#66d9ef>drop</span> <span style=color:#66d9ef>host</span> adb01;
+stop agent <span style=color:#66d9ef>all</span>;
+</code></pre></div><ol start=9>
+<li>添加节点</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>add</span> gtmcoord master gtmcoord(path<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;/home/wen/postgres/build/antdb/data/gtmcoord&#39;</span>, <span style=color:#66d9ef>host</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;adb01&#39;</span>, port<span style=color:#f92672>=</span><span style=color:#ae81ff>65011</span>);
+<span style=color:#66d9ef>add</span> gtmcoord slave  sgtmcoord <span style=color:#66d9ef>for</span> gtmcoord (path<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;/home/wen/postgres/build/antdb/data/gtmcoords&#39;</span>, <span style=color:#66d9ef>host</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;adb01&#39;</span>, port<span style=color:#f92672>=</span><span style=color:#ae81ff>65012</span>); 
+
+<span style=color:#66d9ef>add</span> coordinator master cn1(path<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;/home/wen/postgres/build/antdb/data/cn1&#39;</span>, <span style=color:#66d9ef>host</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;adb01&#39;</span>, port<span style=color:#f92672>=</span><span style=color:#ae81ff>65022</span>);
+<span style=color:#66d9ef>add</span> coordinator master cn2(path<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;/home/wen/postgres/build/antdb/data/cn2&#39;</span>, <span style=color:#66d9ef>host</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;adb01&#39;</span>, port<span style=color:#f92672>=</span><span style=color:#ae81ff>65032</span>);
+
+
+<span style=color:#66d9ef>add</span> datanode master dn1(path<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;/home/wen/postgres/build/antdb/data/dn1&#39;</span>, <span style=color:#66d9ef>host</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;adb01&#39;</span>, port<span style=color:#f92672>=</span><span style=color:#ae81ff>65013</span>);
+<span style=color:#66d9ef>add</span> datanode master dn2(path<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;/home/wen/postgres/build/antdb/data/dn2&#39;</span>, <span style=color:#66d9ef>host</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;adb01&#39;</span>, port<span style=color:#f92672>=</span><span style=color:#ae81ff>65014</span>);
+<span style=color:#66d9ef>add</span> datanode slave ds1 <span style=color:#66d9ef>for</span> dn1 (path<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;/home/wen/postgres/build/antdb/data/ds1&#39;</span>, <span style=color:#66d9ef>host</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;adb01&#39;</span>, port<span style=color:#f92672>=</span><span style=color:#ae81ff>65015</span>);
+<span style=color:#66d9ef>add</span> datanode slave ds2 <span style=color:#66d9ef>for</span> dn2 (path<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;/home/wen/postgres/build/antdb/data/ds2&#39;</span>, <span style=color:#66d9ef>host</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;adb01&#39;</span>, port<span style=color:#f92672>=</span><span style=color:#ae81ff>65016</span>);
+
+<span style=color:#75715e>-- 可以删除节点
+</span><span style=color:#75715e></span><span style=color:#66d9ef>DROP</span> GTMCOORD <span style=color:#960050;background-color:#1e0010>{</span> MASTER <span style=color:#f92672>|</span> SLAVE <span style=color:#960050;background-color:#1e0010>}</span> node_name
+<span style=color:#66d9ef>DROP</span> COORDINATOR MASTER node_name [, ...]
+<span style=color:#66d9ef>DROP</span> DATANODE <span style=color:#960050;background-color:#1e0010>{</span> MASTER <span style=color:#f92672>|</span> SLAVE <span style=color:#960050;background-color:#1e0010>}</span> node_name [, ...]
+
+<span style=color:#75715e>-- 显示节点
+</span><span style=color:#75715e></span>list node;
+
+</code></pre></div><ol start=10>
+<li>初始化节点</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql>init <span style=color:#66d9ef>all</span>;
+<span style=color:#66d9ef>start</span> <span style=color:#66d9ef>all</span>;
+
+monitor <span style=color:#66d9ef>all</span>;
+
+
+ nodename  <span style=color:#f92672>|</span>      nodetype      <span style=color:#f92672>|</span> status <span style=color:#f92672>|</span> description <span style=color:#f92672>|</span>      <span style=color:#66d9ef>host</span>       <span style=color:#f92672>|</span> port  <span style=color:#f92672>|</span> recovery <span style=color:#f92672>|</span>           boot time           <span style=color:#f92672>|</span> nodezone 
+<span style=color:#75715e>-----------+--------------------+--------+-------------+-----------------+-------+----------+-------------------------------+----------
+</span><span style=color:#75715e></span> gtmcoord  <span style=color:#f92672>|</span> gtmcoord master    <span style=color:#f92672>|</span> t      <span style=color:#f92672>|</span> running     <span style=color:#f92672>|</span> <span style=color:#ae81ff>192</span>.<span style=color:#ae81ff>168</span>.<span style=color:#ae81ff>150</span>.<span style=color:#ae81ff>132</span> <span style=color:#f92672>|</span> <span style=color:#ae81ff>65011</span> <span style=color:#f92672>|</span> <span style=color:#66d9ef>false</span>    <span style=color:#f92672>|</span> <span style=color:#ae81ff>2022</span><span style=color:#f92672>-</span><span style=color:#ae81ff>07</span><span style=color:#f92672>-</span><span style=color:#ae81ff>29</span> <span style=color:#ae81ff>12</span>:<span style=color:#ae81ff>58</span>:<span style=color:#ae81ff>11</span>.<span style=color:#ae81ff>839091</span><span style=color:#f92672>+</span><span style=color:#ae81ff>08</span> <span style=color:#f92672>|</span> <span style=color:#66d9ef>local</span>
+ sgtmcoord <span style=color:#f92672>|</span> gtmcoord slave     <span style=color:#f92672>|</span> t      <span style=color:#f92672>|</span> running     <span style=color:#f92672>|</span> <span style=color:#ae81ff>192</span>.<span style=color:#ae81ff>168</span>.<span style=color:#ae81ff>150</span>.<span style=color:#ae81ff>132</span> <span style=color:#f92672>|</span> <span style=color:#ae81ff>65012</span> <span style=color:#f92672>|</span> <span style=color:#66d9ef>true</span>     <span style=color:#f92672>|</span> <span style=color:#ae81ff>2022</span><span style=color:#f92672>-</span><span style=color:#ae81ff>07</span><span style=color:#f92672>-</span><span style=color:#ae81ff>29</span> <span style=color:#ae81ff>12</span>:<span style=color:#ae81ff>58</span>:<span style=color:#ae81ff>13</span>.<span style=color:#ae81ff>437948</span><span style=color:#f92672>+</span><span style=color:#ae81ff>08</span> <span style=color:#f92672>|</span> <span style=color:#66d9ef>local</span>
+ cn1       <span style=color:#f92672>|</span> coordinator master <span style=color:#f92672>|</span> t      <span style=color:#f92672>|</span> running     <span style=color:#f92672>|</span> <span style=color:#ae81ff>192</span>.<span style=color:#ae81ff>168</span>.<span style=color:#ae81ff>150</span>.<span style=color:#ae81ff>132</span> <span style=color:#f92672>|</span> <span style=color:#ae81ff>65022</span> <span style=color:#f92672>|</span> <span style=color:#66d9ef>false</span>    <span style=color:#f92672>|</span> <span style=color:#ae81ff>2022</span><span style=color:#f92672>-</span><span style=color:#ae81ff>07</span><span style=color:#f92672>-</span><span style=color:#ae81ff>29</span> <span style=color:#ae81ff>12</span>:<span style=color:#ae81ff>58</span>:<span style=color:#ae81ff>15</span>.<span style=color:#ae81ff>327357</span><span style=color:#f92672>+</span><span style=color:#ae81ff>08</span> <span style=color:#f92672>|</span> <span style=color:#66d9ef>local</span>
+ cn2       <span style=color:#f92672>|</span> coordinator master <span style=color:#f92672>|</span> t      <span style=color:#f92672>|</span> running     <span style=color:#f92672>|</span> <span style=color:#ae81ff>192</span>.<span style=color:#ae81ff>168</span>.<span style=color:#ae81ff>150</span>.<span style=color:#ae81ff>132</span> <span style=color:#f92672>|</span> <span style=color:#ae81ff>65032</span> <span style=color:#f92672>|</span> <span style=color:#66d9ef>false</span>    <span style=color:#f92672>|</span> <span style=color:#ae81ff>2022</span><span style=color:#f92672>-</span><span style=color:#ae81ff>07</span><span style=color:#f92672>-</span><span style=color:#ae81ff>29</span> <span style=color:#ae81ff>12</span>:<span style=color:#ae81ff>58</span>:<span style=color:#ae81ff>15</span>.<span style=color:#ae81ff>346259</span><span style=color:#f92672>+</span><span style=color:#ae81ff>08</span> <span style=color:#f92672>|</span> <span style=color:#66d9ef>local</span>
+ dn1       <span style=color:#f92672>|</span> datanode master    <span style=color:#f92672>|</span> t      <span style=color:#f92672>|</span> running     <span style=color:#f92672>|</span> <span style=color:#ae81ff>192</span>.<span style=color:#ae81ff>168</span>.<span style=color:#ae81ff>150</span>.<span style=color:#ae81ff>132</span> <span style=color:#f92672>|</span> <span style=color:#ae81ff>65013</span> <span style=color:#f92672>|</span> <span style=color:#66d9ef>false</span>    <span style=color:#f92672>|</span> <span style=color:#ae81ff>2022</span><span style=color:#f92672>-</span><span style=color:#ae81ff>07</span><span style=color:#f92672>-</span><span style=color:#ae81ff>29</span> <span style=color:#ae81ff>12</span>:<span style=color:#ae81ff>58</span>:<span style=color:#ae81ff>18</span>.<span style=color:#ae81ff>087381</span><span style=color:#f92672>+</span><span style=color:#ae81ff>08</span> <span style=color:#f92672>|</span> <span style=color:#66d9ef>local</span>
+ dn2       <span style=color:#f92672>|</span> datanode master    <span style=color:#f92672>|</span> t      <span style=color:#f92672>|</span> running     <span style=color:#f92672>|</span> <span style=color:#ae81ff>192</span>.<span style=color:#ae81ff>168</span>.<span style=color:#ae81ff>150</span>.<span style=color:#ae81ff>132</span> <span style=color:#f92672>|</span> <span style=color:#ae81ff>65014</span> <span style=color:#f92672>|</span> <span style=color:#66d9ef>false</span>    <span style=color:#f92672>|</span> <span style=color:#ae81ff>2022</span><span style=color:#f92672>-</span><span style=color:#ae81ff>07</span><span style=color:#f92672>-</span><span style=color:#ae81ff>29</span> <span style=color:#ae81ff>12</span>:<span style=color:#ae81ff>58</span>:<span style=color:#ae81ff>18</span>.<span style=color:#ae81ff>104376</span><span style=color:#f92672>+</span><span style=color:#ae81ff>08</span> <span style=color:#f92672>|</span> <span style=color:#66d9ef>local</span>
+ ds1       <span style=color:#f92672>|</span> datanode slave     <span style=color:#f92672>|</span> t      <span style=color:#f92672>|</span> running     <span style=color:#f92672>|</span> <span style=color:#ae81ff>192</span>.<span style=color:#ae81ff>168</span>.<span style=color:#ae81ff>150</span>.<span style=color:#ae81ff>132</span> <span style=color:#f92672>|</span> <span style=color:#ae81ff>65015</span> <span style=color:#f92672>|</span> <span style=color:#66d9ef>true</span>     <span style=color:#f92672>|</span> <span style=color:#ae81ff>2022</span><span style=color:#f92672>-</span><span style=color:#ae81ff>07</span><span style=color:#f92672>-</span><span style=color:#ae81ff>29</span> <span style=color:#ae81ff>12</span>:<span style=color:#ae81ff>58</span>:<span style=color:#ae81ff>19</span>.<span style=color:#ae81ff>502512</span><span style=color:#f92672>+</span><span style=color:#ae81ff>08</span> <span style=color:#f92672>|</span> <span style=color:#66d9ef>local</span>
+ ds2       <span style=color:#f92672>|</span> datanode slave     <span style=color:#f92672>|</span> t      <span style=color:#f92672>|</span> running     <span style=color:#f92672>|</span> <span style=color:#ae81ff>192</span>.<span style=color:#ae81ff>168</span>.<span style=color:#ae81ff>150</span>.<span style=color:#ae81ff>132</span> <span style=color:#f92672>|</span> <span style=color:#ae81ff>65016</span> <span style=color:#f92672>|</span> <span style=color:#66d9ef>true</span>     <span style=color:#f92672>|</span> <span style=color:#ae81ff>2022</span><span style=color:#f92672>-</span><span style=color:#ae81ff>07</span><span style=color:#f92672>-</span><span style=color:#ae81ff>29</span> <span style=color:#ae81ff>12</span>:<span style=color:#ae81ff>58</span>:<span style=color:#ae81ff>20</span>.<span style=color:#ae81ff>014611</span><span style=color:#f92672>+</span><span style=color:#ae81ff>08</span> <span style=color:#f92672>|</span> <span style=color:#66d9ef>local</span>
+
+</code></pre></div><blockquote>
+<p>添加host的时候主要是同步二进制文件，所以在修改代码编译之后，需要注意修改host对应文件夹下的文件，否则编译不起效，host上的所有的节点都是使用host目录下的二进制文件</p>
+</blockquote>
+</div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button next">
+<a href=https://Esoye.github.io/posts/postgres/opt/>
+<span class=button__text>Postgres Optimizer</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<a href=/ class=logo style=text-decoration:none>
+<span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg>
+</span>
+<span class=logo__text>Esoye</span>
+<span class=logo__cursor></span>
+</a>
+<div class=copyright>
+<span>© 2022 Powered by
+<a href=https://gohugo.io target=_blank rel=noopener>Hugo</a></span>
+<span>Theme created by
+<a href=https://twitter.com/panr target=_blank rel=noopener>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://Esoye.github.io/assets/main.js></script>
+<script src=https://Esoye.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

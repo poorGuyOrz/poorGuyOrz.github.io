@@ -11,7 +11,9 @@ Esoye — My note blog
  pg_plan_queries  pgxc_try_planner      pgxc SetForceXidFromGTM
  pg_plan_queries  pgxc_planner      pgxc_planner | pgxc_try_planner
  语句可以发送到 Datanode，而且只需要协调器作为代理-在这种情况下，它创建单个节点计划。 语句可以在协调器上完全计算-因此不涉及查询传送，并且调用 standard _ planner ()来计划语句   https://www.cnblogs.com/yyvv/p/4188980.html
-代码的整体质量不错，大部分的改动都有注释，注释可读性也很好，个别注释时效性有问题，但不影响理解代码。所有在pg代码中的改动都用idef做了有效隔离。理论上跟上PG的升级问题不大 postgresql xc修改了一些postgresql的代码，postgresql xl又把他们改了过来，然后又加了好多代码。注意区分#idef和#ifndef Postgresql-xc的原则是能下推到dataNode的就下推到dataNode，实在推不下去的就把所有的数据集中在在聚集节点做。而xl做了MPP。">
+代码的整体质量不错，大部分的改动都有注释，注释可读性也很好，个别注释时效性有问题，但不影响理解代码。所有在pg代码中的改动都用idef做了有效隔离。理论上跟上PG的升级问题不大 postgresql xc修改了一些postgresql的代码，postgresql xl又把他们改了过来，然后又加了好多代码。注意区分#idef和#ifndef Postgresql-xc的原则是能下推到dataNode的就下推到dataNode，实在推不下去的就把所有的数据集中在在聚集节点做。而xl做了MPP。
+语句分析
+简单SQL没有执行RemoteQuery prepare s3(int, int) as select no_o_id from bmsql_new_order where no_w_id = $1 and no_d_id = $2 order by no_o_id asc; explain verbose execute s3(1, 1); prepare s7(int, int, char(32)) as select c_id from bmsql_customer where c_w_id = $1 and c_d_id = $2 and c_last = $3 order by c_first; explain verbose execute s7(1, 1, &amp;#39;OUGHTBARPRES&amp;#39;); prepare s19(int, int, int) as select ol_i_id, ol_supply_w_id, ol_quantity, ol_amount, ol_delivery_d from bmsql_order_line where ol_w_id = $1 and ol_d_id = $2 and ol_o_id = $3 order by ol_w_id, ol_d_id, ol_o_id, ol_number; explain verbose execute s19(1, 1, 1); 对比正常的简单SQL执行RemoteQuery ： prepare s1(int, int) as select d_tax, d_next_o_id from bmsql_district where d_w_id = $1 and d_id = $2 for update; explain verbose execute s1(1, 1); QUERY PLAN --------------------------------------------------------------------------------------------------------------------  Aggregate (cost=0.">
 <meta name=keywords content="数据库">
 <meta name=robots content="noodp">
 <link rel=canonical href=https://Esoye.github.io/posts/postgres/postgres-xc/>
@@ -32,14 +34,18 @@ Esoye — My note blog
  pg_plan_queries  pgxc_try_planner      pgxc SetForceXidFromGTM
  pg_plan_queries  pgxc_planner      pgxc_planner | pgxc_try_planner
  语句可以发送到 Datanode，而且只需要协调器作为代理-在这种情况下，它创建单个节点计划。 语句可以在协调器上完全计算-因此不涉及查询传送，并且调用 standard _ planner ()来计划语句   https://www.cnblogs.com/yyvv/p/4188980.html
-代码的整体质量不错，大部分的改动都有注释，注释可读性也很好，个别注释时效性有问题，但不影响理解代码。所有在pg代码中的改动都用idef做了有效隔离。理论上跟上PG的升级问题不大 postgresql xc修改了一些postgresql的代码，postgresql xl又把他们改了过来，然后又加了好多代码。注意区分#idef和#ifndef Postgresql-xc的原则是能下推到dataNode的就下推到dataNode，实在推不下去的就把所有的数据集中在在聚集节点做。而xl做了MPP。">
+代码的整体质量不错，大部分的改动都有注释，注释可读性也很好，个别注释时效性有问题，但不影响理解代码。所有在pg代码中的改动都用idef做了有效隔离。理论上跟上PG的升级问题不大 postgresql xc修改了一些postgresql的代码，postgresql xl又把他们改了过来，然后又加了好多代码。注意区分#idef和#ifndef Postgresql-xc的原则是能下推到dataNode的就下推到dataNode，实在推不下去的就把所有的数据集中在在聚集节点做。而xl做了MPP。
+语句分析
+简单SQL没有执行RemoteQuery prepare s3(int, int) as select no_o_id from bmsql_new_order where no_w_id = $1 and no_d_id = $2 order by no_o_id asc; explain verbose execute s3(1, 1); prepare s7(int, int, char(32)) as select c_id from bmsql_customer where c_w_id = $1 and c_d_id = $2 and c_last = $3 order by c_first; explain verbose execute s7(1, 1, 'OUGHTBARPRES'); prepare s19(int, int, int) as select ol_i_id, ol_supply_w_id, ol_quantity, ol_amount, ol_delivery_d from bmsql_order_line where ol_w_id = $1 and ol_d_id = $2 and ol_o_id = $3 order by ol_w_id, ol_d_id, ol_o_id, ol_number; explain verbose execute s19(1, 1, 1); 对比正常的简单SQL执行RemoteQuery ： prepare s1(int, int) as select d_tax, d_next_o_id from bmsql_district where d_w_id = $1 and d_id = $2 for update; explain verbose execute s1(1, 1); QUERY PLAN --------------------------------------------------------------------------------------------------------------------  Aggregate (cost=0.">
 <meta property="og:title" content>
 <meta property="og:description" content="exec_simple_query
   antdb parse_query_auto_gram 语法支持 SetForceObtainXidFromAGTM pg_analyze_and_rewrite_for_gram
  pg_plan_queries  pgxc_try_planner      pgxc SetForceXidFromGTM
  pg_plan_queries  pgxc_planner      pgxc_planner | pgxc_try_planner
  语句可以发送到 Datanode，而且只需要协调器作为代理-在这种情况下，它创建单个节点计划。 语句可以在协调器上完全计算-因此不涉及查询传送，并且调用 standard _ planner ()来计划语句   https://www.cnblogs.com/yyvv/p/4188980.html
-代码的整体质量不错，大部分的改动都有注释，注释可读性也很好，个别注释时效性有问题，但不影响理解代码。所有在pg代码中的改动都用idef做了有效隔离。理论上跟上PG的升级问题不大 postgresql xc修改了一些postgresql的代码，postgresql xl又把他们改了过来，然后又加了好多代码。注意区分#idef和#ifndef Postgresql-xc的原则是能下推到dataNode的就下推到dataNode，实在推不下去的就把所有的数据集中在在聚集节点做。而xl做了MPP。">
+代码的整体质量不错，大部分的改动都有注释，注释可读性也很好，个别注释时效性有问题，但不影响理解代码。所有在pg代码中的改动都用idef做了有效隔离。理论上跟上PG的升级问题不大 postgresql xc修改了一些postgresql的代码，postgresql xl又把他们改了过来，然后又加了好多代码。注意区分#idef和#ifndef Postgresql-xc的原则是能下推到dataNode的就下推到dataNode，实在推不下去的就把所有的数据集中在在聚集节点做。而xl做了MPP。
+语句分析
+简单SQL没有执行RemoteQuery prepare s3(int, int) as select no_o_id from bmsql_new_order where no_w_id = $1 and no_d_id = $2 order by no_o_id asc; explain verbose execute s3(1, 1); prepare s7(int, int, char(32)) as select c_id from bmsql_customer where c_w_id = $1 and c_d_id = $2 and c_last = $3 order by c_first; explain verbose execute s7(1, 1, 'OUGHTBARPRES'); prepare s19(int, int, int) as select ol_i_id, ol_supply_w_id, ol_quantity, ol_amount, ol_delivery_d from bmsql_order_line where ol_w_id = $1 and ol_d_id = $2 and ol_o_id = $3 order by ol_w_id, ol_d_id, ol_o_id, ol_number; explain verbose execute s19(1, 1, 1); 对比正常的简单SQL执行RemoteQuery ： prepare s1(int, int) as select d_tax, d_next_o_id from bmsql_district where d_w_id = $1 and d_id = $2 for update; explain verbose execute s1(1, 1); QUERY PLAN --------------------------------------------------------------------------------------------------------------------  Aggregate (cost=0.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://Esoye.github.io/posts/postgres/postgres-xc/"><meta property="article:section" content="posts">
 <meta property="og:site_name" content="Esoye">
@@ -117,6 +123,84 @@ SetForceXidFromGTM</p>
 <p>代码的整体质量不错，大部分的改动都有注释，注释可读性也很好，个别注释时效性有问题，但不影响理解代码。所有在pg代码中的改动都用idef做了有效隔离。理论上跟上PG的升级问题不大
 postgresql xc修改了一些postgresql的代码，postgresql xl又把他们改了过来，然后又加了好多代码。注意区分#idef和#ifndef
 Postgresql-xc的原则是能下推到dataNode的就下推到dataNode，实在推不下去的就把所有的数据集中在在聚集节点做。而xl做了MPP。</p>
+<p>语句分析</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#960050;background-color:#1e0010>简单</span>SQL没有执行RemoteQuery
+<span style=color:#66d9ef>prepare</span> s3(int, int) <span style=color:#66d9ef>as</span> <span style=color:#66d9ef>select</span> no_o_id <span style=color:#66d9ef>from</span> bmsql_new_order <span style=color:#66d9ef>where</span> no_w_id <span style=color:#f92672>=</span> <span style=color:#960050;background-color:#1e0010>$</span><span style=color:#ae81ff>1</span> <span style=color:#66d9ef>and</span> no_d_id <span style=color:#f92672>=</span> <span style=color:#960050;background-color:#1e0010>$</span><span style=color:#ae81ff>2</span> <span style=color:#66d9ef>order</span> <span style=color:#66d9ef>by</span> no_o_id <span style=color:#66d9ef>asc</span>;
+<span style=color:#66d9ef>explain</span> <span style=color:#66d9ef>verbose</span> <span style=color:#66d9ef>execute</span> s3(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>);
+
+<span style=color:#66d9ef>prepare</span> s7(int, int, char(<span style=color:#ae81ff>32</span>)) <span style=color:#66d9ef>as</span> <span style=color:#66d9ef>select</span> c_id <span style=color:#66d9ef>from</span> bmsql_customer <span style=color:#66d9ef>where</span> c_w_id <span style=color:#f92672>=</span> <span style=color:#960050;background-color:#1e0010>$</span><span style=color:#ae81ff>1</span> <span style=color:#66d9ef>and</span> c_d_id <span style=color:#f92672>=</span> <span style=color:#960050;background-color:#1e0010>$</span><span style=color:#ae81ff>2</span> <span style=color:#66d9ef>and</span> c_last <span style=color:#f92672>=</span> <span style=color:#960050;background-color:#1e0010>$</span><span style=color:#ae81ff>3</span> <span style=color:#66d9ef>order</span> <span style=color:#66d9ef>by</span> c_first;
+<span style=color:#66d9ef>explain</span> <span style=color:#66d9ef>verbose</span> <span style=color:#66d9ef>execute</span> s7(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#e6db74>&#39;OUGHTBARPRES&#39;</span>);
+
+<span style=color:#66d9ef>prepare</span> s19(int, int, int) <span style=color:#66d9ef>as</span> <span style=color:#66d9ef>select</span> ol_i_id, ol_supply_w_id, ol_quantity, ol_amount, ol_delivery_d <span style=color:#66d9ef>from</span> bmsql_order_line <span style=color:#66d9ef>where</span> ol_w_id <span style=color:#f92672>=</span> <span style=color:#960050;background-color:#1e0010>$</span><span style=color:#ae81ff>1</span> <span style=color:#66d9ef>and</span> ol_d_id <span style=color:#f92672>=</span> <span style=color:#960050;background-color:#1e0010>$</span><span style=color:#ae81ff>2</span> <span style=color:#66d9ef>and</span> ol_o_id <span style=color:#f92672>=</span> <span style=color:#960050;background-color:#1e0010>$</span><span style=color:#ae81ff>3</span> <span style=color:#66d9ef>order</span> <span style=color:#66d9ef>by</span> ol_w_id, ol_d_id, ol_o_id, ol_number;
+<span style=color:#66d9ef>explain</span> <span style=color:#66d9ef>verbose</span> <span style=color:#66d9ef>execute</span> s19(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>);
+
+
+<span style=color:#960050;background-color:#1e0010>对比正常的简单</span>SQL执行RemoteQuery <span style=color:#960050;background-color:#1e0010>：</span>
+<span style=color:#66d9ef>prepare</span> s1(int, int) <span style=color:#66d9ef>as</span> <span style=color:#66d9ef>select</span> d_tax, d_next_o_id <span style=color:#66d9ef>from</span> bmsql_district <span style=color:#66d9ef>where</span> d_w_id <span style=color:#f92672>=</span> <span style=color:#960050;background-color:#1e0010>$</span><span style=color:#ae81ff>1</span> <span style=color:#66d9ef>and</span> d_id <span style=color:#f92672>=</span> <span style=color:#960050;background-color:#1e0010>$</span><span style=color:#ae81ff>2</span> <span style=color:#66d9ef>for</span> <span style=color:#66d9ef>update</span>;
+<span style=color:#66d9ef>explain</span> <span style=color:#66d9ef>verbose</span> <span style=color:#66d9ef>execute</span> s1(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>);
+
+
+                                                     QUERY PLAN                                                     
+<span style=color:#75715e>--------------------------------------------------------------------------------------------------------------------
+</span><span style=color:#75715e></span> <span style=color:#66d9ef>Aggregate</span>  (cost<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>.<span style=color:#ae81ff>02</span>..<span style=color:#ae81ff>0</span>.<span style=color:#ae81ff>03</span> <span style=color:#66d9ef>rows</span><span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> width<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>)
+   <span style=color:#f92672>-&gt;</span>  Nested Loop Semi <span style=color:#66d9ef>Join</span>  (cost<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>.<span style=color:#ae81ff>00</span>..<span style=color:#ae81ff>0</span>.<span style=color:#ae81ff>01</span> <span style=color:#66d9ef>rows</span><span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> width<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>)
+         <span style=color:#66d9ef>Join</span> Filter: (bmsql_stock.s_i_id <span style=color:#f92672>=</span> bmsql_order_line.ol_i_id)
+         <span style=color:#f92672>-&gt;</span>  <span style=color:#66d9ef>Data</span> Node Scan <span style=color:#66d9ef>on</span> bmsql_stock <span style=color:#e6db74>&#34;_REMOTE_TABLE_QUERY_&#34;</span>  (cost<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>.<span style=color:#ae81ff>00</span>..<span style=color:#ae81ff>0</span>.<span style=color:#ae81ff>00</span> <span style=color:#66d9ef>rows</span><span style=color:#f92672>=</span><span style=color:#ae81ff>1000</span> width<span style=color:#f92672>=</span><span style=color:#ae81ff>4</span>)
+               Node<span style=color:#f92672>/</span>s: data_1
+         <span style=color:#f92672>-&gt;</span>  <span style=color:#66d9ef>Data</span> Node Scan <span style=color:#66d9ef>on</span> <span style=color:#e6db74>&#34;_REMOTE_TABLE_QUERY_&#34;</span> <span style=color:#e6db74>&#34;_REMOTE_TABLE_QUERY__1&#34;</span>  (cost<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>.<span style=color:#ae81ff>00</span>..<span style=color:#ae81ff>0</span>.<span style=color:#ae81ff>00</span> <span style=color:#66d9ef>rows</span><span style=color:#f92672>=</span><span style=color:#ae81ff>1000</span> width<span style=color:#f92672>=</span><span style=color:#ae81ff>4</span>)
+               Node<span style=color:#f92672>/</span>s: data_1
+
+
+                                                                                                                               QUERY PLAN                                                                               
+                                                 
+<span style=color:#75715e>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</span><span style=color:#75715e></span> <span style=color:#66d9ef>Data</span> Node Scan <span style=color:#66d9ef>on</span> <span style=color:#e6db74>&#34;__REMOTE_SORT_QUERY__&#34;</span>  (cost<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>.<span style=color:#ae81ff>00</span>..<span style=color:#ae81ff>0</span>.<span style=color:#ae81ff>00</span> <span style=color:#66d9ef>rows</span><span style=color:#f92672>=</span><span style=color:#ae81ff>1000</span> width<span style=color:#f92672>=</span><span style=color:#ae81ff>50</span>)
+   <span style=color:#66d9ef>Output</span>: bmsql_order_line.ol_i_id, bmsql_order_line.ol_supply_w_id, bmsql_order_line.ol_quantity, bmsql_order_line.ol_amount, bmsql_order_line.ol_delivery_d, bmsql_order_line.ol_w_id, bmsql_order_line.ol_d_id, bmsql_order_line.ol_o_id, bmsql_order_line.ol_number
+   Node<span style=color:#f92672>/</span>s: data_1
+   Remote query: <span style=color:#66d9ef>SELECT</span> ol_i_id, ol_supply_w_id, ol_quantity, ol_amount, ol_delivery_d, ol_w_id, ol_d_id, ol_o_id, ol_number <span style=color:#66d9ef>FROM</span> <span style=color:#66d9ef>ONLY</span> <span style=color:#66d9ef>public</span>.bmsql_order_line <span style=color:#66d9ef>WHERE</span> ((ol_w_id <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>) <span style=color:#66d9ef>AND</span> (ol_d_id <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>) <span style=color:#66d9ef>AND</span> (ol_o_id <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>)) <span style=color:#66d9ef>ORDER</span> <span style=color:#66d9ef>BY</span> <span style=color:#ae81ff>9</span>
+</code></pre></div><ol>
+<li>优化器入口</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c++ data-lang=c++><span style=color:#66d9ef>if</span> (IS_PGXC_COORDINATOR <span style=color:#f92672>&amp;&amp;</span> <span style=color:#f92672>!</span>IsConnFromCoord())
+  result <span style=color:#f92672>=</span> pgxc_planner(parse, cursorOptions, boundParams);
+</code></pre></div><p>remotequery的执行计划的实现</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c++ data-lang=c++><span style=color:#66d9ef>extern</span> Plan <span style=color:#f92672>*</span><span style=color:#a6e22e>create_remotedml_plan</span>(PlannerInfo <span style=color:#f92672>*</span>root, Plan <span style=color:#f92672>*</span>topplan, CmdType cmdtyp);
+<span style=color:#66d9ef>extern</span> Plan <span style=color:#f92672>*</span><span style=color:#a6e22e>create_remotegrouping_plan</span>(PlannerInfo <span style=color:#f92672>*</span>root, Plan <span style=color:#f92672>*</span>local_plan);
+<span style=color:#66d9ef>extern</span> Plan <span style=color:#f92672>*</span><span style=color:#a6e22e>create_remotequery_plan</span>(PlannerInfo <span style=color:#f92672>*</span>root, RemoteQueryPath <span style=color:#f92672>*</span>best_path);
+<span style=color:#66d9ef>extern</span> Plan <span style=color:#f92672>*</span><span style=color:#a6e22e>create_remotesort_plan</span>(PlannerInfo <span style=color:#f92672>*</span>root, Plan <span style=color:#f92672>*</span>local_plan);
+<span style=color:#66d9ef>extern</span> Plan <span style=color:#f92672>*</span><span style=color:#a6e22e>create_remotelimit_plan</span>(PlannerInfo <span style=color:#f92672>*</span>root, Plan <span style=color:#f92672>*</span>local_plan);
+<span style=color:#66d9ef>extern</span> List <span style=color:#f92672>*</span><span style=color:#a6e22e>pgxc_order_qual_clauses</span>(PlannerInfo <span style=color:#f92672>*</span>root, List <span style=color:#f92672>*</span>clauses);
+<span style=color:#66d9ef>extern</span> List <span style=color:#f92672>*</span><span style=color:#a6e22e>pgxc_build_path_tlist</span>(PlannerInfo <span style=color:#f92672>*</span>root, Path <span style=color:#f92672>*</span>path);
+<span style=color:#66d9ef>extern</span> <span style=color:#66d9ef>void</span>  <span style=color:#a6e22e>pgxc_copy_path_costsize</span>(Plan <span style=color:#f92672>*</span>dest, Path <span style=color:#f92672>*</span>src);
+<span style=color:#66d9ef>extern</span> Plan <span style=color:#f92672>*</span><span style=color:#a6e22e>pgxc_create_gating_plan</span>(PlannerInfo <span style=color:#f92672>*</span>root, Plan <span style=color:#f92672>*</span>plan, List <span style=color:#f92672>*</span>quals);
+<span style=color:#66d9ef>extern</span> Node <span style=color:#f92672>*</span><span style=color:#a6e22e>pgxc_replace_nestloop_params</span>(PlannerInfo <span style=color:#f92672>*</span>root, Node <span style=color:#f92672>*</span>expr);
+
+</code></pre></div><p>SELECT
+procpid,
+start,
+now() - start AS lap,
+current_query
+FROM
+(SELECT
+backendid,
+pg_stat_get_backend_pid(S.backendid) AS procpid,
+pg_stat_get_backend_activity_start(S.backendid) AS start,
+pg_stat_get_backend_activity(S.backendid) AS current_query
+FROM
+(SELECT pg_stat_get_backend_idset() AS backendid) AS S
+) AS S
+WHERE
+current_query &lt;> &lsquo;&rsquo;
+ORDER BY
+lap DESC;</p>
+<p>../configure &ndash;prefix=/home/wen/postgres/build/antdb/build &ndash;with-segsize=4 &ndash;with-wal-blocksize=64 &ndash;enable-grammar-oracle &ndash;with-perl &ndash;with-python &ndash;with-pam &ndash;with-ldap &ndash;with-libxml &ndash;with-libxslt &ndash;enable-thread-safety &ndash;disable-debug &ndash;disable-cassert &ndash;enable-depend CFLAGS='-g'</p>
+<p>select pg_backend_pid()</p>
+<p>// 处理不支持的语句
+pgxc_handle_unsupported_stmts</p>
+<p>// 处理untility语句
+pgxc_handle_exec_direct</p>
+<p>// 处理可以remote执行的语句
+pgxc_FQS_planner</p>
 </div>
 <div class=pagination>
 <div class=pagination__title>

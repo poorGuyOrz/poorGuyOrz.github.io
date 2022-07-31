@@ -62,6 +62,25 @@ Esoye — My note blog
 <div class=content>
 <div class=posts>
 <div class="post on-list">
+<h1 class=post-title><a href=https://Esoye.github.io/posts/postgres/antdbbuild/>Antdbbuild</a></h1>
+<div class=post-meta>
+<span class=post-date>
+2022-07-29
+</span>
+</div>
+<span class=post-tags>
+<a href=https://Esoye.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/>#数据库</a>&nbsp;
+<a href=https://Esoye.github.io/tags/antdb/>#AntDB</a>&nbsp;
+<a href=https://Esoye.github.io/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/>#环境搭建</a>&nbsp;
+</span>
+<div class=post-content>
+AntDB环境搭建，由于只有一个机器，所以可能会在一个环境运行多个postgres集群实例，所以和常规的集群搭建不一样，所以特意记录下来
+</div>
+<div>
+<a class="read-more button" href=/posts/postgres/antdbbuild/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
 <h1 class=post-title><a href=https://Esoye.github.io/posts/postgres/opt/>Postgres Optimizer</a></h1>
 <div class=post-meta>
 <span class=post-date>
@@ -513,6 +532,14 @@ ranges https://zhuanlan.
 <div class=post-meta>
 </div>
 <div class=post-content>
+exec_simple_query
+antdb parse_query_auto_gram 语法支持 SetForceObtainXidFromAGTM pg_analyze_and_rewrite_for_gram
+pg_plan_queries pgxc_try_planner pgxc SetForceXidFromGTM
+pg_plan_queries pgxc_planner pgxc_planner | pgxc_try_planner
+语句可以发送到 Datanode，而且只需要协调器作为代理-在这种情况下，它创建单个节点计划。 语句可以在协调器上完全计算-因此不涉及查询传送，并且调用 standard _ planner ()来计划语句 https://www.cnblogs.com/yyvv/p/4188980.html
+代码的整体质量不错，大部分的改动都有注释，注释可读性也很好，个别注释时效性有问题，但不影响理解代码。所有在pg代码中的改动都用idef做了有效隔离。理论上跟上PG的升级问题不大 postgresql xc修改了一些postgresql的代码，postgresql xl又把他们改了过来，然后又加了好多代码。注意区分#idef和#ifndef Postgresql-xc的原则是能下推到dataNode的就下推到dataNode，实在推不下去的就把所有的数据集中在在聚集节点做。而xl做了MPP。
+语句分析
+简单SQL没有执行RemoteQuery prepare s3(int, int) as select no_o_id from bmsql_new_order where no_w_id = $1 and no_d_id = $2 order by no_o_id asc; explain verbose execute s3(1, 1); prepare s7(int, int, char(32)) as select c_id from bmsql_customer where c_w_id = $1 and c_d_id = $2 and c_last = $3 order by c_first; explain verbose execute s7(1, 1, 'OUGHTBARPRES'); prepare s19(int, int, int) as select ol_i_id, ol_supply_w_id, ol_quantity, ol_amount, ol_delivery_d from bmsql_order_line where ol_w_id = $1 and ol_d_id = $2 and ol_o_id = $3 order by ol_w_id, ol_d_id, ol_o_id, ol_number; explain verbose execute s19(1, 1, 1); 对比正常的简单SQL执行RemoteQuery ： prepare s1(int, int) as select d_tax, d_next_o_id from bmsql_district where d_w_id = $1 and d_id = $2 for update; explain verbose execute s1(1, 1); QUERY PLAN -------------------------------------------------------------------------------------------------------------------- Aggregate (cost=0.
 </div>
 <div>
 <a class="read-more button" href=/posts/postgres/postgres-xc/>Read more →</a>
@@ -526,6 +553,17 @@ ranges https://zhuanlan.
 </div>
 <div>
 <a class="read-more button" href=/posts/postgres/query/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title><a href=https://Esoye.github.io/posts/postgres/trafodion/></a></h1>
+<div class=post-meta>
+</div>
+<div class=post-content>
+create table sales (product_id int , b int , c int); create table product (product_id int , b int , c int); create table product_class (product_id int , b int , c int); insert into sales values(1,1,1),(2,2,2),(3,3,3),(4,4,4),(5,5,5),(6,6,6),(7,7,7),(8,8,8),(9,9,9),(10,10,10),(11,11,11); insert into product values(1,1,1),(2,2,2),(3,3,3),(4,4,4),(5,5,5),(6,6,6),(7,7,7),(8,8,8),(9,9,9),(10,10,10),(11,11,11); insert into product_class values(1,1,1),(2,2,2),(3,3,3),(4,4,4),(5,5,5),(6,6,6),(7,7,7),(8,8,8),(9,9,9),(10,10,10),(11,11,11); explain option 'f' select s.product_id, pc.product_id from sales as s left join product as p on s.product_id = p.product_id left join product_class pc on s.product_id = pc.
+</div>
+<div>
+<a class="read-more button" href=/posts/postgres/trafodion/>Read more →</a>
 </div>
 </div>
 <div class="post on-list">

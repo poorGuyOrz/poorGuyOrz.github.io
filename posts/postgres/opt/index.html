@@ -326,7 +326,7 @@ case
 </span><span style=color:#75715e></span><span style=color:#66d9ef>left</span> <span style=color:#66d9ef>join</span> product_class pc 
   <span style=color:#66d9ef>on</span> s.product_id <span style=color:#f92672>=</span> pc.product_id;
 
-
+<span style=color:#66d9ef>explain</span> <span style=color:#66d9ef>option</span> <span style=color:#e6db74>&#39;f&#39;</span>
 <span style=color:#66d9ef>select</span> s.product_id, pc.product_id <span style=color:#66d9ef>from</span> sales <span style=color:#66d9ef>as</span> s 
 <span style=color:#66d9ef>left</span> <span style=color:#66d9ef>join</span> product <span style=color:#66d9ef>as</span> p 
   <span style=color:#66d9ef>on</span> s.product_id <span style=color:#f92672>=</span> p.product_id 
@@ -2038,6 +2038,12 @@ case 2
 <hr>
 </div>
 <div class=pagination__buttons>
+<span class="button previous">
+<a href=https://Esoye.github.io/posts/postgres/antdbbuild/>
+<span class=button__icon>←</span>
+<span class=button__text>Antdbbuild</span>
+</a>
+</span>
 <span class="button next">
 <a href=https://Esoye.github.io/posts/postgres/storage/>
 <span class=button__text>Postgres Storage</span>
